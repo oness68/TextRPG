@@ -1,15 +1,9 @@
-#pragma once
+О╩©#pragma once
 
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
 #include <string>
-
-// юс╫ц
-class Character {
-
-};
-
 
 namespace GameManger {
 
@@ -17,7 +11,7 @@ namespace GameManger {
 	public:
 		static GameManger& GetInstance();
 
-		Character GenerateCharacter();
+		//Character GenerateCharacter(std::string name);
 		void GenerateBattleManager();
 
 		void VisitShop();
@@ -42,4 +36,4 @@ namespace GameManger {
 
 } // namespace GameManger
 
-#endif
+#endif // !GAMEMANAGER_H

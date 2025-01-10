@@ -1,67 +1,68 @@
-#include "GameManager.h"
+ï»¿#include "GameManager.h"
+//#include "Character.h"
 
 namespace GameManger {
 
-    // ½Ì±ÛÅæ ÀÎ½ºÅÏ½º ¹İÈ¯
+    // ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤ ë°˜í™˜
     GameManger& GameManger::GetInstance() 
     {
         static GameManger instance;
         return instance;
     }
 
-    // »óÁ¡ ¹æ¹® ÇÔ¼ö
+    // ìƒì  ë°©ë¬¸ í•¨ìˆ˜
     void GameManger::VisitShop() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // ÀüÅõ ½ÃÀÛ ÇÔ¼ö
+    // ì „íˆ¬ ì‹œì‘ í•¨ìˆ˜
     void GameManger::BeginBattle() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // BattleManager »ı¼º ÇÔ¼ö
+    // BattleManager ìƒì„± í•¨ìˆ˜
     void GameManger::GenerateBattleManager() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // ÈŞ½Ä Àå¼Ò ¹æ¹® ÇÔ¼ö
+    // íœ´ì‹ ì¥ì†Œ ë°©ë¬¸ í•¨ìˆ˜
     void GameManger::VisitRest() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // ¹öÇÁ·ë ¹æ¹® ÇÔ¼ö
+    // ë²„í”„ë£¸ ë°©ë¬¸ í•¨ìˆ˜
     void GameManger::VisiteBuffRoom() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // Ä³¸¯ÅÍ »ı¼º ÇÔ¼ö
-    Character GameManger::GenerateCharacter() 
-    {
-        // TODO: ±¸Çö ÇÊ¿ä
-        return Character();
-    }
+    // ìºë¦­í„° ìƒì„± í•¨ìˆ˜
+    //Character GameManger::GenerateCharacter(string name)
+    //{
+    //    // TODO: êµ¬í˜„ í•„ìš”
+    //    return Character::Character(name);
+    //}
 
-    // ÇöÀç ½ºÅ×ÀÌÁö ¹İÈ¯ ÇÔ¼ö
+    // í˜„ì¬ ìŠ¤í…Œì´ì§€ ë°˜í™˜ í•¨ìˆ˜
     int GameManger::getCurrentStage() 
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
         return stage;
     }
 
-    // ½ºÅ×ÀÌÁö ´Ü°è ¼³Á¤
+    // ìŠ¤í…Œì´ì§€ ë‹¨ê³„ ì„¤ì •
     void GameManger::SetStage(int num)
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 
-    // °ÔÀÓ½ÃÀÛ
+    // ê²Œì„ì‹œì‘
     void GameManger::BeginPlay()
     {
-        // TODO: ±¸Çö ÇÊ¿ä
+        // TODO: êµ¬í˜„ í•„ìš”
     }
 } // namespace GameManger
