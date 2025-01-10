@@ -1,6 +1,7 @@
-#include <iostream>
+ï»¿#include <iostream>
 
 #include "GameManager.h"
+#include "Character.h"
 
 using namespace std;
 
@@ -10,29 +11,30 @@ void main()
 
 	GM& gameManager = GM::GetInstance();
 
-	// ¹èÆ² ¸Å´ÏÀú, ÄÉ¸¯ÅÍ »ı¼º
+	// ë°°í‹€ ë§¤ë‹ˆì €, ì¼€ë¦­í„° ìƒì„±
 	gameManager.GenerateBattleManager();
-	Character player1 = gameManager.GenerateCharacter();
+	Character player1 = *new Character("í•œì •í˜");
+	player1.DisplayStatus();
 
 	int menuOption;
 
-	// 1. °ÔÀÓ½ÃÀÛ, 2. Á¾·á
+	// 1. ê²Œì„ì‹œì‘, 2. ì¢…ë£Œ
 	while (true) 
 	{
-		cout << "°ÔÀÓ ¸Ş´º" << endl;
-		cout << "1. °ÔÀÓ½ÃÀÛ" << endl;
-		cout << "2. °ÔÀÓÁ¾·á" << endl;
+		cout << "ê²Œì„ ë©”ë‰´" << endl;
+		cout << "1. ê²Œì„ì‹œì‘" << endl;
+		cout << "2. ê²Œì„ì¢…ë£Œ" << endl;
 		cin >> menuOption;
 
 		switch (menuOption) {
 		case 1:
 			break;
 		case 2:
-			cout << "°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù..." << endl;
+			cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤..." << endl;
 			return;
 			break;
 		default:
-			cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇÏ¼¼¿ä." << endl;
+			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì„¸ìš”." << endl;
 		}
 	}
 
