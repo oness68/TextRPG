@@ -3,7 +3,7 @@
 
 namespace Enums
 {
-	enum LogEnum { StartMenu, GameOver, GameEnd };
+	enum LogEnum { GameOver, GameEnd };
 }
 
 #endif
