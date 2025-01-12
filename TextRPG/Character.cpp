@@ -44,6 +44,7 @@ string Character::GetCharacterStatusString()
 	returnValue += format("경험치 : {}/{}\n", currentExp, requiredLevelUpExp);
 
 	return returnValue;
+	
 }
 
 map<EquipmentType, int> Character::GetEquipmentItems()
