@@ -18,6 +18,7 @@ void main()
 	Log* logger = Log::GetInstance();
 	Character player1 = *new Character("한정혁");
 	player1.DisplayStatus();
+	Log* logger = Log::GetInstance();
 
 	int menuOption;
 	bool isGameRun = false;		//게임의 실행여부
