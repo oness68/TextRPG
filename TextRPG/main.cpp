@@ -1,42 +1,56 @@
-ï»¿#include <iostream>
+#include <iostream>
 
 #include "GameManager.h"
 #include "Character.h"
+#include "EnumCollection.h"
+#include "Log.h"
 
 using namespace std;
 
-void main() 
+void main()
 {
 	using GM = GameManger::GameManger;
 
 	GM& gameManager = GM::GetInstance();
 
-	// ë°°í‹€ ë§¤ë‹ˆì €, ì¼€ë¦­í„° ìƒì„±
+	// ¹èÆ² ¸Å´ÏÀú, ÄÉ¸¯ÅÍ »ı¼º
 	gameManager.GenerateBattleManager();
-	Character player1 = *new Character("í•œì •í˜");
+	Character player1 = *new Character("ÇÑÁ¤Çõ");
 	player1.DisplayStatus();
+	Log* logger = Log::GetInstance();
 
 	int menuOption;
+	bool isGameRun = false;		//°ÔÀÓÀÇ ½ÇÇà¿©ºÎ
+	bool isGameStart = false;	//°ÔÀÓ¸Ş´º Å»ÃâÁ¶°Ç À§ÇÔ
 
-	// 1. ê²Œì„ì‹œì‘, 2. ì¢…ë£Œ
-	while (true) 
+	// 1. °ÔÀÓ½ÃÀÛ, 2. Á¾·á
+	while (!isGameStart)
 	{
-		cout << "ê²Œì„ ë©”ë‰´" << endl;
-		cout << "1. ê²Œì„ì‹œì‘" << endl;
-		cout << "2. ê²Œì„ì¢…ë£Œ" << endl;
+		logger->PrintStartMenu(Menu);
 		cin >> menuOption;
 
 		switch (menuOption) {
 		case 1:
+			isGameStart = true;	//½ÃÀÛÈ­¸é ·çÇÁ ¹ş¾î³ª±â À§ÇÔ
+			isGameRun = true;	//°ÔÀÓ ½ÃÀÛ
+			logger->PrintStartMenu(Start);
 			break;
 		case 2:
-			cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤..." << endl;
+			logger->PrintGameOver(LogEnum::GameEnd);	//ÇÃ·¹ÀÌ¾îÀÇ »ç¸Á°ú °ÔÀÓ Àç½ÃÀÛ ¿©ºÎ ¹°¾îº¸´Â Ãâ·Â¹®
 			return;
 			break;
 		default:
-			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì„¸ìš”." << endl;
+			logger->PrintInputError();	//Àß¸øµÈ ÀÔ·Â ¾È³» Ãâ·Â
 		}
 	}
 
+	//°ÔÀÓ ½ÇÇà ÄÚµå
+	while (isGameStart)
+	{
+		break;
+	}
+
+	//°ÔÀÓ ½ÇÇàÀÌ ³¡³µÀ» ¶§
+	logger->PrintGameOver(LogEnum::GameEnd);
 	return;
 }
