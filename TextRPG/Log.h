@@ -26,7 +26,7 @@ public:
 	static Log* GetInstance();
 	string GetLog();
 	void SetLog(string log);
-	void PrintLog(string orderLog);
+	void PrintLog(string orderLog, int enumCase);
 	void PrintStartMenu(int caseNumber);	//게임 시작 메뉴 출력
 	void PrintInputError();
 	void PrintGameOver(int caseNumber);	//1 : 게임 종료의 경우, 2 : 플레이어 사망의 경우
