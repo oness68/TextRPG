@@ -4,6 +4,7 @@
 namespace Enums
 {
 	enum LogEnum { Menu, Start, GameOver, GameEnd };
+	enum PrintEnum { BattlePrint, StatusPrint, ShopRoomPrint, RestRoomPrint, BuffDebuffRoomPrint};
 }
 
 #endif
