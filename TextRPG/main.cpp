@@ -23,7 +23,7 @@ void main()
 	bool isGameRun = false;		//게임의 실행여부
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함
 
-	logger->PrintLog("Hello", 0);
+	logger->SetScreen();
 	// 1. 게임시작, 2. 종료
 	while (!isGameStart)
 	{

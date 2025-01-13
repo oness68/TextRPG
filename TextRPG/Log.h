@@ -2,7 +2,7 @@
 #define LOG_H
 
 #include <iostream>
-//#include <Windows.h>		추후 사용가능성
+#include <Windows.h>
 #include <string>
 #include <vector>
 #include "EnumCollection.h"
@@ -24,12 +24,18 @@ private:
 	Log& operator = (const Log&) = delete;
 public:
 	static Log* GetInstance();
+	void SetScreen();
 	string GetLog();
 	void SetLog(string log);
 	void PrintLog(string orderLog, int enumCase);
 	void PrintStartMenu(int caseNumber);	//게임 시작 메뉴 출력
 	void PrintInputError();
 	void PrintGameOver(int caseNumber);	//1 : 게임 종료의 경우, 2 : 플레이어 사망의 경우
+	void PrintBattle(); //BattlePrint, StatusPrint, ShopRoomPrint, RestRoomPrint, BuffDebuffRoomPrint
+	void PrintStatus();
+	void PrintShopRoom();
+	void PrintRestRoom();
+	void PrintBuffDebuffRoom();
 };
 
 #endif

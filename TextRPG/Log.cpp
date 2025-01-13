@@ -11,6 +11,32 @@ Log* Log::GetInstance()
 	return instance;
 }
 
+void Log::SetScreen()
+{
+	int moniterScreenWidth = GetSystemMetrics(SM_CXSCREEN);		//모니터 해상도 가져오기
+	int moniterScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+	int consoleWidth = moniterScreenWidth / 2;					//모니터 해상도 가로세로의 절반만큼이 콘솔창의 크기가 되도록 함(창 크기는 모니터의 1/4
+	int consoleHeight = moniterScreenHeight / 2;
+	int charWidth = 8;											//Windows 콘솔창의 기본 폰트(Raster Fonts)의 문자 크기 값(픽셀)  가로 8픽셀  세로 16픽셀
+	int charHeight = 16;
+	int bufferWidth = consoleWidth / charWidth;					//콘솔 버퍼의 크기를 문자 크기로 맞춰줌. 이러면 문자열 길이에 따라 스크롤 발생하지 않음(게임이기 때문에)
+	int bufferHeight = consoleHeight / charHeight;
+
+	//콘솔 핸들 가져옴
+	HWND console = GetConsoleWindow();	
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	//문자 크기로 콘솔 버퍼 크기 정하고 창 크기 설정해줌
+	COORD bufferSize;
+	bufferSize.X = bufferWidth;
+	bufferSize.Y = bufferHeight;
+	SetConsoleScreenBufferSize(consoleHandle, bufferSize);
+	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//내부의 크기 조절
+	SetConsoleWindowInfo(consoleHandle, true, &windowSize);
+
+	MoveWindow(console, moniterScreenWidth / 4, moniterScreenHeight / 4, consoleWidth, consoleHeight, true);	//화면 가운데로 띄우고, 크기 조절
+}
+
 string Log::GetLog()
 {
 	return this->log;
@@ -31,6 +57,7 @@ void Log::PrintLog(string orderLog, int enumCase)
 	case PrintEnum::BattlePrint:
 		break;
 	case PrintEnum::StatusPrint:
+		this->PrintStatus();
 		break;
 	case PrintEnum::ShopRoomPrint:
 		break;
@@ -78,4 +105,14 @@ void Log::PrintGameOver(int caseNumber)	//플레이어의 사망 경우와 게임의 종료에 �
 	default:
 		break;
 	}
+}
+
+void Log::PrintBattle()
+{
+
+}
+
+void Log::PrintStatus()
+{
+
 }
