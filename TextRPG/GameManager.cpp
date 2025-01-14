@@ -1,5 +1,7 @@
 ﻿#include "GameManager.h"
-//#include "Character.h"
+
+#include <iostream>
+using namespace std;
 
 namespace GameManger {
 
@@ -7,6 +9,7 @@ namespace GameManger {
     GameManger& GameManger::GetInstance() 
     {
         static GameManger instance;
+
         return instance;
     }
 
@@ -20,12 +23,15 @@ namespace GameManger {
     void GameManger::BeginBattle() 
     {
         // TODO: 구현 필요
+        // 배틀 매니저 에게 캐릭터 정보와 스테이지 정보 제공
     }
 
     // BattleManager 생성 함수
     void GameManger::GenerateBattleManager() 
     {
         // TODO: 구현 필요
+
+
     }
 
     // 휴식 장소 방문 함수
@@ -58,11 +64,73 @@ namespace GameManger {
     void GameManger::SetStage(int num)
     {
         // TODO: 구현 필요
+        if (num > 0)
+        {
+            stage = num;
+        }
     }
 
     // 게임시작
     void GameManger::BeginPlay()
     {
         // TODO: 구현 필요
+        SetStage(1);
+        BeginBattle();
+
+        // 반복문으로 케릭터 죽기 전까지 또는 목표 스테이지 달성 전까지
+
+        std::srand(static_cast<unsigned>(std::time(nullptr)));
+        std::vector<StageRooms> selectedRooms = GenerateTwoRandomRooms(roomProbabilities);
+
+        cout << "Room: " << StageRoomToString(selectedRooms[0]) << endl;
+        cout << "Room: " << StageRoomToString(selectedRooms[1]) << endl;
+       
+        // 유저에게 방 선택 입력 받기
+
+
     }
+
+    StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
+    {
+        double totalProbability = 0.0;
+
+        for (const auto& room : roomProbabilities) 
+        {
+            totalProbability += room.second;
+        }
+
+        double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability; // std::rand()는 0부터 32767까지의 난수를 생성 0 ~ 9999 나머지
+        double cumulativeProbability = 0.0;
+
+        for (const auto& room : roomProbabilities) 
+        {
+            cumulativeProbability += room.second;
+            if (randomValue <= cumulativeProbability) 
+            {
+                return room.first;
+            }
+        }
+
+        return Shop;
+    }
+
+    // 배틀방만 중복이 가능하도록 처리한 랜덤 방 선택 함수
+    std::vector<StageRooms> GameManger::GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities) 
+    {
+        std::vector<StageRooms> selectedRooms;
+
+        StageRooms firstRoom = GenerateRandomRoom(roomProbabilities);
+        selectedRooms.push_back(firstRoom);
+
+        StageRooms secondRoom;
+        do 
+        {
+            secondRoom = GenerateRandomRoom(roomProbabilities);
+        } while (firstRoom != Battle && secondRoom == firstRoom);
+
+        selectedRooms.push_back(secondRoom);
+
+        return selectedRooms;
+    }
+
 } // namespace GameManger
