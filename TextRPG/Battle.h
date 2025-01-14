@@ -9,8 +9,7 @@ class Battle
 {
 	struct saveState {
 		int Power;
-		int CurrentHP;
-		int MaxHP;
+		int HP;
 	};
 	saveState CharacterData;
 	bool endBattle = false;

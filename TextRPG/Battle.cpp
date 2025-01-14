@@ -6,15 +6,14 @@
 
 void Battle::restoreCharacterState(Character* player)
 {
-	player->SetAttackPower(CharacterData.Power);
-	player->SetMaxHP(CharacterData.MaxHP);
+	player->setAttackPower(CharacterData.Power);
+	player->setMaxHP(CharacterData.HP);
 }
 
 void Battle::saveCharacterState(Character* player)
 {
-	CharacterData.Power = player->GetAttackPower();
-	CharacterData.CurrentHP = player->GetCurrentHP();
-	CharacterData.MaxHP = player->GetMaxHP();
+	CharacterData.Power = player->GetAcctackPower();
+	CharacterData.HP = player->getMaxHP();
 }
 
 void Battle::StageOfDifficulty()
@@ -45,7 +44,7 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 	this->battleMonster = monster;
 	saveCharacterState(Player);
 	string str = battleMonster->GetName() + "이(가) 등장하였다!\n";
-	//logger->PrintLog(str, this);
+	logger->PrintLog(str, this);
 	while (!endBattle)
 	{
 		if (myTurn)
@@ -77,7 +76,7 @@ void Battle::PlayerAction(Character* Player)
 {
 	Log* logger = Log::GetInstance();
 	string str ="1.공격\t2.아이템사용\n";
-	//logger->PrintLog(str, this);
+	logger->PrintLog(str, this);
 	int choice = Input(1, 2);
 	switch (choice)
 	{
@@ -119,12 +118,12 @@ void Battle::AttackSystem(Character* Player)
 		{
 		case 1:
 
-			battleMonster->TakeDamage(Player->GetAttackPower() * 1.2);
+			battleMonster->TakeDamage(Player->GetAcctackPower() * 1.2);
 			flag = true;
 			//log
 			break;
 		case 2:
-			battleMonster->TakeDamage(Player->GetAttackPower());
+			battleMonster->TakeDamage(Player->GetAcctackPower());
 			flag = true;
 			//log
 			break;
@@ -140,14 +139,14 @@ void Battle::AttackSystem(Character* Player)
 
 void Battle::isEndBattle(Character* Player)
 {
-	if (Player->GetCurrentHP() < 1 || battleMonster->GetHealth()<1)
+	if (Player->getCurrnetHP() < 1 || battleMonster->GetHealth()<1)
 	{
 		endBattle = true;
 	}
 
 	if (endBattle)
 	{
-		if (Player->GetCurrentHP() > 0)
+		if (Player->getCurrnetHP() > 0)
 		{
 			isWin = true;
 		}
