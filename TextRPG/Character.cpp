@@ -89,8 +89,6 @@ void Character::EquipItem(EquipableItem* item)
 
 };
 
-
-
 void Character::TakeExp(const int& exp)
 {
 	currentExp += exp;

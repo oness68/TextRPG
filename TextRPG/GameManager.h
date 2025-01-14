@@ -19,15 +19,12 @@ namespace GameManger {
 	public:
 		static GameManger& GetInstance();
 
-		//Character GenerateCharacter(std::string name);
-		void GenerateBattleManager();
-
 		StageRooms GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities);
 		std::vector<StageRooms> GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities);
 
 		void VisitShop();
 		void VisitRest();
-		void VisiteBuffRoom();
+		void VisitBuffRoom();
 		void BeginBattle();
 
 		void BeginPlay();

@@ -25,12 +25,6 @@ namespace GameManger {
         // TODO: 구현 필요
     }
 
-    // BattleManager 생성 함수
-    void GameManger::GenerateBattleManager() 
-    {
-        // TODO: 구현 필요
-    }
-
     // 휴식 장소 방문 함수
     void GameManger::VisitRest() 
     {
@@ -38,7 +32,7 @@ namespace GameManger {
     }
 
     // 버프룸 방문 함수
-    void GameManger::VisiteBuffRoom() 
+    void GameManger::VisitBuffRoom() 
     {
         // TODO: 구현 필요
     }
@@ -74,6 +68,8 @@ namespace GameManger {
 
         cout << "Room: " << StageRoomToString(selectedRooms[0]) << endl;
         cout << "Room: " << StageRoomToString(selectedRooms[1]) << endl;
+
+
     }
 
     StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
