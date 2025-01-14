@@ -27,18 +27,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="shop.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="consumableItem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="equipableItem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="enchancer.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -53,29 +41,13 @@
     <ClInclude Include="Log.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="shop.h">
+    <ClInclude Include="stb_image.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="shopInterface.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="itemInterface.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="consumableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="baseEquipableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="equipableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="equipableItemDecorator.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="enchancer.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\Player.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

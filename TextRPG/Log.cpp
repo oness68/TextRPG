@@ -1,4 +1,6 @@
 #include "Log.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 Log* Log::instance = nullptr;
 
@@ -17,6 +19,71 @@ int Log::CharToIndex(char c)
 	return c - 'a';
 }
 
+vector<string> Log::PNGImageToData(string filePath)
+{
+	vector<string> data;
+	string line;
+	const char alphabet[] = "abcdefghijklmnop";		//색상 순서대로 알파벳으로 전환됨
+	// PNG 파일 로딩
+	int width, height, channels;
+	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, 3); // RGB 형식으로만 읽기
+	if (!image) {
+		std::cerr << "이미지 읽어오기 실패" << std::endl;
+		exit(1);
+	}
+
+	//이미지를 픽셀별로 문자로 변환
+	for (int y = 0; y < height; y++)
+	{
+		line += "\"";
+		for (int x = 0; x < width; x++)
+		{
+			int pixelIndex = (y * width + x) * 3;	//3채널 RGB
+			int r = image[pixelIndex + 0];
+			int g = image[pixelIndex + 1];
+			int b = image[pixelIndex + 2];
+
+			//픽셀의 RGB값과 가장 가까운 색상 인덱스 찾기
+			int closestColor = GetClosestColorIndex(r, g, b);
+
+			line += alphabet[closestColor];
+		}
+		data.push_back(line);
+		line = "";
+	}
+	return data;
+}
+
+// RGB 색상과 팔레트 색상 간의 유클리드 거리 계산
+int Log::GetClosestColorIndex(int r, int g, int b) {
+	int closestIndex = 0;
+	int minDistance = INT_MAX;
+
+	for (int i = 0; i < NUMBER_OF_COLOR; i++) {
+		int dr = r - palette[i][0];
+		int dg = g - palette[i][1];
+		int db = b - palette[i][2];
+		int distance = dr * dr + dg * dg + db * db;
+
+		if (distance < minDistance) {
+			minDistance = distance;
+			closestIndex = i;
+		}
+	}
+	return closestIndex;
+}
+
+//void Log::ProcessPNG(string filePath)
+//{
+//	// PNG 파일 로딩
+//	int width, height, channels;
+//	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, 3); // RGB 형식으로만 읽기
+//	if (!image) {
+//		std::cerr << "이미지 읽어오기 실패" << std::endl;
+//		return;
+//	}
+//}
+
 //모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
 void Log::Initialize()
 {
@@ -31,355 +98,16 @@ void Log::Initialize()
 
 	MoveWindow(console, moniterScreenWidth / 4, moniterScreenHeight / 4, consoleWidth, consoleHeight, true);	//화면 가운데로 띄우고, 크기 조절
 
-	this->playerData =
-	{
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaooggoaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaagoghhgoaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaoghhhhhaaaaaaaaaaaaaaaa",
-		"aaaaaaaaagohahahaaaaaaaaaaaaaaaa",
-		"aaaaaaaaagihihihaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaghihihaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaiiiaaaaaaaaaaaaaaapaa",
-		"aaaaaaaaemmmiiimmeaaaaaaaaaappaa",
-		"aaaaaaahemmeimieeehaaaaaaaapppaa",
-		"aaaaaahiemeeeieeeehhaaaaaapppaaa",
-		"aaaaaahiemmeememehhhaaaaapppaaaa",
-		"aaaaaahiieeeeeemeihhaaaapppaaaaa",
-		"aaaaaahiiaeeeeemeahhhaapppaaaaaa",
-		"aaaaaahiiaeeeeemfaiihhhfpaaaaaaa",
-		"aaaaaahiiaffngnnnaaaiihhaaaaaaaa",
-		"aaaaaaiiaaefnnnfeaaaaiihaaaaaaaa",
-		"aaaaaaiiammeeeemeeaanfaaaaaaaaaa",
-		"aaaaaaihhmmeeeemeeaaaaaaaaaaaaaa",
-		"aaaaaaaiiemmemeemeaaaaaaaaaaaaaa",
-		"aaaaaaaiheemmmeemeaaaaaaaaaaaaaa",
-		"aaaaaaaaibbbaaabbbaaaaaaaaaaaaaa",
-		"aaaaaaaaabjbaaabjbaaaaaaaaaaaaaa",
-		"aaaaaaaaabjbaaabjbaaaaaaaaaaaaaa",
-		"aaaaaaaaabjbaaabjjaaaaaaaaaaaaaa",
-		"aaaaaaaaajbbaaabbjaaaaaaaaaaaaaa",
-		"aaaaaaaaajbbaaabbjaaaaaaaaaaaaaa",
-		"aaaaaaaaameaaaaaemaaaaaaaaaaaaaa",
-		"aaaaaaaameeaaaaaeemaaaaaaaaaaaaa",
-		"aaaaaammmeeaaaaaeeemmaaaaaaaaaaa",
-		"aaaaaaeeeeeaaaaaeeeeeaaaaaaaaaaa"
-	};
-	this->goblinData =
-	{
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaahaaahaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaheeeheaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaimmeieaaaaaaaaaaaaa",
-		"aaaaaaaaaaaimemmmeeggaaaaaaaaaaa",
-		"aaaaaaaaaaaammmmmmegaaaaaaaaaaaa",
-		"aaaaaaaaaaaamoeeomeeaaaaaaaaaaaa",
-		"aaaaaaaaaaaamemmmeeeaaaaaaaaaaaa",
-		"aaaaaaaaaaaackkkccccaaaaaaaaaaaa",
-		"aaaaaaaaaaaickaaakccaaaaaaaaaaaa",
-		"aaaaaiiaaaiickaaakcaaaaaaaaaaaaa",
-		"aaaaaiimeiiiickkkccaiiaaaaaaaaaa",
-		"aaaaaiimmiaaicckccaiiiiaaaaaaaaa",
-		"aaaaaaaaaaaaaiccccaiaiiaaaaaaaaa",
-		"aaaaaaaaaaaaaaiccaiaaaeeaaaaaaaa",
-		"aaaaaaaaaaaaagiaaigaaaiiiaaaaaaa",
-		"aaaaaaaaaaaaaamggmeaaaiiiaaaaaaa",
-		"aaaaaaaaaaaaaaimeeiaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaiimeeiiaaaaaaaaaaaa",
-		"aaaaaaaaaaaaiiieeeiiiaaaaaaaaaaa",
-		"aaaaaaaaaaaaiiaaaaaiiaaaaaaaaaaa",
-		"aaaaaaaaaaaaameaaaemmaaaaaaaaaaa",
-		"aaaaaaaaaaaaeeaaaaameaaaaaaaaaaa",
-		"aaaaaaaaaaaiiiaaaaaiiiaaaaaaaaaa",
-		"aaaaaaaaaaiiiaaaaaaiiiiaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->orcData =
-	{
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaiiiihiaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaiihhhiiiaaaaaaaaaa",
-		"aaaaaaaaaaaaaaiihhiiiiiaaaaaaaaa",
-		"aaaaaaaaaahhhhamiiiimaiihhhhaaaa",
-		"aaaaaaaaaaaiiiiaaiiaaiiiiiaaaaaa",
-		"aaaaaaaaaaaaipiiiipiiiiiiaaaaaaa",
-		"aaaaaaaaaaaaaapmmmmpiiiaaaaaaaaa",
-		"aaaaaaaaaaaaaiiiiiiimihhaaaaaaaa",
-		"aaaaaaaaaaaiiiiiihiiiiihhaaaaaaa",
-		"aaaaaaaaaaihhhhiiiiiihhihhaaaaaa",
-		"aaaaaaaaaihiihhhhiihhhhihhhaaaaa",
-		"aaaaaaaaihiiihhhhiihhhhihhhhaaaa",
-		"aaaaaaaaihiiiiiiiiiiiiiiihhhaaaa",
-		"aaaaaaaihhiihiiiiihiiiiiaiihiaaa",
-		"aaaaaaahhiahihhhhhhhhhhiiaihiaaa",
-		"aaaaaaahhiaihhhhhhhhhhhhiaihhaaa",
-		"aaaaaahhhiaiihhhhhhhhhhhiaihhhaa",
-		"aaaaahhhiaaihhhhhihhhhhiiaihhhaa",
-		"aaaaahhiiaaaihhhhhhhhhiiaaaihhaa",
-		"aaaaahiiaaaafffnhiihiinffaaiihaa",
-		"aaaaaiiaaaaanffnfnnfnffnffaaiiaa",
-		"aaaaaaaaaaafnifnffnffnfnnfaaaaaa",
-		"aaaaaaaaaaafnhfnifnfnnhnhfaaaaaa",
-		"aaaaaaaaaaanaihninnanihnhfaaaaaa",
-		"aaaaaaaaaaaaahhhaananihhhaaaaaaa",
-		"aaaaaaaaaaaaahhhiaaaaihhhaaaaaaa",
-		"aaaaaaaaaaaaahhhiaaaaiihhaaaaaaa",
-		"aaaaaaaaaaaahhhiiaaaaihhhaaaaaaa",
-		"aaaaaaaaaaahhhihiaaaaiihhhaaaaaa",
-		"aaaaaaaaaaaihiiiaaaaaaiiihaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->trollData =
-	{
-		"aaaaaaaaaaaaaaiihhaaaaaaaaaaaaaa",
-		"aaaaaaanfaaaaihihihaaaaaaaaaaaaa",
-		"aaaaaanfffaaaihhhhhaaaaaaaaaaaaa",
-		"aaaaaannnfaaihaahaahaaaaaaaaaaaa",
-		"aaaaanffffaaihhhhhhhaaaaaaaaaaaa",
-		"aaaaannfffaaihhmmmmhhhaaaaaaaaaa",
-		"aaaaanfnffhiiimmmmmmhihhiaaaaaaa",
-		"aaaaanffffhiiimpeepmhihihhiaaaaa",
-		"aaaahnnnfhhihiiiiiiiiiihhhhiaaaa",
-		"aaahhhnnnhiiiiiiihhihhiihhhhiaaa",
-		"aahhihnnfiaiihhhhhhhhhaiihhhhiaa",
-		"aahhhinnfaiihhhhihhhhiaaaiiihhaa",
-		"ahhhinnffaiihhhhihhhhiiaaahhhiaa",
-		"ahhihnnnaaihiiiihhiiihiaaahhhhaa",
-		"aihhhnnfaiihhhhhhhhhhiiaaaihhhaa",
-		"aaihhhnfaiihhhhhhhhhhiiaaahhhiaa",
-		"aaaihhhhaeihhhhhhhhhhhiaaiiihiaa",
-		"aaaaihihaeeiihhhhhhhiieaiihhiaaa",
-		"aaaaaiihaoeeiiiiaiiiieeaihhhiaaa",
-		"aaaaanfaaooeemmiiiieeeoaaiiiaaaa",
-		"aaaaafaagogoemmmmmmeeogoaaaaaaaa",
-		"aaaaaaaaooogogoemmmgooooaaaaaaaa",
-		"aaaaaaagogiogogogogoogogaaaaaaaa",
-		"aaaaaaooooiooioooooiooioaaaaaaaa",
-		"aaaaaaaoiogogigoigoigohaaaaaaaaa",
-		"aaaaaaaaihhgiiioaoiihohhaaaaaaaa",
-		"aaaaaaaaihhoiiaaaoiihhhiaaaaaaaa",
-		"aaaaaaaiihhiiaaaaaiihiiaaaaaaaaa",
-		"aaaaaaaiiihiiaaaaaaiihhaaaaaaaaa",
-		"aaaaaaaihhhiaaaaaaaihihhhaaaaaaa",
-		"aaaaaaaiiiiiaaaaaaaiiiiiiaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->wolfData =
-	{
-		"aaaaaaaaaaaahaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaahhaaaaaaaaaaaaaaaaaa",
-		"ahaaaaaaaaahhiaaaaaaaaaaaaaaaaaa",
-		"aihaaaaaaaahiaaaaaaaaaaaaaaaaaaa",
-		"aaihaaaaaahiiaaaaaaaaaaaaaaaaaaa",
-		"aaaihiiihhhiaaaaaaaaaaaaaaaaaaaa",
-		"aaahihiiihhhaaaaaaaaaaaaaaaaaaaa",
-		"aaahhiiihhhhhaaaaaaaaaaaaaaaaaaa",
-		"aaahmhhhmmhhhaaaaaaaaaaaaaaaaaaa",
-		"aaahhhihhhhhihaaaaaaaaaaaaaaaaaa",
-		"aaahhiihhhhhhhhhaaaaaaaaaaaaaaaa",
-		"aaaahhiihhhhhhhhhhaaaaaaaaaaaaaa",
-		"aaaahiihhphihhhhhhhhaaaaaaaaaaaa",
-		"aaaaipahmmhihhhhhhhhhaaaaaaaaaaa",
-		"aaaaaaahmhiihhhhhhhhhhaaaaaaaaaa",
-		"aaaaaihhhhihhhihhhhhhhhaaaaaaaaa",
-		"aaaaaammiihhhhihhhhhhhhhaaaaaaaa",
-		"aaaaaammhhhhhiihihhhhhhhhaaaaaaa",
-		"aaaaaammihhhiihhihhhhhhhhhaaaaaa",
-		"aaaaaamaihiiiihhiiihiihhhhaaaaaa",
-		"aaaaaaaaihiiihhiiiiiiiihhhhaaaaa",
-		"aaaaaaaaihaiihhiiiihiihhhhhaaaaa",
-		"aaaaaaaahhhahhhiiihiihhhhhhaaaaa",
-		"aaaaaaaahhhahhhiiihihhhhhhhaaaaa",
-		"aaaaaaaahhhahhhaiihihhhhhhhaaiia",
-		"aaaaaaahhhaaahhaiiihhhhhhhaaihhh",
-		"aaaaaaahhhaaahhaiiiiiihhhhhihhah",
-		"aaaaaaihhhaahhhhiiaaiihhaahhhaaa",
-		"aaaaahhhhaaihhhhahhhhhhhaaaaaaaa",
-		"aaaaahahaahhhhapahhhhhhaaaaaaaaa",
-		"aaaaapapaapaapaaapapaapaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->slimeData =
-	{
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaakkkkkaaaaaaaaaaaaaa",
-		"aaaaaaaaaaakkkkcckkkaaaaaaaaaaaa",
-		"aaaaaaaaaakkkkclcdkkkaaaaaaaaaaa",
-		"aaaaaaaaakkkkkccddkkkkaaaaaaaaaa",
-		"aaaaaaaaakkkkkkddkkkkkkaaaaaaaaa",
-		"aaaaaaaakkkkkkkkkkkkkkkaaaaaaaaa",
-		"aaaaaaaakkkkkklckkkkkkkaaaaaaaaa",
-		"aaaaaaaakcckkkcdkcckklckaaaaaaaa",
-		"aaaaaaaklcckkkkkclcckccgaaaaaaaa",
-		"aaaaaaakccdkkkkkcccdkkkkgaaaaaaa",
-		"aaaaaakkkddkkkkkkddkgkkgkaaaaaaa",
-		"aaaaaakkggkkkkcckkkkkcckgaaaaaaa",
-		"aaaaakkkgkkkkkkckkkkccccgkaaaaaa",
-		"aaaaakkkkkkkkggkkkkkcccdkkaaaaaa",
-		"aaaakkkkkkkkglcggkkkkddgkggaaaaa",
-		"aaakkckgkkkgllccgkgkkkkkkkgaaaaa",
-		"aakkkcdgkkkgcccdkgggkkkkkkkkaaaa",
-		"aakkkkkkkkkgggdgklcggkkkkkkgkaaa",
-		"aaaakkkkkkggggkkkcdkgkkkkkggaaaa",
-		"aaaaaaakkkggkkkkkggkkkkgaagaaaaa",
-		"aaaaaaaakkggkgkkgkkkkkggaaaaaaaa",
-		"aaaaaaaaakgaaggkggaaakgaaaaaaaaa",
-		"aaaaaaaaaaaaaaggaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->goblinRiderData =
-	{
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaiaahaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaiccicaaaaaaaeaaaaaa",
-		"aaaaaaaaaaaaiccccciiaaaamaaaaaaa",
-		"aagaaaaaaaagacicccicaaamaaeaaaaa",
-		"aaeaaaaaaaaeaocoiiccaamaaaaaaaaa",
-		"aaagaaaaaagaaiiiicccaeaaaaiiihaa",
-		"aaaaeaaaaeaaakcaccchiaaaiiihhiaa",
-		"aaaaagaageaaakcaachiiaaiiihhiiaa",
-		"aaaaieeeeiaeakcaachiaaaiiiiiiaaa",
-		"aaaaieiiecgeeacccemaiaiihhhhaaaa",
-		"aaaagghhggggeaaemeeiaihhhhiaaaaa",
-		"aaaaoahiggogeehieeeaihhiiiihiiia",
-		"aaaaggiiggggepieeeiiiiiiiihhhiaa",
-		"aaaaagiiiggppiiiaiiiiiiiihiiiaaa",
-		"aaaaaaiiiaapiaaiiaaiiiahhhhiaaaa",
-		"aaaaaahahaaaaaeiaiahiidbaiaaaaaa",
-		"aaaaaaaaaaaaaeiaaiaaidddbaaaaaaa",
-		"aaaaaaaaaaaaeiaaaiaaahhhiaaaaaaa",
-		"aaaaaaaaaaaiaaaaieagghhiiaaaaaaa",
-		"aaaaaaaaaaaaaaaieaaoooccaaaaaaaa",
-		"aaaaaaaaaaaaaiaeaaopgooggaaaaaaa",
-		"aaaaaaaaaaaaaaaaaogoppgggaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaooggggaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->twinHeadTrollData =
-	{
-		"aaaaaaaaaaaahhhhaahhhhaaaanfaaaa",
-		"aaaaaaanfaaihhhhhiihhhhaannnfaaa",
-		"aaaaaannffahihiihihihihaannnnfaa",
-		"aaaaaannnfhaahaahiaahaahafnnffaa",
-		"aaaaanfnffhhhhhiihhhhhhhanffnfaa",
-		"aaaaannfnfheeeehihheeeehhanfnfaa",
-		"aaaaannfnfmmmemmihmmemmmhannnfaa",
-		"aaaaannfffmpmmpmiimpmmpmhinffaaa",
-		"aaaahnnnfhhhhhhhiihhhhhhiinnfaaa",
-		"aaahhhnnnhiiiiiihhiiiiiihinnfaaa",
-		"aahhihnnfiihhiihhhhhhhiiihnnfiaa",
-		"aahhhinnfaihhhhhihhhhiiiannfhhaa",
-		"ahhhinnffahihhhhihhhhiiaannfhiaa",
-		"aihhhnnnaaihiiiihhiiiiiaannfhiaa",
-		"aihhhnnfaihhhhhhhhhhhiiaaanfhiaa",
-		"aaihhhnfaihhhhhhhhhhhiiaaanfhiaa",
-		"aaaihhhhaaihhhhhhhhhhhiaainfhiaa",
-		"aaaaihhhaaeihhhhhhhhiiaahhhhiaaa",
-		"aaaaaihhageeiiihahiiiaaaihhhiaaa",
-		"aaaaanfaaggeeeeiiiieeagaaiiiaaaa",
-		"aaaaafaaggggeeeeeeeeegggaaaaaaaa",
-		"aaaaaaaaggggogoeeeegggggaaaaaaaa",
-		"aaaaaaagggiggogogogoggggaaaaaaaa",
-		"aaaaaaggggigoioooooiggigaaaaaaaa",
-		"aaaaaaagiggogigoigoigghiaaaaaaaa",
-		"aaaaaaaaihhghiigaoiiighiaaaaaaaa",
-		"aaaaaaaaihhohiaaaoiiihhhaaaaaaaa",
-		"aaaaaaaihiihiaaaaaihhhhaaaaaaaaa",
-		"aaaaaaaiihhhiaaaaaaiihhaaaaaaaaa",
-		"aaaaaaaihhhhaaaaaaaihiihhaaaaaaa",
-		"aaaaaaaiiiiiaaaaaaaiihhhhaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->treantData =
-	{
-		"aaaaaaaakkaakkkmaaaaaaaaaaaaaaaa",
-		"aaaaaaaakkkkkkefmfeaaaaaaaaaaaaa",
-		"aaaaaamkmekkmekefmkkaaaaaaaaaaaa",
-		"aaaaamakekkkeekkmfmckkkaaaaaaaaa",
-		"aaaaaaekkkkkkkkefmfekckkkkaaaaaa",
-		"aaaaaefkkmmmmkkkefmekckkkooaaaaa",
-		"aaaaaakkckkkkkafafcmkookccokaaaa",
-		"aaaaaakkeccccckececccckkccookaaa",
-		"aaaaaafkekccockkckkkkccokkkocaaa",
-		"aaaaaaakkkccokccckkccccccocockaa",
-		"aaaaaaakkcaackcckkkkcccccokkccaa",
-		"aaaaaaakkcaaaaccckokkccccokkkkaa",
-		"aaaaaaaokcaaackkckockkccaacckoaa",
-		"aaaaaaaoccaaaakckkkcckccaaackoka",
-		"aaaaaaaoccaaaackcckkccccaaaakock",
-		"aaaaaaackkcaaaockckckcccaaaackka",
-		"aaaaaaaakkcaaaokcccckcccaaaaccka",
-		"aaaaaaakokcaaakkccccccccaaaackka",
-		"aaaaaaakokcaaakccccackccaaaackka",
-		"aaaaaakckcccaackcccaccccaaakckka",
-		"aaaaakcccccaakkcccoackccaaakakca",
-		"aaaackccaaaaakkcoccakkcaaaaoacck",
-		"aaackccaaaaakkcoocaaakkcaaaoaoao",
-		"aackkccaaaakkkccccaaakkckcaoaoao",
-		"ackkckcaaaakcccccaaaaakkkaaoaoao",
-		"akakckaaaaackcocaaaaaacckaaoaoao",
-		"aoaoaoaaaaackccaaaaaaakckcaaaoao",
-		"aoaoaoaaaaakcccaaaaaaackcccaaoao",
-		"aoaoaoaaaaakckcaaaaaaackccaaaoao",
-		"aaaoaoaaaakkkccaaaaaakckccaaaoaa",
-		"aaaoaaaaaakkcccaaaaaakkkccaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
-	this->dragonData =
-	{ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aappphaaaaaaaaaaaaaaaaaaaaaaippa",
-		"aaaaiiphhpiaaaaaaaaaaaihhppiiaaa",
-		"aaaaaaaaiihpppaaaaapppiiaaaaaaaa",
-		"aaaaaaaaaiphpiaaaaaaaaaaaaaaaaaa",
-		"aaaaaaiiphihiiaaaahhphpidiiaaaaa",
-		"aaaaihhiaiihphaahhphhphhpphiiiaa",
-		"aahiiaaaiiiaaphhhhiiidhiipihaiia",
-		"aaaaaaaiiaaaaabdhidbbbbdidphdaaa",
-		"aaaaaaiiaaaaaaihidaaaaaabiiphaaa",
-		"aaaaahaaaaaaaihiiaaaadaaadhhpdaa",
-		"aaaaaaaaaahaaihidaaaaaiaaaihhdaa",
-		"aaaaaaaaahiabiiiaaaaaaiaaahpiiaa",
-		"aaaaaaaphiaaadidaaaaaaaaahhhdaaa",
-		"aaaaaphhhpiiaaadaaaaaaaahphddaaa",
-		"aaaapphffhpiiddaaaaaaaaphhiidaaa",
-		"aaphphhfhhdhppipihhhhphhihdbaaaa",
-		"appppphhhiidihpihhiihhhihdbaaaaa",
-		"apaaaihidhibdhddddhdhdidbbaaaaaa",
-		"aaaaaahdaaaaaadbiababdaaaaaaaaaa",
-		"aaaaaaiaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaidaaaaadaaaaaaabaadaaaaaaaa",
-		"aaaaabaaaaaaabibabbddbdbiaaaaaaa",
-		"aaaaaaaaaaaaaibhaaaaaaiiidaaaaaa",
-		"aaaaaaaaaaaaaaihpaaaaadhphaaaaaa",
-		"aaaaaaaaaaaaaadiipaaaaahhiaaaaaa",
-		"aaaaaaaaaaaabaabhipaaaihhdaaaaaa",
-		"ahaaaaaaaaaidaaadihhiihiiaaaaaaa",
-		"aaihaaaaaahidaaaadddiiibaaaaaaaa",
-		"aaaihhphihiiaaaaaaabddaaaaaaaaaa",
-		"aaaaaihididaaaaaaaaaaaaaaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-	};
+	this->playerData = PNGImageToData("images/Player.png");
+	this->goblinData = PNGImageToData("images/Goblin.png");
+	this->orcData = PNGImageToData("images/Orc.png");
+	this->trollData = PNGImageToData("images/Troll.png");
+	this->wolfData = PNGImageToData("images/Wolf.png");
+	this->slimeData = PNGImageToData("images/Slime.png");
+	this->goblinRiderData = PNGImageToData("images/GoblinRider.png");
+	this->twinHeadTrollData = PNGImageToData("images/TwinHeadTroll.png");
+	this->treantData = PNGImageToData("images/Treant.png");
+	this->dragonData = PNGImageToData("images/Dragon.png");
 }
 
 const string& Log::GetLog()
@@ -390,23 +118,6 @@ const string& Log::GetLog()
 void Log::SetLog(string log)
 {
 	this->log = log;
-}
-
-//객체에서 전달된 문자열을 멤버 변수 log에 저장하고 출력
-template<typename T>
-void Log::PrintLog(string orderLog, const T& object)
-{
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
-
-	/*if constexpr (is_same_v<T, Character>)	//참조 객체에 따라 Print 다르게 함
-	{
-
-	}
-	else if constexpr (is_same_v<t, battlemanager>)
-	{
-
-	}*/
-	cout << this->log;
 }
 
 //게임 시작 메뉴 출력
@@ -445,21 +156,19 @@ void Log::PrintGameOver(int caseNumber)	//플레이어의 사망 경우와 게임의 종료에 �
 	}
 }
 
-void Log::PrintBattle()
-{
-
-}
+//void Log::PrintBattle(BattleManager& object)
+//{
+//	string monsterName;
+//}
 
 void Log::PrintStatus()
 {
-
+	this->PrintImage(playerData);
 }
 
-//이미지 Initialize 확인용 최종본에선 삭제 필요
-void Log::TestPrint()
+void Log::PrintImage(vector<string>& data)
 {
 	int colorIndex = 0;
-	vector<string> &data = treantData;
 	for (int i = 0; i < data.size(); ++i)
 	{
 		for (int j = 0; j < IMAGE_SIDE_LENGTH; j++)	//IMAGE_SIDE_LENGTH 32

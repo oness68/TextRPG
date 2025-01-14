@@ -17,8 +17,11 @@ void main()
 	gameManager.GenerateBattleManager();
 	Log* logger = Log::GetInstance();
 	logger->Initialize();
-	//Character player1 = *new Character("한정혁");
-	//player1.DisplayStatus();
+	Character player1 = *new Character("한정혁");
+	string playerStatus = player1.GetCharacterStatusString();
+	logger->PrintLog(playerStatus, player1);
+	logger->PrintGameOver(GameEnd);
+	return;
 
 	//int menuOption;
 	//bool isGameRun = false;		//게임의 실행여부
@@ -51,8 +54,8 @@ void main()
 	//{
 	//	break;
 	//}
-	logger->TestPrint();
 	//게임 실행이 끝났을 때
-	logger->PrintGameOver(LogEnum::GameEnd);
-	return;
+	//logger->PrintLog("")
+	//logger->PrintGameOver(LogEnum::GameEnd);
+	//return;
 }
