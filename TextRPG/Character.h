@@ -5,8 +5,8 @@
 #include <vector>
 #include <map>
 //#include "Log.h"
-#include "Item.h"//추가 이인화
-#include "EquipableItem.h"//추가 이인화
+#include "Item.h"
+#include "EquipableItem.h"
 
 using namespace std;
 
@@ -21,8 +21,6 @@ public:
 		this->Count = count;
 	}
 
-	void ReduceItem();
-
 	class Item* item = nullptr;
 	enum class ItemType itemType = ItemType::Unknown;
 	int Count = 0;
@@ -31,72 +29,42 @@ public:
 class Character
 {
 public:
-	//Character();
 	Character(const string& name);
 	~Character();
 
 	void DisplayStatus();
-	string GetCharacterStatusString();
+	const string& GetCharacterStatusString();
 
-	const int& GetAttackPower();//변경 이인화
+	int GetCurrentHP();
+	int GetMaxHP();
+	const int& GetAttackPower();
+
+	void SetCurrentHP(int hp);
+	void SetMaxHP(int hp);
 	void SetAttackPower(int attackPower);
 
-	const int& GetGold();
-	//map<EquipmentType, int> GetEquipmentItems();//변경 이인화
-	map<Item*, int> GetInventory();//변경 이인화
-
-	void UseItem(Item* item);//변경 이인화
-	void RemoveItem(Item* item);//추가 이인화
-
+	void TakeDamage(const int& damage);
 	void TakeExp(const int& exp);
 	void TakeGold(const int& gold);
 
+	// ========== 인벤토리 및 아이템 상점관련 ==========
+	map<Item*, int> GetInventory();//변경 이인화
+	const int& GetGold();
+
 	void TakeItem(Item* item);//변경 이인화
-	//void TakeItem(const int& equipmentKey);
+	void UseItem(Item* item);//변경 이인화
 
-	void TakeDamage(const int& damage);
+	void BuyItem(class Item* item);
+	void SellItem(string itemKey);
 
-	int GetCurrentHP();
-	/*{
-		return currentHP;
-	};*/
+	void RemoveItem(Item* item);//추가 이인화
+	void ReduceInventory(const string& itemKey); //추가 한정혁
 
-	int GetMaxHP();
-	//{
-	//	return maxHP;
-	//};
-
-	void SetCurrentHP(int HP);
-	//{
-	//	currentHP = max(0, HP);
-	//}
-
-	void SetMaxHP(int HP);
-	//{
-	//	maxHP = max(0, HP);
-	//}
-
-	//EquipableItem* GetWeaponSlot() //추가 이인화----------
-	//{
-	//	return weaponSlot;
-	//}
-
-	//void SetWeaponSlot(EquipableItem* item)
-	//{
-	//	weaponSlot = item;
-	//}
-
-	//EquipableItem* GetArmorSlot()
-	//{
-	//	return armorSlot;
-	//}
-
-	//void SetArmorSlot(EquipableItem* item)
-	//{
-	//	armorSlot = item;
-	//}
-
-	//~추가 이인화-----------------------------------
+	//추가 이인화--------------
+	//EquipableItem* GetWeaponSlot();
+	//void SetWeaponSlot(EquipableItem* item);
+	//EquipableItem* GetArmorSlot();
+	//void SetArmorSlot(EquipableItem* item);
 	//void EquipItem(EquipableItem* item);//추가 이인화
 
 private:
@@ -108,6 +76,7 @@ private:
 	int gold = 0;
 	int currentExp = 0;
 	int requiredLevelUpExp = 100;
+	int maxLevel = 10;
 
 	//map<EquipmentType, int> equipmentItems;
 	map<Item*, int> inventory;//변경 이인화

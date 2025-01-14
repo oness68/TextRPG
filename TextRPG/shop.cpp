@@ -48,7 +48,7 @@ void Shop::BuyItem(Character& player)
 			cout << "Not enough gold" << endl;
 		}
 	}
-	for (auto item : shopInven)delete item;
+	for (auto item : shopInven) delete item;
 }
 
 void Shop::SellItem(Character& player)
@@ -63,7 +63,7 @@ void Shop::SellItem(Character& player)
 	vector <Item*> invenItems;
 	for (const auto& item : inventory)
 	{
-		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetDepreciationRate() << "gold]" << endl;
+		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetSellPrice() << "gold]" << endl;
 		invenItems.push_back(item.first);
 		index++;
 	}
@@ -75,7 +75,7 @@ void Shop::SellItem(Character& player)
 		return;
 	}
 	Item* selectedItem = invenItems[choice - 1];
-	int sellPrice = selectedItem->GetDepreciationRate();
+	int sellPrice = selectedItem->GetSellPrice();
 
 	player.TakeGold(sellPrice);
 	player.RemoveItem(selectedItem);

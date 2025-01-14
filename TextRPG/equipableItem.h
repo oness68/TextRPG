@@ -1,42 +1,31 @@
-﻿#pragma once
-#include "BaseEquipableItem.h"
+﻿#ifndef EQUIPABLE_ITEM_H_
+#define EQUIPABLE_ITEM_H_
+
 #include "Character.h"
 #include <string>
-#include<map>
+#include <map>
 
 using namespace std;
 
-class EquipableItem :public BaseEquipableItem
+class EquipableItem : public Item
 {
 public:
 	EquipableItem();
-	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel);/*
-		:BaseEquipableItem(name, price, rarity, "EquipableItem"), equipType(equipType), baseStat(baseStat), enchantLevel(enchantLevel) {
-	}*/
-
+	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel);
 	~EquipableItem();
 
 	string GetEquipType();
+	//enum class EquipmentType GetGetEquipType();
 
 	map<string, int> GetBaseStat();
 
 	int GetEnchantLevel();
-
 	void SetEnchantLevel(const int& level);
 
 	bool IsEquipping();
-
 	void SetEquipping(const bool& equipping);
 
-	//string GetName() override
-	//{
-	//	return isEquipping ? BaseEquipableItem::GetName() + " (Equipping)" : BaseEquipableItem::GetName();
-	//}
-
-	//void EquipEffect(Character& player);
-	//{
-		//사용 효과 구현 BaseStat을 캐릭터에게 적용
-	//}
+	void EquipEffect(Character& player);
 
 private:
 	string equipType;//무기,방어구
@@ -44,3 +33,5 @@ private:
 	int enchantLevel;
 	bool isEquipping;
 };
+
+#endif // !EQUIPABLE_ITEM_H_

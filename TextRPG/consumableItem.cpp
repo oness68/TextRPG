@@ -11,46 +11,11 @@ ConsumableItem::ConsumableItem(string name, int price, int rarity, string effect
 	this->effectValue = effectValue;
 }
 
+ConsumableItem::~ConsumableItem() {}
 
-ConsumableItem::~ConsumableItem()
-{
+string ConsumableItem::GetEffectType() { return this->effectType; }
 
-}
-//
-//string ConsumableItem::GetName()
-//{
-//	return this->name;
-//}
-//
-//int ConsumableItem::GetPrice()
-//{
-//	return this->price;
-//}
-//
-//int ConsumableItem::GetRarity()
-//{
-//	return this->rarity;
-//}
-//
-//string ConsumableItem::GetItemType()
-//{
-//	return this->itemType;
-//}
-
-string ConsumableItem::GetEffectType()
-{
-	return this->effectType;
-}
-
-int ConsumableItem::GetEffectValue()
-{
-	return this->effectValue;
-}
-
-int ConsumableItem::GetSellPrice()
-{
-	return (int)price * 0.6;
-}
+int ConsumableItem::GetEffectValue() { return this->effectValue; }
 
 void ConsumableItem::ConsumeEffect(Character& player)
 {

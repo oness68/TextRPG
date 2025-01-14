@@ -1,7 +1,7 @@
 ﻿#include "Character.h"
-#include "Item.h"//추가 이인화--------------------
-#include "ConsumableItem.h"//추가 이인화
-#include "EquipableItem.h"//추가 이인화
+#include "Item.h"
+#include "ConsumableItem.h"
+#include "EquipableItem.h"
 #include <format>
 #include <iostream>
 
@@ -11,35 +11,18 @@ using namespace std;
 Character::Character(const string& name)
 {
 	this->name = name;
-	cout << "캐릭터 " << name << " 생성 완료!";
-	cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
+	// cout << "캐릭터 " << name << " 생성 완료!";
+	// cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
 }
 
-Character::~Character()
-{
-}
-
-const int& Character::GetAttackPower()
-{
-	return this->attackPower; // + 아이템 + 버프
-}
-
-void Character::SetAttackPower(int attackPower)
-{
-	this->attackPower = attackPower;
-}
-
-const int& Character::GetGold()
-{
-	return this->gold;
-}
+Character::~Character(){}
 
 void Character::DisplayStatus()
 {
 	cout << GetCharacterStatusString();
 }
 
-string Character::GetCharacterStatusString()
+const string& Character::GetCharacterStatusString()
 {
 	string returnValue;
 	returnValue += format("이름 : {}\n", name);
@@ -51,17 +34,64 @@ string Character::GetCharacterStatusString()
 	returnValue += format("경험치 : {}/{}\n", currentExp, requiredLevelUpExp);
 
 	return returnValue;
-
 }
 
-/*map<EquipmentType, int> Character::GetEquipmentItems()
-{
-	return this->EquipableItems;//수정 이인화--------------------------
-}*/
 
-map<Item*, int> Character::GetInventory()//수정 이인화-----------------------------
+int Character::GetCurrentHP() { return this->currentHP; }
+int Character::GetMaxHP() { return 0; }
+const int& Character::GetAttackPower()
+{
+	return this->attackPower; // + 아이템 + 버프
+}
+
+void Character::SetCurrentHP(int hp) { this->currentHP = hp; }
+void Character::SetMaxHP(int hp) { this->maxHP = hp; }
+void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
+
+void Character::TakeDamage(const int& damage)
+{
+	// TODO : 방어력에 대한 데미지 계산식 적용
+	currentHP -= damage;
+}
+
+void Character::TakeExp(const int& exp)
+{
+	currentExp += exp;
+	if (currentExp >= requiredLevelUpExp)
+	{
+		LevelUp();
+	}
+}
+
+void Character::TakeGold(const int& gold)
+{
+	this->gold += gold;
+}
+
+
+// ========== 인벤토리 및 아이템 상점관련 ==========
+map<Item*, int> Character::GetInventory()
 {
 	return this->inventory;
+}
+
+const int& Character::GetGold()
+{
+	return this->gold;
+}
+
+void Character::TakeItem(Item* item)//수정 이인화-------------------------
+{
+	// TO DO : if Can't Find Add Key
+	if (inventory.find(item) != inventory.end())
+	{
+		inventory[item]++;
+	}
+	else
+	{
+		inventory[item] = 1;
+	}
+	//수정 이인화 ---------------------------인벤토리에 있으면 +1 없으면 새로 1
 }
 
 void Character::UseItem(Item* item)//수정 이인화-------------------
@@ -79,6 +109,14 @@ void Character::UseItem(Item* item)//수정 이인화-------------------
 	}
 }
 
+void Character::BuyItem(Item* item)
+{
+}
+
+void Character::SellItem(string itemKey)
+{
+}
+
 void Character::RemoveItem(Item* item)//추가 이인화---------
 {
 	if (inventory.find(item) != inventory.end())
@@ -90,81 +128,42 @@ void Character::RemoveItem(Item* item)//추가 이인화---------
 	}
 }
 
-void Character::TakeExp(const int& exp)
+void Character::LevelUp()
 {
-	currentExp += exp;
-	if (currentExp >= requiredLevelUpExp)
+	if (level < maxLevel)
 	{
-		LevelUp();
-	}
-}
+		currentExp -= requiredLevelUpExp;
 
-void Character::TakeGold(const int& gold)
-{
-	this->gold += gold;
-}
+		IncreaseMaxHP(level);
+		IncreaseAttackPower(level);
+		IncreaseRequireLevelUpExp(level);
 
-void Character::TakeItem(Item* item)//수정 이인화-------------------------
-{
-	// TO DO : if Can't Find Add Key
-	if (inventory.find(item) != inventory.end())
-	{
-		inventory[item]++;
+		level++;
+		if (level == maxLevel)
+		{
+			currentExp = requiredLevelUpExp;
+			//cout << "최대 레벨에 도달했습니다." << endl;
+		}
 	}
 	else
 	{
-		inventory[item] = 1;
+
 	}
-	//수정 이인화 ---------------------------인벤토리에 있으면 +1 없으면 새로 1
-}
-
-void Character::TakeDamage(const int& damage)
-{
-	currentHP -= damage;
-}
-
-int Character::GetCurrentHP()
-{
-	return 0;
-}
-
-int Character::GetMaxHP()
-{
-	return 0;
-}
-
-void Character::SetCurrentHP(int HP)
-{
-	this->currentHP = HP;
-}
-
-void Character::SetMaxHP(int HP)
-{
-	this->maxHP = HP;
-}
-
-void Character::LevelUp()
-{
-	//TO DO : Level Up
-	currentExp -= requiredLevelUpExp;
-	level++;
-
-	IncreaseMaxHP(level);
-	IncreaseAttackPower(level);
-	IncreaseRequireLevelUpExp(level);
 }
 
 void Character::IncreaseMaxHP(const int& level)
 {
+	maxHP += level * 20;
 }
 
 void Character::IncreaseAttackPower(const int& level)
 {
+	attackPower += level * 5;
 }
 
 void Character::IncreaseRequireLevelUpExp(const int& level)
 {
-
+	requiredLevelUpExp += level * 10;
 }
 
 
