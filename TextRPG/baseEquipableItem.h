@@ -1,5 +1,5 @@
 #pragma once
-#include "itemInterface.h"
+#include "ItemInterface.h"
 
 
 class BaseEquipableItem : public ItemInterface
@@ -30,5 +30,9 @@ public:
 	string GetItemType() override
 	{
 		return itemType;
+	}
+	int GetSellPrice()
+	{
+		return price * 0.6;
 	}
 };

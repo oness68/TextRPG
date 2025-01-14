@@ -1,20 +1,19 @@
 #pragma once
 #include <vector>
-#include "shopInterface.h"
-#include "itemInterface.h"
+#include "ShopInterface.h"
+#include "ItemInterface.h"
 
 using namespace std;
 
-class shop : public ShopInterface
+class Shop : public ShopInterface
 {
 private:
-	vector<ItemInterface*> generateItem;
+	vector<ItemInterface*> shopInven;
 public:
-	shop() {};
-	~shop() {};
-	void DisplayItem()override;
-	void BuyItem(ItemInterface* item, int price) {};
-	void SellItem(ItemInterface* item, int price) {};
-	void UseEnchancer();
+	Shop() {};
+	~Shop() {};
+	void BuyItem(Character& player) {};
+	void SellItem(Character& player) {};
+	void UseEnchancer(Character& player) {};
 
 };

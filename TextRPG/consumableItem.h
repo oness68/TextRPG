@@ -1,5 +1,5 @@
 #pragma once
-#include "itemInterface.h"
+#include "ItemInterface.h"
 #include "Character.h"
 #include <string>
 
@@ -44,6 +44,11 @@ public:
 	{
 		return effectValue;
 	}
+	int GetSellPrice()
+	{
+		return price * 0.6;
+	}
+
 
 	void ConsumeEffect(Character& player)
 	{

@@ -1,7 +1,10 @@
 ﻿#include "Character.h"
-
+#include "ItemInterface.h"//추가 이인화--------------------
+#include "ConsumableItem.h"//추가 이인화
+#include "EquipableItem.h"//추가 이인화
 #include <format>
 #include <iostream>
+
 
 using namespace std;
 
@@ -17,7 +20,7 @@ Character::~Character()
 }
 
 
-const int& Character::GetAcctackPower()
+const int& Character::GetAttackPower()
 {
 	return this->attackPower; // + 아이템 + 버프
 }
@@ -32,8 +35,7 @@ void Character::DisplayStatus()
 	cout << GetCharacterStatusString();
 }
 
-string Character::GetCharacterStatusString()
-{
+/* {
 	string returnValue;
 	returnValue += format("이름 : {}\n", name);
 	returnValue += format("레벨 : {}\n", level);
@@ -44,22 +46,50 @@ string Character::GetCharacterStatusString()
 	returnValue += format("경험치 : {}/{}\n", currentExp, requiredLevelUpExp);
 
 	return returnValue;
-	
-}
 
-map<EquipmentType, int> Character::GetEquipmentItems()
+}
+*/
+/*map<EquipmentType, int> Character::GetEquipmentItems()
 {
-	return this->equipmentItems;
-}
+	return this->EquipableItems;//수정 이인화--------------------------
+}*/
 
-map<string, int> Character::GetInventory()
+map<ItemInterface*, int> Character::GetInventory()//수정 이인화-----------------------------
 {
 	return this->inventory;
 }
 
-void Character::UseItem(const string& itemKey)
+void Character::UseItem(ItemInterface* item)//수정 이인화-------------------
 {
+	if (ConsumableItem* consumable = dynamic_cast<ConsumableItem*>(item))
+	{
+		consumable->ConsumeEffect(*this);
+		RemoveItem(item);
+		return;
+	}
+	else if (EquipableItem* equipable = dynamic_cast<EquipableItem*>(item))
+	{
+		equipable->EquipEffect(*this);
+		return;
+	}
 }
+
+void Character::RemoveItem(ItemInterface* item)//추가 이인화---------
+{
+	if (inventory.find(item) != inventory.end())
+	{
+		inventory[item]--;
+		if (inventory[item] == 0) {
+			inventory.erase(item);
+		}
+	}
+}
+void Character::EquipItem(EquipableItem* item)
+{
+
+};
+
+
 
 void Character::TakeExp(const int& exp)
 {
@@ -75,18 +105,25 @@ void Character::TakeGold(const int& gold)
 	this->gold += gold;
 }
 
-void Character::TakeItem(const string& itemKey)
+void Character::TakeItem(ItemInterface* item)//수정 이인화-------------------------
 {
 	// TO DO : if Can't Find Add Key
-	inventory[itemKey]++;
-
+	if (inventory.find(item) != inventory.end())
+	{
+		inventory[item]++;
+	}
+	else
+	{
+		inventory[item] = 1;
+	}
+	//수정 이인화 ---------------------------인벤토리에 있으면 +1 없으면 새로 1
 }
 
-void Character::TakeItem(const int& equipmentKey)
+/*void Character::TakeItem(const int& equipmentKey)
 {
 	// TO DO : Parameter Replace : (class)EquipableItem
 
-}
+}*/ //수정 이인화----------------
 
 void Character::TakeDamage(const int& damage)
 {

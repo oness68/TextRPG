@@ -3,8 +3,7 @@
 class ShopInterface
 {
 public:
-	virtual void DisplayItem() = 0;
-	virtual void BuyItem() = 0;
-	virtual void SellItem() = 0;
-	virtual void UseEnchancer() = 0;
+	virtual void BuyItem(Character& player) = 0;
+	virtual void SellItem(Character& player) = 0;
+	virtual void UseEnchancer(Character& player) = 0;
 };

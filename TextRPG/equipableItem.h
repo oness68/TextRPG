@@ -1,5 +1,5 @@
 #pragma once
-#include "baseEquipableItem.h"
+#include "BaseEquipableItem.h"
 #include "Character.h"
 #include <string>
 #include<map>
@@ -12,6 +12,7 @@ private:
 	string equipType;//무기,방어구
 	map<string, int> baseStat;
 	int enchantLevel;
+	bool isEquipping;
 public:
 	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel)
 		:BaseEquipableItem(name, price, rarity, "EquipableItem"), equipType(equipType), baseStat(baseStat), enchantLevel(enchantLevel) {
@@ -29,6 +30,22 @@ public:
 	{
 		return enchantLevel;
 	}
+	void SetEnchantLevel(int level)
+	{
+		enchantLevel = level;
+	};
+
+	bool IsEquipping() {
+		return isEquipping;
+	}
+	void SetEquipping(bool equipping) {
+		isEquipping = equipping;
+	}
+	string GetName()override
+	{
+		return isEquipping ? BaseEquipableItem::GetName() + " (Equipping)" : BaseEquipableItem::GetName();
+	}
+
 
 	void EquipEffect(Character& player)
 	{

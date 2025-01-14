@@ -4,7 +4,9 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "Log.h"
+//#include "Log.h"
+#include "ItemInterface.h"//추가 이인화
+#include "EquipableItem.h"//추가 이인화
 
 using namespace std;
 
@@ -24,22 +26,60 @@ public:
 	void DisplayStatus();
 	string GetCharacterStatusString();
 
-	const int& GetAcctackPower();
-	const int& GetGold();
-	map<EquipmentType, int> GetEquipmentItems();
-	map<string, int> GetInventory();
+	const int& GetAttackPower();//변경 이인화
+	void SetAttackPower(int AP) //변경 이인화
+	{
+		attackPower = AP;
+	}
 
-	void UseItem(const string& itemKey);
+	const int& GetGold();
+	//map<EquipmentType, int> GetEquipmentItems();//변경 이인화
+	map<ItemInterface*, int> GetInventory();//변경 이인화
+
+	void UseItem(ItemInterface* item);//변경 이인화
+	void RemoveItem(ItemInterface* item);//추가 이인화
 
 	void TakeExp(const int& exp);
 	void TakeGold(const int& gold);
 
-	void TakeItem(const string& itemKey);
-	void TakeItem(const int& equipmentKey);
+	void TakeItem(ItemInterface* item);//변경 이인화
+	//void TakeItem(const int& equipmentKey);
 
 	void TakeDamage(const int& damage);
 
-
+	int GetCurrentHP()
+	{
+		return currentHP;
+	};
+	int GetMaxHP()
+	{
+		return maxHP;
+	};
+	void SetCurrentHP(int HP)
+	{
+		currentHP = max(0, HP);
+	}
+	void SetMaxHP(int HP)
+	{
+		maxHP = max(0, HP);
+	}
+	EquipableItem* GetWeaponSlot() //추가 이인화----------
+	{
+		return weaponSlot;
+	}
+	void SetWeaponSlot(EquipableItem* item)
+	{
+		weaponSlot = item;
+	}
+	EquipableItem* GetArmorSlot()
+	{
+		return armorSlot;
+	}
+	void SetArmorSlot(EquipableItem* item)
+	{
+		armorSlot = item;
+	}//~추가 이인화-----------------------------------
+	void EquipItem(EquipableItem* item);//추가 이인화
 private:
 	string name;
 	int level = 1;
@@ -50,8 +90,10 @@ private:
 	int currentExp = 0;
 	int requiredLevelUpExp = 100;
 
-	map<EquipmentType, int> equipmentItems;
-	map<string, int> inventory;
+	//map<EquipmentType, int> equipmentItems;
+	map<ItemInterface*, int> inventory;//변경 이인화
+	EquipableItem* weaponSlot = nullptr;
+	EquipableItem* armorSlot = nullptr;
 
 	void LevelUp();
 	void IncreaseMaxHP(const int& level);
