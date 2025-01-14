@@ -92,6 +92,7 @@ void NormalMonster::InitializeDropTable()
 
 int NormalMonster::TakeAction() const
 {
+
 	return 0;
 }
 
@@ -101,7 +102,7 @@ void BossMonster::InitializeDropTable()
 	dropTable.push_back({ 50,"Elixir" });
 }
 
-int BossMonster::TakeAction() const
+int BossMonster::TakeAction() const 
 {
 	return 0;
 }

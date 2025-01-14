@@ -36,10 +36,7 @@ protected:
 
 public:
 	BaseMonster(string n, int hp, int atk, int exp, int g) :
-		name(n), HP(hp), attackPower(atk), experience(exp), gold(g) 
-	{
-		InitializeDropTable();
-	}
+		name(n), HP(hp), attackPower(atk), experience(exp), gold(g) {}
 	string GetName() override;
 	int GetHealth() const override;
 	void SetHealth(int health) override;
