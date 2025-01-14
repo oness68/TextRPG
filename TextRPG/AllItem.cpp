@@ -1,4 +1,4 @@
-#include "ConsumableItem.h"
+﻿#include "ConsumableItem.h"
 #include "EquipableItem.h"
 #include<iostream>
 #include<vector>
@@ -13,31 +13,37 @@ class LowHPPotion : public ConsumableItem
 public:
 	LowHPPotion() : ConsumableItem("Low HP Potion", 50, 3, "Healing HP", 20) {}
 };
+
 class MiddleHPPotion : public ConsumableItem
 {
 public:
 	MiddleHPPotion() : ConsumableItem("Middle HP Potion", 100, 2, "Healing HP", 40) {}
 };
+
 class HighHPPotion : public ConsumableItem
 {
 public:
 	HighHPPotion() : ConsumableItem("High HP Potion", 200, 1, "Healing HP", 100) {}
 };
+
 class LowHPElixer : public ConsumableItem
 {
 public:
 	LowHPElixer() : ConsumableItem("Low HP Elixer", 100, 3, "Max HP Up", 10) {}
 };
+
 class MiddleHPElixer : public ConsumableItem
 {
 public:
 	MiddleHPElixer() : ConsumableItem("Middle HP Elixer", 150, 2, "Max HP Up", 20) {}
 };
+
 class HighHPElixer : public ConsumableItem
 {
 public:
 	HighHPElixer() : ConsumableItem("High HP Elixer", 200, 1, "Max HP Up", 50) {}
 };
+
 class DamageUPpotion : public ConsumableItem
 {
 public:
@@ -50,11 +56,13 @@ class ShortSword : public EquipableItem
 public:
 	ShortSword() :EquipableItem("Short Sword", 300, 3, "Weapon", { {"Damage", 10} }, 0) {}
 };
+
 class LongSword : public EquipableItem
 {
 public:
 	LongSword() :EquipableItem("Long Sword", 500, 2, "Weapon", { {"Damage", 20} }, 0) {}
 };
+
 class TwoHandedSword : public EquipableItem
 {
 public:

@@ -1,15 +1,18 @@
-
 #include"Shop.h"
 #include"ItemInterface.h"
 #include"AllItem.cpp"
 #include "Enchancer.h"
 
-Shop::Shop() {
+Shop::Shop()
+{
 	AllItem allItems;
 	shopInven = allItems.GetRandomItems(3);
 }
-Shop::~Shop() {
-	for (auto item : shopInven) {
+
+Shop::~Shop()
+{
+	for (auto item : shopInven)
+	{
 		delete item;
 	}
 }
@@ -79,6 +82,7 @@ void Shop::SellItem(Character& player)
 	cout << "You sold " << selectedItem->GetName() << " for " << sellPrice << "gold!" << endl;
 	cout << "Left gold : " << player.GetGold() << endl;
 }
+
 void Shop::UseEnchancer(Character& player)
 {
 	Enchancer enchancer;

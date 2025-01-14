@@ -27,10 +27,7 @@ public:
 	string GetCharacterStatusString();
 
 	const int& GetAttackPower();//변경 이인화
-	void SetAttackPower(int AP) //변경 이인화
-	{
-		attackPower = AP;
-	}
+	void SetAttackPower(int attackPower);
 
 	const int& GetGold();
 	//map<EquipmentType, int> GetEquipmentItems();//변경 이인화
@@ -47,39 +44,49 @@ public:
 
 	void TakeDamage(const int& damage);
 
-	int GetCurrentHP()
-	{
+	int GetCurrentHP();
+	/*{
 		return currentHP;
-	};
-	int GetMaxHP()
-	{
-		return maxHP;
-	};
-	void SetCurrentHP(int HP)
-	{
-		currentHP = max(0, HP);
-	}
-	void SetMaxHP(int HP)
-	{
-		maxHP = max(0, HP);
-	}
-	EquipableItem* GetWeaponSlot() //추가 이인화----------
-	{
-		return weaponSlot;
-	}
-	void SetWeaponSlot(EquipableItem* item)
-	{
-		weaponSlot = item;
-	}
-	EquipableItem* GetArmorSlot()
-	{
-		return armorSlot;
-	}
-	void SetArmorSlot(EquipableItem* item)
-	{
-		armorSlot = item;
-	}//~추가 이인화-----------------------------------
-	void EquipItem(EquipableItem* item);//추가 이인화
+	};*/
+
+	int GetMaxHP();
+	//{
+	//	return maxHP;
+	//};
+
+	void SetCurrentHP(int HP);
+	//{
+	//	currentHP = max(0, HP);
+	//}
+
+	void SetMaxHP(int HP);
+	//{
+	//	maxHP = max(0, HP);
+	//}
+
+	//EquipableItem* GetWeaponSlot() //추가 이인화----------
+	//{
+	//	return weaponSlot;
+	//}
+
+	//void SetWeaponSlot(EquipableItem* item)
+	//{
+	//	weaponSlot = item;
+	//}
+
+	//EquipableItem* GetArmorSlot()
+	//{
+	//	return armorSlot;
+	//}
+
+	//void SetArmorSlot(EquipableItem* item)
+	//{
+	//	armorSlot = item;
+	//}
+
+	//~추가 이인화-----------------------------------
+	//void EquipItem(EquipableItem* item);//추가 이인화
+
 private:
 	string name;
 	int level = 1;
@@ -92,8 +99,8 @@ private:
 
 	//map<EquipmentType, int> equipmentItems;
 	map<ItemInterface*, int> inventory;//변경 이인화
-	EquipableItem* weaponSlot = nullptr;
-	EquipableItem* armorSlot = nullptr;
+	//EquipableItem* weaponSlot = nullptr;
+	//EquipableItem* armorSlot = nullptr;
 
 	void LevelUp();
 	void IncreaseMaxHP(const int& level);

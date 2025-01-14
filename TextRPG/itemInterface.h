@@ -1,13 +1,41 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 using namespace std;
 
 class ItemInterface
 {
 public:
-	virtual string GetName() = 0;
-	virtual int GetPrice() = 0;
-	virtual int GetRarity() = 0;
-	virtual string GetItemType() = 0;//¼Òºñ¾ÆÀÌÅÛ, Àåºñ¾ÆÀÌÅÛ
-	virtual int GetSellPrice() = 0;
+	virtual ~ItemInterface() {}
+
+	string GetName()
+	{
+		return this->name;
+	}
+
+	int GetPrice()
+	{
+		return this->price;
+	}
+
+	int GetRarity()
+	{
+		return this->rarity;
+	}
+
+	string GetItemType() //ì†Œë¹„ì•„ì´í…œ, ìž¥ë¹„ì•„ì´í…œ
+	{
+		return this->name;
+	}
+
+	int GetSellPrice()
+	{
+		return this->sellPrice;
+	}
+
+protected:
+	string name = "";
+	int price = 0;
+	int rarity = 0;
+	string itemType = "";
+	int sellPrice = 0;
 };

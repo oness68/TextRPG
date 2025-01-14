@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "EquipableItem.h"
 #include "EquipableItemDecorator.h"
 #include <random>

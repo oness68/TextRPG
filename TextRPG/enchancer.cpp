@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Enchancer.h"
 #include "EquipableItem.h"
 #include "EquipableItemDecorator.h"

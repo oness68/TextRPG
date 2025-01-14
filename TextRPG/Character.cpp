@@ -19,10 +19,14 @@ Character::~Character()
 {
 }
 
-
 const int& Character::GetAttackPower()
 {
 	return this->attackPower; // + 아이템 + 버프
+}
+
+void Character::SetAttackPower(int attackPower)
+{
+	this->attackPower = attackPower;
 }
 
 const int& Character::GetGold()
@@ -35,7 +39,8 @@ void Character::DisplayStatus()
 	cout << GetCharacterStatusString();
 }
 
-/* {
+string Character::GetCharacterStatusString()
+{
 	string returnValue;
 	returnValue += format("이름 : {}\n", name);
 	returnValue += format("레벨 : {}\n", level);
@@ -48,7 +53,7 @@ void Character::DisplayStatus()
 	return returnValue;
 
 }
-*/
+
 /*map<EquipmentType, int> Character::GetEquipmentItems()
 {
 	return this->EquipableItems;//수정 이인화--------------------------
@@ -69,7 +74,7 @@ void Character::UseItem(ItemInterface* item)//수정 이인화------------------
 	}
 	else if (EquipableItem* equipable = dynamic_cast<EquipableItem*>(item))
 	{
-		equipable->EquipEffect(*this);
+		//equipable->EquipEffect(*this);
 		return;
 	}
 }
@@ -84,12 +89,6 @@ void Character::RemoveItem(ItemInterface* item)//추가 이인화---------
 		}
 	}
 }
-void Character::EquipItem(EquipableItem* item)
-{
-
-};
-
-
 
 void Character::TakeExp(const int& exp)
 {
@@ -119,18 +118,30 @@ void Character::TakeItem(ItemInterface* item)//수정 이인화-----------------
 	//수정 이인화 ---------------------------인벤토리에 있으면 +1 없으면 새로 1
 }
 
-/*void Character::TakeItem(const int& equipmentKey)
-{
-	// TO DO : Parameter Replace : (class)EquipableItem
-
-}*/ //수정 이인화----------------
-
 void Character::TakeDamage(const int& damage)
 {
 	currentHP -= damage;
 }
 
+int Character::GetCurrentHP()
+{
+	return 0;
+}
 
+int Character::GetMaxHP()
+{
+	return 0;
+}
+
+void Character::SetCurrentHP(int HP)
+{
+	this->currentHP = HP;
+}
+
+void Character::SetMaxHP(int HP)
+{
+	this->maxHP = HP;
+}
 
 void Character::LevelUp()
 {

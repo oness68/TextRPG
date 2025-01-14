@@ -150,7 +150,6 @@
     <ClInclude Include="ItemInterface.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Shop.h" />
-    <ClInclude Include="ShopInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
