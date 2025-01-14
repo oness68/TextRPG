@@ -23,12 +23,15 @@ namespace GameManger {
     void GameManger::BeginBattle() 
     {
         // TODO: 구현 필요
+        // 배틀 매니저 에게 캐릭터 정보와 스테이지 정보 제공
     }
 
     // BattleManager 생성 함수
     void GameManger::GenerateBattleManager() 
     {
         // TODO: 구현 필요
+
+
     }
 
     // 휴식 장소 방문 함수
@@ -61,6 +64,10 @@ namespace GameManger {
     void GameManger::SetStage(int num)
     {
         // TODO: 구현 필요
+        if (num > 0)
+        {
+            stage = num;
+        }
     }
 
     // 게임시작
@@ -68,12 +75,19 @@ namespace GameManger {
     {
         // TODO: 구현 필요
         SetStage(1);
+        BeginBattle();
+
+        // 반복문으로 케릭터 죽기 전까지 또는 목표 스테이지 달성 전까지
 
         std::srand(static_cast<unsigned>(std::time(nullptr)));
         std::vector<StageRooms> selectedRooms = GenerateTwoRandomRooms(roomProbabilities);
 
         cout << "Room: " << StageRoomToString(selectedRooms[0]) << endl;
         cout << "Room: " << StageRoomToString(selectedRooms[1]) << endl;
+       
+        // 유저에게 방 선택 입력 받기
+
+
     }
 
     StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
