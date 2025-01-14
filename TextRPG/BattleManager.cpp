@@ -32,6 +32,9 @@ void BattleManager::BeginBattle(Character* player, int stage)
 	else
 	{
 		CreateMonster(false, stage);
+		Battle battle;
+		battle.Fight(player, monster, stage);
+
 		/*NormalMonster monster = CreateNormalMonster();
 		NormalBattle B;*/
 		//B.setTarget(monster);
@@ -73,7 +76,6 @@ void BattleManager::CreateMonster(bool isNamde,int stage)
 		{
 			range = 5;
 
-			setMonster(new Goblin());
 			int random = rand() % range;
 			switch (random)
 			{

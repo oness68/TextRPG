@@ -1,63 +1,35 @@
 #pragma once
 #include "Character.h"
 #include "Monster.h"
-#include"Character.h"
+#include"Log.h"
 #include<algorithm>
-
+#include"EnumCollection.h"
 
 class Battle
 {
+	struct saveState {
+		int Power;
+		int HP;
+	};
+	saveState CharacterData;
 	bool endBattle = false;
 	bool myTurn = true;
-	
-	
+	bool isWin = false;
+	BaseMonster* battleMonster;
 public:
-
+	Log* logger = Log::GetInstance();
+	void restoreCharacterState(Character* player);
+	void saveCharacterState(Character* player);
 	void StageOfDifficulty();
-	void NextTurn(bool& flag);
+	void NextTurn();
 	int Input(int min,int max);
-	virtual void Fight(Character* Player, int stage) = 0;
+	void Fight(Character* Player,BaseMonster* monster, int stage);
 	void PlayerAction(Character* Player);
 	void AttackSystem(Character* Player);
-	//void setTarget(NormalMonster monster) { this->monster = monster; }
-	void MonsterAction();
-	//void NextTrun(bool& turn);
+	void isEndBattle(Character* Player);
+	void MonsterAction(Character* Player);
+	void LootAction(Character* Player);
 };
 
 
-
-class NormalBattle :public Battle
-{
-
-};
-
-
-//class NormalBattle :public Battle
-//{
-//	NormalMonster Data;
-//	
-//public:
-//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-//	void PlayerAction() override;
-//	void MonsterAction() override;
-//	void StageOfDifficulty(int stage) override;
-//};
-//
-//class NamedBattle :public Battle
-//{
-//public:
-//
-//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-//	void PlayerAction() override;
-//	void MonsterAction() override;
-//};
-//
-//class BossBattle :public Battle
-//{
-//public:
-//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-//	void PlayerAction() override;
-//	void MonsterAction() override;
-//};
-//
 

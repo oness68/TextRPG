@@ -1,24 +1,28 @@
 #include "Battle.h"
 //Common
 
-//void Battle::NextTrun(bool& turn)
-//{
-//	turn = !&turn;
-//}
 
 
-void Battle::MonsterAction()
+
+void Battle::restoreCharacterState(Character* player)
 {
+	player->setAttackPower(CharacterData.Power);
+	player->setMaxHP(CharacterData.HP);
+}
 
+void Battle::saveCharacterState(Character* player)
+{
+	CharacterData.Power = player->GetAcctackPower();
+	CharacterData.HP = player->getMaxHP();
 }
 
 void Battle::StageOfDifficulty()
 {
 }
 
-void Battle::NextTurn(bool& flag)
+void Battle::NextTurn()
 {
-	flag = !flag;
+	myTurn = !myTurn;
 }
 
 int Battle::Input(int min,int max)
@@ -34,9 +38,12 @@ int Battle::Input(int min,int max)
 	return input;
 }
 
-void Battle::Fight(Character* Player, int stage)
+void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 {
-
+	this->battleMonster = monster;
+	saveCharacterState(Player);
+	string str = battleMonster->GetName() + "이(가) 등장하였다!\n";
+	logger->PrintLog(str, EnumPrintLog::EJustString);
 	while (!endBattle)
 	{
 		if (myTurn)
@@ -46,21 +53,29 @@ void Battle::Fight(Character* Player, int stage)
 		}
 		else
 		{
-			MonsterAction();
+			MonsterAction(Player);
 			//몬스터 턴
 		}
 
-		NextTurn(myTurn);
+		NextTurn();
+		isEndBattle(Player);
+	}
+
+	if (isWin)
+	{
+		LootAction(Player);
 	}
 
 
-	cout << "일반 전투" << endl;
-	Player->TakeExp(10);
 }
+
+
 
 void Battle::PlayerAction(Character* Player)
 {
-	cout << "1.공격\t2.아이템사용\n";
+
+	string str ="1.공격\t2.아이템사용\n";
+	logger->PrintLog(str, EnumPrintLog::EJustString);
 	int choice = Input(1, 2);
 	switch (choice)
 	{
@@ -75,21 +90,69 @@ void Battle::PlayerAction(Character* Player)
 	}
 }
 
+void Battle::MonsterAction(Character* Player)
+{
+	Player->TakeDamage(battleMonster->GetDamage());
+
+}
+
+void Battle::LootAction(Character* Player)
+{
+	Player->TakeExp(battleMonster->GetExperience());
+	Player->TakeGold(battleMonster->GetGold());
+	//battleMonster.
+}
+
 void Battle::AttackSystem(Character* Player)
 {
+	
 
 	cout << "1.머리\t2.몸통\n";
-	int choice = Input(1, 2);
-	switch (choice)
-	{
-	case 1:
-		//monster->TakeDamage(Player->GetAcctackPower()*1.2f);
-		break;
-	case 2:
-		//monster->TakeDamage(Player->GetAcctackPower());
+	bool flag = false;
 
-		break;
-	default:
-		break;
+	while (!flag)
+	{
+		int choice = Input(1, 2);
+		switch (choice)
+		{
+		case 1:
+
+			battleMonster->TakeDamage(Player->GetAcctackPower() * 1.2);
+			flag = true;
+			//log
+			break;
+		case 2:
+			battleMonster->TakeDamage(Player->GetAcctackPower());
+			flag = true;
+			//log
+			break;
+		default:
+			cout << "다시입력" << endl;
+			break;
+		}
+	}
+	
+
+	
+}
+
+void Battle::isEndBattle(Character* Player)
+{
+	if (Player->getCurrnetHP() < 1 || battleMonster->GetHealth()<1)
+	{
+		endBattle = true;
+	}
+
+	if (endBattle)
+	{
+		if (Player->getCurrnetHP() > 0)
+		{
+			isWin = true;
+		}
+		else
+		{
+			isWin = false;
+			Player = nullptr;
+		}
 	}
 }
