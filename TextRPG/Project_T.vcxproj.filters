@@ -27,16 +27,19 @@
     <ClCompile Include="Log.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="shop.cpp">
+    <ClCompile Include="Shop.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="consumableItem.cpp">
+    <ClCompile Include="ConsumableItem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="equipableItem.cpp">
+    <ClCompile Include="EquipableItem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="enchancer.cpp">
+    <ClCompile Include="Enchancer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AllItem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,28 +56,28 @@
     <ClInclude Include="Log.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="shop.h">
+    <ClInclude Include="Shop.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="shopInterface.h">
+    <ClInclude Include="ShopInterface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="itemInterface.h">
+    <ClInclude Include="ItemInterface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="consumableItem.h">
+    <ClInclude Include="ConsumableItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="baseEquipableItem.h">
+    <ClInclude Include="BaseEquipableItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="equipableItem.h">
+    <ClInclude Include="EquipableItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="equipableItemDecorator.h">
+    <ClInclude Include="EquipableItemDecorator.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="enchancer.h">
+    <ClInclude Include="Enchancer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

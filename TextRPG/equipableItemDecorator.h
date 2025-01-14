@@ -1,5 +1,5 @@
 #pragma once
-#include "equipableItem.h"
+#include "EquipableItem.h"
 #include "Character.h"
 
 class EquipableItemDecorator : public EquipableItem
@@ -7,7 +7,7 @@ class EquipableItemDecorator : public EquipableItem
 private:
 	EquipableItem* decoratedItem;
 public:
-	EquipableItemDecorator(EquipableItem* item) : decoratedItem(item) {}
+	EquipableItemDecorator(EquipableItem* item) : EquipableItem(item->GetName(), item->GetPrice(), item->GetRarity(), item->GetEquipType(), item->GetBaseStat(), item->GetEnchantLevel()), decoratedItem(item) {}
 
 
 	string GetName() override
@@ -30,14 +30,24 @@ public:
 		return decoratedItem->GetEquipType();
 	}
 
-	map<string, int> GetBaseStat() {
-		return decoratedItem->GetBaseStat();
+	map<string, int> GetBaseStat()
+	{
+		map<string, int> enhancedStat = decoratedItem->GetBaseStat();
+		for (auto& stat : enhancedStat)
+		{
+			stat.second += (decoratedItem->GetEnchantLevel() * 5);
+		}
+		return enhancedStat;
 	}
 
-	int GetEnchantLevel() {
+	int GetEnchantLevel()
+	{
 		return decoratedItem->GetEnchantLevel();
 	}
-
+	void SetEnchantLevel(int level)
+	{
+		decoratedItem->SetEnchantLevel(level);
+	}
 	void EquipEffect(Character& player) {
 		decoratedItem->EquipEffect(player);
 	}

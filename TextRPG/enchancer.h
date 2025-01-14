@@ -1,9 +1,18 @@
 #pragma once
-#include "equipableItem.h"
+#include "EquipableItem.h"
+#include "EquipableItemDecorator.h"
+#include <random>
+#include <iostream>
+using namespace std;
+
 class Enchancer
 {
+private:
+	random_device rd;
+	mt19937 gen;
 public:
-	void EnchanceItem(EquipableItem* item) {};
+	Enchancer();
+	EquipableItem* EnchanceItem(EquipableItem* item);
+
+	vector<ItemInterface*> GetEnchanceableItems(map<ItemInterface*, int>& inventory);
 };
-//equipableItemDecorator를 이용하는 메서드구현?
-//enchantDecorator를 만드나
