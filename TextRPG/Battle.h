@@ -5,11 +5,13 @@
 #include<algorithm>
 #include"EnumCollection.h"
 
+
 class Battle
 {
 	struct saveState {
 		int Power;
-		int HP;
+		int CurrentHP;
+		int MaxHP;
 	};
 	saveState CharacterData;
 	bool endBattle = false;

@@ -3,7 +3,6 @@
 
 BattleManager* BattleManager::Battleinstance = nullptr;
 
-
 BattleManager* BattleManager::GetInstance()
 {
 

@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_HAS_STD_BYTE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -129,6 +129,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AllItem.cpp" />
+    <ClCompile Include="Battle.cpp" />
+    <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ConsumableItem.cpp" />
     <ClCompile Include="Enchancer.cpp" />
@@ -136,10 +138,13 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Shop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseEquipableItem.h" />
+    <ClInclude Include="Battle.h" />
+    <ClInclude Include="BattleManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ConsumableItem.h" />
     <ClInclude Include="Enchancer.h" />
@@ -149,6 +154,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Shop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
