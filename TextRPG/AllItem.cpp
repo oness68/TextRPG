@@ -88,7 +88,7 @@ public:
 class AllItem
 {
 private:
-	vector<ItemInterface*> items;
+	vector<Item*> items;
 public:
 	AllItem()
 	{
@@ -109,13 +109,13 @@ public:
 	~AllItem() {
 		for (auto item : items) delete item;
 	}
-	vector<ItemInterface*> GetRandomItems(int count) {
-		vector<ItemInterface*> shuffledItems = items;
+	vector<Item*> GetRandomItems(int count) {
+		vector<Item*> shuffledItems = items;
 		random_device rd;
 		mt19937 gen(rd());
 		shuffle(shuffledItems.begin(), shuffledItems.end(), gen);
 
-		vector<ItemInterface*>randomItems(shuffledItems.begin(), shuffledItems.begin() + count);
+		vector<Item*>randomItems(shuffledItems.begin(), shuffledItems.begin() + count);
 		return randomItems;
 	}
 

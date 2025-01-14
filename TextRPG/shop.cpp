@@ -34,7 +34,7 @@ void Shop::BuyItem(Character& player)
 	}
 	else
 	{
-		ItemInterface* selectedItem = shopInven[choice - 1];
+		Item* selectedItem = shopInven[choice - 1];
 		if (player.GetGold() >= selectedItem->GetPrice())
 		{
 			player.TakeGold(-selectedItem->GetPrice());
@@ -53,14 +53,14 @@ void Shop::BuyItem(Character& player)
 
 void Shop::SellItem(Character& player)
 {
-	map<ItemInterface*, int> inventory = player.GetInventory();
+	map<Item*, int> inventory = player.GetInventory();
 	if (inventory.empty()) {
 		cout << "You have no items to sell!" << endl;
 		return;
 	}
 	cout << "Your inventory" << endl;
 	int index = 1;
-	vector <ItemInterface*> invenItems;
+	vector <Item*> invenItems;
 	for (const auto& item : inventory)
 	{
 		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetSellPrice() << "gold]" << endl;
@@ -74,7 +74,7 @@ void Shop::SellItem(Character& player)
 		cout << "Invaild choice" << endl;
 		return;
 	}
-	ItemInterface* selectedItem = invenItems[choice - 1];
+	Item* selectedItem = invenItems[choice - 1];
 	int sellPrice = selectedItem->GetSellPrice();
 
 	player.TakeGold(sellPrice);
@@ -86,8 +86,8 @@ void Shop::SellItem(Character& player)
 void Shop::UseEnchancer(Character& player)
 {
 	Enchancer enchancer;
-	map<ItemInterface*, int> inventory = player.GetInventory();
-	vector<ItemInterface*> enchantableItems = enchancer.GetEnchanceableItems(inventory);
+	map<Item*, int> inventory = player.GetInventory();
+	vector<Item*> enchantableItems = enchancer.GetEnchanceableItems(inventory);
 
 	if (enchantableItems.empty())
 	{

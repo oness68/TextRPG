@@ -2,7 +2,7 @@
 #include "ItemInterface.h"
 
 
-class BaseEquipableItem : public ItemInterface
+class BaseEquipableItem : public Item
 {
 public:
 	BaseEquipableItem() {}

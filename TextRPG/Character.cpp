@@ -59,12 +59,12 @@ string Character::GetCharacterStatusString()
 	return this->EquipableItems;//수정 이인화--------------------------
 }*/
 
-map<ItemInterface*, int> Character::GetInventory()//수정 이인화-----------------------------
+map<Item*, int> Character::GetInventory()//수정 이인화-----------------------------
 {
 	return this->inventory;
 }
 
-void Character::UseItem(ItemInterface* item)//수정 이인화-------------------
+void Character::UseItem(Item* item)//수정 이인화-------------------
 {
 	if (ConsumableItem* consumable = dynamic_cast<ConsumableItem*>(item))
 	{
@@ -79,7 +79,7 @@ void Character::UseItem(ItemInterface* item)//수정 이인화------------------
 	}
 }
 
-void Character::RemoveItem(ItemInterface* item)//추가 이인화---------
+void Character::RemoveItem(Item* item)//추가 이인화---------
 {
 	if (inventory.find(item) != inventory.end())
 	{
@@ -104,7 +104,7 @@ void Character::TakeGold(const int& gold)
 	this->gold += gold;
 }
 
-void Character::TakeItem(ItemInterface* item)//수정 이인화-------------------------
+void Character::TakeItem(Item* item)//수정 이인화-------------------------
 {
 	// TO DO : if Can't Find Add Key
 	if (inventory.find(item) != inventory.end())

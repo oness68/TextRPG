@@ -14,5 +14,5 @@ public:
 	void SellItem(Character& player);
 	void UseEnchancer(Character& player);
 private:
-	vector<ItemInterface*> shopInven;
+	vector<Item*> shopInven;
 };

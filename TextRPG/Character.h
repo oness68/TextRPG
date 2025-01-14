@@ -31,15 +31,15 @@ public:
 
 	const int& GetGold();
 	//map<EquipmentType, int> GetEquipmentItems();//변경 이인화
-	map<ItemInterface*, int> GetInventory();//변경 이인화
+	map<Item*, int> GetInventory();//변경 이인화
 
-	void UseItem(ItemInterface* item);//변경 이인화
-	void RemoveItem(ItemInterface* item);//추가 이인화
+	void UseItem(Item* item);//변경 이인화
+	void RemoveItem(Item* item);//추가 이인화
 
 	void TakeExp(const int& exp);
 	void TakeGold(const int& gold);
 
-	void TakeItem(ItemInterface* item);//변경 이인화
+	void TakeItem(Item* item);//변경 이인화
 	//void TakeItem(const int& equipmentKey);
 
 	void TakeDamage(const int& damage);
@@ -98,7 +98,7 @@ private:
 	int requiredLevelUpExp = 100;
 
 	//map<EquipmentType, int> equipmentItems;
-	map<ItemInterface*, int> inventory;//변경 이인화
+	map<Item*, int> inventory;//변경 이인화
 	//EquipableItem* weaponSlot = nullptr;
 	//EquipableItem* armorSlot = nullptr;
 

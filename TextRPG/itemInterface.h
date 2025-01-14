@@ -2,10 +2,10 @@
 #include <string>
 using namespace std;
 
-class ItemInterface
+class Item
 {
 public:
-	virtual ~ItemInterface() {}
+	virtual ~Item() {}
 
 	string GetName()
 	{

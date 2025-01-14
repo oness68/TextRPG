@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class ConsumableItem : public ItemInterface
+class ConsumableItem : public Item
 {
 public:
 	ConsumableItem(string name, int price, int rarity, string effectType, int effectValue);
