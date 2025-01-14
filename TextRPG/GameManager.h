@@ -4,7 +4,8 @@
 #define GAMEMANAGER_H
 
 #include <string>
-
+#include"BattleManager.h"
+#include"Character.h"
 namespace GameManger {
 
 	class GameManger {
@@ -17,7 +18,7 @@ namespace GameManger {
 		void VisitShop();
 		void VisitRest();
 		void VisiteBuffRoom();
-		void BeginBattle();
+		void BeginBattle(Character* player,int stage);
 
 		void BeginPlay();
 		
