@@ -115,15 +115,24 @@ int NormalMonster::TakeAction() const
 {
 	// 1 -> 공격
 	// 2 -> 방어
+	Log* log = Log::GetInstance();
 	int option = GetRandomNumber(2);
-	if (option==1)
+	string temp;
+
+	if (option == 1)
 	{
 		//공격 문구 출력
+		temp = this->name;
+		temp += "이(가) 공격해 옵니다.\n";
+		log->PrintLog(temp, EJustString);
 		return 1;
 	}
-	else if (option==2)
+	else if (option == 2)
 	{
 		//방어 문구 출력
+		temp = this->name;
+		temp += "이(가) 공격을 막아내려 합니다.\n";
+		log->PrintLog(temp, EJustString);
 		return 2;
 	}
 	return 0;
@@ -134,20 +143,34 @@ int BossMonster::TakeAction() const
 	// 1 -> 공격
 	// 2 -> 방어
 	// 3 -> 특수 패턴
+	Log* log = Log::GetInstance();
 	int option = GetRandomNumber(3);
+	string temp;
+
 	if (option == 1)
 	{
 		//공격 문구 출력
+		temp = this->name;
+		temp += "이(가) 공격해 옵니다.\n";
+		log->PrintLog(temp,EJustString);
 		return 1;
 	}
 	else if (option == 2)
 	{
 		//방어 문구 출력
+		temp = this->name;
+		temp += "이(가) 공격을 막아내려 합니다.\n";
+		log->PrintLog(temp, EJustString);
 		return 2;
 	}
 	else if (option == 3)
 	{
 		//특수 패턴 선택지 출력
+		for (string s : characterResponseList) {
+			temp += s;
+		}
+		log->PrintLog(temp, EJustString);
 		return 3;
 	}
 }
+

@@ -140,6 +140,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
