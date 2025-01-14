@@ -48,6 +48,8 @@ void main()
 	//게임 실행 코드
 	while (isGameStart)
 	{
+		gameManager.BeginBattle(player, 1);
+
 		break;
 	}
 
