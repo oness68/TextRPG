@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <random>
+#include <iostream>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 	virtual void SetGold(int gold) = 0;
 	virtual void TakeDamage(int damage) = 0;
 	virtual int TakeAction() const = 0;
+	virtual string GetRandomItem() const = 0;
 };
 
 class BaseMonster : public Monster
@@ -33,7 +35,6 @@ protected:
 	vector<pair<int, string>> dropTable;
 
 	virtual void InitializeDropTable() = 0;
-	string GetRandomItem() const;
 
 public:
 	BaseMonster(string n, int hp, int atk, int exp, int g) :
@@ -48,6 +49,7 @@ public:
 	int GetGold() const override;
 	void SetGold(int gold) override;
 	void TakeDamage(int damage) override;
+	string GetRandomItem() const override;
 };
 
 class NormalMonster : public BaseMonster 
@@ -57,7 +59,7 @@ protected:
 
 public:
 	NormalMonster(string n, int hp, int atk, int exp, int g)
-		: BaseMonster(n, hp, atk, exp, g) {}
+		: BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
 };
 
@@ -101,7 +103,7 @@ protected:
 
 public:
 	BossMonster(string n, int hp, int atk, int exp, int g) :
-		BaseMonster(n, hp, atk, exp, g) {}
+		BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
 };
 
@@ -129,5 +131,8 @@ protected:
 	void InitializeDropTable() override;
 
 public:
-	Dragon() : BossMonster("Dragon", 1000, 50, 777, 777) {}
+	Dragon() : BossMonster("Dragon", 1000, 50, 777, 777) {
+		dropTable.clear();
+		InitializeDropTable();
+	}
 };

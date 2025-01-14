@@ -16,6 +16,7 @@ string BaseMonster::GetRandomItem() const
 	{
 		return "";
 	}
+
 	int totalProbabiility = 0;
 
 	for (const auto& item : dropTable) 

@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Character.h"
 #include "EnumCollection.h"
+#include "Monster.h"
 
 using namespace std;
 
