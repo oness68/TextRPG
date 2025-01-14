@@ -10,10 +10,22 @@
 
 using namespace std;
 
-enum EquipmentType
+class Inventory
 {
-	Weapone = 0,
-	Armor,
+public:
+	Inventory() : item(nullptr), Count(0) {}
+	Inventory(class Item* item, enum class ItemType type, int count)
+	{
+		this->item = item;
+		this->itemType = type;
+		this->Count = count;
+	}
+
+	void ReduceItem();
+
+	class Item* item = nullptr;
+	enum class ItemType itemType = ItemType::Unknown;
+	int Count = 0;
 };
 
 class Character

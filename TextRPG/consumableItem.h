@@ -1,5 +1,5 @@
 #pragma once
-#include "ItemInterface.h"
+#include "Item.h"
 #include "Character.h"
 #include <string>
 

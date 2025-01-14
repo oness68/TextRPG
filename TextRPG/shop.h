@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "ItemInterface.h"
+#include "Item.h"
 #include "Character.h"
 
 using namespace std;

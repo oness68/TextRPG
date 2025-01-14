@@ -1,5 +1,5 @@
 ﻿#include "Character.h"
-#include "ItemInterface.h"//추가 이인화--------------------
+#include "Item.h"//추가 이인화--------------------
 #include "ConsumableItem.h"//추가 이인화
 #include "EquipableItem.h"//추가 이인화
 #include <format>

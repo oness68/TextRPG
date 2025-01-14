@@ -1,5 +1,5 @@
 #pragma once
-#include "ItemInterface.h"
+#include "Item.h"
 
 
 class BaseEquipableItem : public Item
