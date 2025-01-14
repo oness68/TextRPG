@@ -32,6 +32,7 @@ public:
 	void setMonster(BaseMonster* monster);
 	void BeginBattle(Character* player, int stage);
 	void CreateMonster(bool isNamde, int stage);
+	
 };
 
 

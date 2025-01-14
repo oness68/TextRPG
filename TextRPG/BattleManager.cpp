@@ -46,16 +46,18 @@ void BattleManager::BeginBattle(Character* player, int stage)
 void BattleManager::CreateMonster(bool isNamde,int stage)
 {
 	monster = nullptr;
+	std::random_device rd;
+	std::mt19937 gen(rd());
 	int range;
 	if (stage < 20)
 	{
 		if (isNamde)
 		{
 			range = 3;
+			
+			std::uniform_int_distribution<int> dist(0, range-1);
 
-
-			int random = rand() % range;
-			switch (random)
+			switch (dist(gen))
 			{
 			case 0:
 				setMonster(new GoblinRider());
@@ -75,8 +77,9 @@ void BattleManager::CreateMonster(bool isNamde,int stage)
 		{
 			range = 5;
 
-			int random = rand() % range;
-			switch (random)
+			std::uniform_int_distribution<int> dist(0, range-1);
+
+			switch (dist(gen))
 			{
 			case 0:
 				setMonster(new Goblin());

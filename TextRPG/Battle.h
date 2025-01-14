@@ -31,6 +31,7 @@ public:
 	void isEndBattle(Character* Player);
 	void MonsterAction(Character* Player);
 	void LootAction(Character* Player);
+	bool RandomSuccess(int probability);
 };
 
 
