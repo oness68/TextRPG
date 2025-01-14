@@ -5,55 +5,25 @@
 
 using namespace std;
 
-class ConsumableItem :public ItemInterface
+class ConsumableItem : public Item
 {
+public:
+	ConsumableItem(string name, int price, int rarity, string effectType, int effectValue);
+	~ConsumableItem();
+
+	string GetEffectType();
+
+	int GetEffectValue();
+
+	int GetSellPrice();
+
+	void ConsumeEffect(Character& player);
+
 private:
-	string name;
-	int price;
-	int rarity;
-	string itemType;
+//	string name;
+//	int price;
+//	int rarity;
+//	string itemType;
 	string effectType;
 	int effectValue;
-public:
-	ConsumableItem(string name, int price, int rarity, string effectType, int effectValue)
-		:name(name), price(price), rarity(rarity), itemType("ConsumableItem"), effectType(effectType), effectValue(effectValue) {
-	}
-
-
-	string GetName() override
-	{
-		return name;
-	}
-	int GetPrice() override
-	{
-		return price;
-	}
-	int GetRarity() override
-	{
-		return rarity;
-	}
-	string GetItemType() override
-	{
-		return itemType;
-	}
-	string GetEffectType()
-	{
-		return effectType;
-	}
-	int GetEffectValue()
-	{
-		return effectValue;
-	}
-	int GetSellPrice()
-	{
-		return price * 0.6;
-	}
-
-
-	void ConsumeEffect(Character& player)
-	{
-		//사용 효과 구현
-	}
-
-
 };

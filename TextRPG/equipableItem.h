@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseEquipableItem.h"
 #include "Character.h"
 #include <string>
@@ -8,49 +8,39 @@ using namespace std;
 
 class EquipableItem :public BaseEquipableItem
 {
+public:
+	EquipableItem();
+	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel);/*
+		:BaseEquipableItem(name, price, rarity, "EquipableItem"), equipType(equipType), baseStat(baseStat), enchantLevel(enchantLevel) {
+	}*/
+
+	~EquipableItem();
+
+	string GetEquipType();
+
+	map<string, int> GetBaseStat();
+
+	int GetEnchantLevel();
+
+	void SetEnchantLevel(const int& level);
+
+	bool IsEquipping();
+
+	void SetEquipping(const bool& equipping);
+
+	//string GetName() override
+	//{
+	//	return isEquipping ? BaseEquipableItem::GetName() + " (Equipping)" : BaseEquipableItem::GetName();
+	//}
+
+	//void EquipEffect(Character& player);
+	//{
+		//ì‚¬ìš© íš¨ê³¼ êµ¬í˜„ BaseStatì„ ìºë¦­í„°ì—ê²Œ ì ìš©
+	//}
+
 private:
-	string equipType;//¹«±â,¹æ¾î±¸
+	string equipType;//ë¬´ê¸°,ë°©ì–´êµ¬
 	map<string, int> baseStat;
 	int enchantLevel;
 	bool isEquipping;
-public:
-	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel)
-		:BaseEquipableItem(name, price, rarity, "EquipableItem"), equipType(equipType), baseStat(baseStat), enchantLevel(enchantLevel) {
-	}
-
-	string GetEquipType()
-	{
-		return equipType;
-	}
-	map<string, int> GetBaseStat()
-	{
-		return baseStat;
-	}
-	int GetEnchantLevel()
-	{
-		return enchantLevel;
-	}
-	void SetEnchantLevel(int level)
-	{
-		enchantLevel = level;
-	};
-
-	bool IsEquipping() {
-		return isEquipping;
-	}
-	void SetEquipping(bool equipping) {
-		isEquipping = equipping;
-	}
-	string GetName()override
-	{
-		return isEquipping ? BaseEquipableItem::GetName() + " (Equipping)" : BaseEquipableItem::GetName();
-	}
-
-
-	void EquipEffect(Character& player)
-	{
-		//»ç¿ë È¿°ú ±¸Çö BaseStatÀ» Ä³¸¯ÅÍ¿¡°Ô Àû¿ë
-	}
-
-
 };

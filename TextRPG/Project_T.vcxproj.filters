@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Item">
+      <UniqueIdentifier>{946057ab-2800-4f09-bdc6-6d017a190413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item">
+      <UniqueIdentifier>{2e4395b2-ee36-4dbe-828f-72fc545dcc47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp">
@@ -30,17 +36,17 @@
     <ClCompile Include="Shop.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ConsumableItem.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="AllItem.cpp">
+      <Filter>소스 파일\Item</Filter>
     </ClCompile>
-    <ClCompile Include="EquipableItem.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ConsumableItem.cpp">
+      <Filter>소스 파일\Item</Filter>
     </ClCompile>
     <ClCompile Include="Enchancer.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Item</Filter>
     </ClCompile>
-    <ClCompile Include="AllItem.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="EquipableItem.cpp">
+      <Filter>소스 파일\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,26 +65,23 @@
     <ClInclude Include="Shop.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ShopInterface.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemInterface.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="BaseEquipableItem.h">
+      <Filter>헤더 파일\Item</Filter>
     </ClInclude>
     <ClInclude Include="ConsumableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseEquipableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="EquipableItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="EquipableItemDecorator.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Item</Filter>
     </ClInclude>
     <ClInclude Include="Enchancer.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipableItem.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipableItemDecorator.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>헤더 파일\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

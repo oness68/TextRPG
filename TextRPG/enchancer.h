@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "EquipableItem.h"
 #include "EquipableItemDecorator.h"
 #include <random>
@@ -14,5 +14,5 @@ public:
 	Enchancer();
 	EquipableItem* EnchanceItem(EquipableItem* item);
 
-	vector<ItemInterface*> GetEnchanceableItems(map<ItemInterface*, int>& inventory);
+	vector<Item*> GetEnchanceableItems(map<Item*, int>& inventory);
 };

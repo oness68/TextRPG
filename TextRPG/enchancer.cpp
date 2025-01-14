@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Enchancer.h"
 #include "EquipableItem.h"
 #include "EquipableItemDecorator.h"
@@ -28,9 +28,9 @@ EquipableItem* Enchancer::EnchanceItem(EquipableItem* item)
 		return item;
 	}
 }
-vector<ItemInterface*> Enchancer::GetEnchanceableItems(map<ItemInterface*, int>& inventory)
+vector<Item*> Enchancer::GetEnchanceableItems(map<Item*, int>& inventory)
 {
-	vector<ItemInterface*> equipableItems;
+	vector<Item*> equipableItems;
 	for (auto& item : inventory)
 	{
 		if (item.first->GetItemType() == "EquipableItem")

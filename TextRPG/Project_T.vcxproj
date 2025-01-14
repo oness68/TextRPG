@@ -147,10 +147,9 @@
     <ClInclude Include="EquipableItem.h" />
     <ClInclude Include="EquipableItemDecorator.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="ItemInterface.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Shop.h" />
-    <ClInclude Include="ShopInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
