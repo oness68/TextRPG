@@ -27,9 +27,9 @@ public:
 		return this->name;
 	}
 
-	int GetSellPrice()
+	double GetDepreciationRate()
 	{
-		return this->sellPrice;
+		return this->depreciationRate;
 	}
 
 protected:
@@ -37,5 +37,5 @@ protected:
 	int price = 0;
 	int rarity = 0;
 	string itemType = "";
-	int sellPrice = 0;
+	double depreciationRate = 0;
 };

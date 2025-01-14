@@ -63,7 +63,7 @@ void Shop::SellItem(Character& player)
 	vector <Item*> invenItems;
 	for (const auto& item : inventory)
 	{
-		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetSellPrice() << "gold]" << endl;
+		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetDepreciationRate() << "gold]" << endl;
 		invenItems.push_back(item.first);
 		index++;
 	}
@@ -75,7 +75,7 @@ void Shop::SellItem(Character& player)
 		return;
 	}
 	Item* selectedItem = invenItems[choice - 1];
-	int sellPrice = selectedItem->GetSellPrice();
+	int sellPrice = selectedItem->GetDepreciationRate();
 
 	player.TakeGold(sellPrice);
 	player.RemoveItem(selectedItem);
