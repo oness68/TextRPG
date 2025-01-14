@@ -89,14 +89,12 @@ void Character::RemoveItem(Item* item)//추가 이인화---------
 		}
 	}
 }
-<<<<<<< HEAD
+/*
 void Character::EquipItem(EquipableItem* item)
 {
 
 };
-=======
->>>>>>> 3897571fc9341e3cec2c9ac2208e4c785b53a4c0
-
+*/
 void Character::TakeExp(const int& exp)
 {
 	currentExp += exp;
