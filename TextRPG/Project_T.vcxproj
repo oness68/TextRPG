@@ -138,6 +138,10 @@
     <ClInclude Include="EnumCollection.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\Player.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
