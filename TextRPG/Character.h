@@ -39,7 +39,6 @@ public:
 
 	void TakeDamage(const int& damage);
 
-
 private:
 	string name;
 	int level = 1;

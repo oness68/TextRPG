@@ -7,6 +7,8 @@
 #include <vector>
 #include <map>
 
+using namespace std;
+
 namespace GameManger {
 	enum StageRooms {
 		Shop = 1,
