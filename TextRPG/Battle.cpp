@@ -40,10 +40,11 @@ int Battle::Input(int min,int max)
 
 void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 {
+	Log* logger = Log::GetInstance();
 	this->battleMonster = monster;
 	saveCharacterState(Player);
 	string str = battleMonster->GetName() + "이(가) 등장하였다!\n";
-	logger->PrintLog(str, EnumPrintLog::EJustString);
+	logger->PrintLog(str, this);
 	while (!endBattle)
 	{
 		if (myTurn)
@@ -73,9 +74,9 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 
 void Battle::PlayerAction(Character* Player)
 {
-
+	Log* logger = Log::GetInstance();
 	string str ="1.공격\t2.아이템사용\n";
-	logger->PrintLog(str, EnumPrintLog::EJustString);
+	logger->PrintLog(str, this);
 	int choice = Input(1, 2);
 	switch (choice)
 	{

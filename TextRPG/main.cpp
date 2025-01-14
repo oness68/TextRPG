@@ -27,17 +27,17 @@ int main()
 	// 1. 게임시작, 2. 종료
 	while (!isGameStart)
 	{
-		logger->PrintStartMenu(Menu);
+		logger->PrintStartMenu(LogEnum::Menu);
 		cin >> menuOption;
 
 		switch (menuOption) {
 		case 1:
 			isGameStart = true;	//시작화면 루프 벗어나기 위함
 			isGameRun = true;	//게임 시작
-			logger->PrintStartMenu(Start);
+			logger->PrintStartMenu(LogEnum::Start);
 			break;
 		case 2:
-			logger->PrintGameOver(LogEnum::GameEnd);	//플레이어의 사망과 게임 재시작 여부 물어보는 출력문
+			logger->PrintGameOver(LogEnum::GameOver);	//플레이어의 사망과 게임 재시작 여부 물어보는 출력문
 			return 0;
 			break;
 		default:

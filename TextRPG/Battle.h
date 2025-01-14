@@ -17,7 +17,7 @@ class Battle
 	bool isWin = false;
 	BaseMonster* battleMonster;
 public:
-	Log* logger = Log::GetInstance();
+	
 	void restoreCharacterState(Character* player);
 	void saveCharacterState(Character* player);
 	void StageOfDifficulty();

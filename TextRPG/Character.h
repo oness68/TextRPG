@@ -28,7 +28,7 @@ public:
 	const int& GetGold();
 	map<EquipmentType, int> GetEquipmentItems();
 	map<string, int> GetInventory();
-
+	
 	void UseItem(const string& itemKey);
 
 	void TakeExp(const int& exp);
@@ -38,6 +38,15 @@ public:
 	void TakeItem(const int& equipmentKey);
 
 	void TakeDamage(const int& damage);
+
+
+	int getMaxHP() { return this->maxHP; }
+	void setMaxHP(int maxhp) { this->maxHP = maxhp; }
+	int getAttackPower() { return this->attackPower; }
+	void setAttackPower(int attackpower) { this->attackPower = attackpower; }
+
+
+	int getCurrnetHP() { return this->currentHP; }
 
 
 private:
@@ -57,6 +66,10 @@ private:
 	void IncreaseMaxHP(const int& level);
 	void IncreaseAttackPower(const int& level);
 	void IncreaseRequireLevelUpExp(const int& level);
+
+
+	
+
 };
 
 #endif // !CHARACTER_H_
