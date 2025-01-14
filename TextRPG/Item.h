@@ -1,10 +1,23 @@
-﻿#pragma once
+﻿#ifndef ITEM_H_
+#define ITEM_H_
+
+enum class ItemType
+{
+	Unknown = 0,
+	Equipable,
+	Consumable,
+	Archive,
+	Default
+};
+
 #include <string>
 using namespace std;
 
 class Item
 {
+	friend class Character;
 public:
+	Item() {};
 	virtual ~Item() {}
 
 	string GetName()
@@ -39,3 +52,5 @@ protected:
 	string itemType = "";
 	double depreciationRate = 0;
 };
+
+#endif // !ITEM_H_
