@@ -8,11 +8,11 @@ string BaseMonster::GetRandomItem() const
 	}
 	int totalProbabiility = 0;
 
-	for (const auto& item : dropTable) 
+	for (const auto& item : dropTable)
 	{
 		totalProbabiility += item.first;
 	}
-	
+
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<> dis(1, totalProbabiility);
@@ -20,10 +20,10 @@ string BaseMonster::GetRandomItem() const
 	int randomValue = dis(gen);
 	int cumulativeProbability = 0;
 
-	for (const auto& item : dropTable) 
+	for (const auto& item : dropTable)
 	{
 		cumulativeProbability += item.first;
-		if (randomValue <= cumulativeProbability) 
+		if (randomValue <= cumulativeProbability)
 		{
 			return item.second;
 		}

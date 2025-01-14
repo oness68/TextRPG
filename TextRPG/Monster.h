@@ -5,7 +5,7 @@
 #include <random>
 using namespace std;
 
-class Monster 
+class Monster
 {
 public:
 	virtual string GetName() = 0;
@@ -36,9 +36,7 @@ protected:
 
 public:
 	BaseMonster(string n, int hp, int atk, int exp, int g) :
-		name(n), HP(hp), attackPower(atk), experience(exp), gold(g) 
-	{
-		InitializeDropTable();
+		name(n), HP(hp), attackPower(atk), experience(exp), gold(g) {
 	}
 	string GetName() override;
 	int GetHealth() const override;
@@ -52,24 +50,25 @@ public:
 	void TakeDamage(int damage) override;
 };
 
-class NormalMonster : public BaseMonster 
+class NormalMonster : public BaseMonster
 {
 protected:
 	void InitializeDropTable() override;
 
 public:
 	NormalMonster(string n, int hp, int atk, int exp, int g)
-		: BaseMonster(n, hp, atk, exp, g) {}
+		: BaseMonster(n, hp, atk, exp, g) {
+	}
 	int TakeAction() const override;
 };
 
-class Goblin : public NormalMonster 
+class Goblin : public NormalMonster
 {
 public:
 	Goblin() : NormalMonster("Goblin", 100, 15, 20, 25) {};
 };
 
-class Orc : public NormalMonster 
+class Orc : public NormalMonster
 {
 public:
 	Orc() : NormalMonster("Orc", 100, 15, 20, 25) {};
@@ -81,19 +80,19 @@ public:
 	Troll() : NormalMonster("Troll", 100, 15, 20, 25) {};
 };
 
-class Wolf : public NormalMonster 
+class Wolf : public NormalMonster
 {
 public:
-	Wolf () : NormalMonster("Wolf", 100, 15, 20, 25) {};
+	Wolf() : NormalMonster("Wolf", 100, 15, 20, 25) {};
 };
 
-class Slime : public NormalMonster 
+class Slime : public NormalMonster
 {
 public:
 	Slime() : NormalMonster("Slime", 100, 15, 20, 25) {};
 };
 
-class BossMonster : public BaseMonster 
+class BossMonster : public BaseMonster
 {
 protected:
 	vector<string> characterResponseList;
@@ -103,33 +102,35 @@ protected:
 
 public:
 	BossMonster(string n, int hp, int atk, int exp, int g) :
-		BaseMonster(n, hp, atk, exp, g) {}
+		BaseMonster(n, hp, atk, exp, g) {
+	}
 	int TakeAction() const override;
 };
 
-class GoblinRider : public BossMonster 
+class GoblinRider : public BossMonster
 {
 public:
 	GoblinRider() : BossMonster("GoblinRider", 500, 30, 50, 100) {}
 };
 
-class TwinHeadTroll : public BossMonster 
+class TwinHeadTroll : public BossMonster
 {
 public:
 	TwinHeadTroll() : BossMonster("TwinHeadTroll", 500, 30, 50, 100) {}
 };
 
-class Treant : public BossMonster 
+class Treant : public BossMonster
 {
 public:
 	Treant() : BossMonster("Treant", 500, 30, 50, 100) {}
 };
 
-class Dragon : public BossMonster 
+class Dragon : public BossMonster
 {
 protected:
 	void InitializeDropTable() override;
 
 public:
 	Dragon() : BossMonster("Dragon", 1000, 50, 777, 777) {}
+
 };

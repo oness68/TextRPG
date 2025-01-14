@@ -13,18 +13,12 @@
 
 class BattleManager
 {
-	struct monsterdata {
-		string name;
-		int HP;
-		int attackPower;
-		int experience;
-		int gold;
-		vector<pair<int, string>> dropTable;
-	};
-
+	
+	
 private:
 
-	monsterdata monster;
+	BaseMonster* monster;
+
 
 	static BattleManager* Battleinstance;
 
@@ -35,7 +29,7 @@ private:
 public:
 	static BattleManager* GetInstance();
 
-
+	void setMonster(BaseMonster* monster);
 	void BeginBattle(Character* player, int stage);
 	void CreateMonster(bool isNamde, int stage);
 	void readMonster(string _name, int hp, int _attackPower, int _experience, int _gold);
