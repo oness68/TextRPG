@@ -19,7 +19,6 @@ private:
 
 	BaseMonster* monster;
 
-
 	static BattleManager* Battleinstance;
 
 	BattleManager() = default;
@@ -27,12 +26,12 @@ private:
 	BattleManager(const BattleManager&) = delete;
 	BattleManager& operator=(const BattleManager&) = delete;
 public:
-	static BattleManager* GetInstance();
 
+	static BattleManager* GetInstance();
+	BaseMonster* getMonster() { return monster; }
 	void setMonster(BaseMonster* monster);
 	void BeginBattle(Character* player, int stage);
 	void CreateMonster(bool isNamde, int stage);
-	void readMonster(string _name, int hp, int _attackPower, int _experience, int _gold);
 };
 
 

@@ -16,7 +16,7 @@ public:
 	void StageOfDifficulty();
 	void NextTurn(bool& flag);
 	int Input(int min,int max);
-	void Fight(Character* Player, int stage);
+	virtual void Fight(Character* Player, int stage) = 0;
 	void PlayerAction(Character* Player);
 	void AttackSystem(Character* Player);
 	//void setTarget(NormalMonster monster) { this->monster = monster; }
@@ -24,6 +24,12 @@ public:
 	//void NextTrun(bool& turn);
 };
 
+
+
+class NormalBattle :public Battle
+{
+
+};
 
 
 //class NormalBattle :public Battle

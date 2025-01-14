@@ -25,23 +25,13 @@ void BattleManager::BeginBattle(Character* player, int stage)
 	
 	if (stage % 5 == 0)
 	{
-		if (stage == 20)
-		{
-			
-			CreateMonster(true, stage);
-
-		}
-		else
-		{
-			CreateMonster(true, stage);
+		CreateMonster(true, stage);
 
 
-		}
 	}
 	else
 	{
 		CreateMonster(false, stage);
-
 		/*NormalMonster monster = CreateNormalMonster();
 		NormalBattle B;*/
 		//B.setTarget(monster);
@@ -53,68 +43,71 @@ void BattleManager::BeginBattle(Character* player, int stage)
 
 void BattleManager::CreateMonster(bool isNamde,int stage)
 {
+	monster = nullptr;
 	int range;
-	if (isNamde)
+	if (stage < 20)
 	{
-		range = 3;
-
-
-		int random = rand() % range;
-		switch (random)
+		if (isNamde)
 		{
-		case 0:
+			range = 3;
 
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		default:
-			break;
+
+			int random = rand() % range;
+			switch (random)
+			{
+			case 0:
+				setMonster(new GoblinRider());
+				break;
+			case 1:
+				setMonster(new TwinHeadTroll());
+
+				break;
+			case 2:
+				setMonster(new Treant());
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			range = 5;
+
+			setMonster(new Goblin());
+			int random = rand() % range;
+			switch (random)
+			{
+			case 0:
+				setMonster(new Goblin());
+				break;
+			case 1:
+				setMonster(new Orc());
+				break;
+			case 2:
+				setMonster(new Troll());
+				break;
+			case 3:
+				setMonster(new Wolf());
+				break;
+			case 4:
+				setMonster(new Slime());
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	else
 	{
-		range = 5;
+		setMonster(new Dragon());
 
-		setMonster(new Goblin());
-		int random = rand() % range;
-		//switch (random)
-		//{
-		//case 0:
-		//	
-		//	readMonster(goblin.GetName(), goblin.GetHealth(), goblin.GetDamage(), goblin.GetExperience(), goblin.GetGold());
-		//	break;
-		//case 1:
-		//	readMonster(wolf.GetName(), wolf.GetHealth(), wolf.GetDamage(), wolf.GetExperience(), wolf.GetGold());
-
-		//	break;
-		//case 2:
-		//	readMonster(troll.GetName(), troll.GetHealth(), troll.GetDamage(), troll.GetExperience(), troll.GetGold());
-
-
-		//	break;
-		//case 3:
-		//	readMonster(slime.GetName(), slime.GetHealth(), slime.GetDamage(), slime.GetExperience(), slime.GetGold());
-
-		//	break;
-		//case 4:
-		//	readMonster(orc.GetName(), orc.GetHealth(), orc.GetDamage(), orc.GetExperience(), orc.GetGold());
-
-		//	break;
-		//default:
-		//	break;
-	//	}
 	}
+	
 
 	
 
 }
 
-void BattleManager::readMonster(string _name,int hp, int _attackPower,int _experience,int _gold)
-{
-	
-}
 
 
 
