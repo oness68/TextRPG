@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <random>
+
 using namespace std;
 
 class Monster 
