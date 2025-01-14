@@ -1,46 +1,57 @@
 #pragma once
 #include "Character.h"
 #include "Monster.h"
+#include"Character.h"
+#include<algorithm>
+
 
 class Battle
 {
-
+	bool endBattle = false;
+	bool myTurn = true;
+	
+	
 public:
-	virtual void Fight(Character* Player,NormalMonster* monster, int stage) = 0;
-	virtual void PlayerAction() = 0;
-	virtual void MonsterAction() = 0;
-	void NextTrun(bool& turn);
+
+	void StageOfDifficulty();
+	void NextTurn(bool& flag);
+	int Input(int min,int max);
+	void Fight(Character* Player, int stage);
+	void PlayerAction(Character* Player);
+	void AttackSystem(Character* Player);
+	//void setTarget(NormalMonster monster) { this->monster = monster; }
+	void MonsterAction();
+	//void NextTrun(bool& turn);
 };
 
 
 
-class NormalBattle :public Battle
-{
-	NormalMonster Data;
-	bool myTurn=true;
-	bool endBattle=false;
-public:
-	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-	void PlayerAction() override;
-	void MonsterAction() override;
-
-};
-
-class NamedBattle :public Battle
-{
-public:
-
-	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-	void PlayerAction() override;
-	void MonsterAction() override;
-};
-
-class BossBattle :public Battle
-{
-public:
-	void Fight(Character* Player, NormalMonster* monster, int stage) override;
-	void PlayerAction() override;
-	void MonsterAction() override;
-};
-
+//class NormalBattle :public Battle
+//{
+//	NormalMonster Data;
+//	
+//public:
+//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
+//	void PlayerAction() override;
+//	void MonsterAction() override;
+//	void StageOfDifficulty(int stage) override;
+//};
+//
+//class NamedBattle :public Battle
+//{
+//public:
+//
+//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
+//	void PlayerAction() override;
+//	void MonsterAction() override;
+//};
+//
+//class BossBattle :public Battle
+//{
+//public:
+//	void Fight(Character* Player, NormalMonster* monster, int stage) override;
+//	void PlayerAction() override;
+//	void MonsterAction() override;
+//};
+//
 

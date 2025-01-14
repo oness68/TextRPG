@@ -13,8 +13,8 @@ public:
 	shop() {};
 	~shop() {};
 	void DisplayItem()override;
-	void BuyItem(ItemInterface* item, int price) {};
-	void SellItem(ItemInterface* item, int price) {};
+	void BuyItem(ItemInterface* item, int price);
+	void SellItem(ItemInterface* item, int price);
 	void UseEnchancer();
 
 };

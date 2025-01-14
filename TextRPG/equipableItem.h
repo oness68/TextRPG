@@ -30,10 +30,8 @@ public:
 		return enchantLevel;
 	}
 
-	void EquipEffect(Character& player)
-	{
-		//사용 효과 구현 BaseStat을 캐릭터에게 적용
-	}
+	void EquipEffect(Character& player);
+	
 
 
 };

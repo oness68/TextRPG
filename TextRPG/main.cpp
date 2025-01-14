@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void main()
+int main()
 {
 	using GM = GameManger::GameManger;
 
@@ -38,7 +38,7 @@ void main()
 			break;
 		case 2:
 			logger->PrintGameOver(LogEnum::GameEnd);	//플레이어의 사망과 게임 재시작 여부 물어보는 출력문
-			return;
+			return 0;
 			break;
 		default:
 			logger->PrintInputError();	//잘못된 입력 안내 출력
@@ -48,12 +48,12 @@ void main()
 	//게임 실행 코드
 	while (isGameStart)
 	{
-		gameManager.BeginBattle(player, 1);
+		gameManager.BeginBattle(&player1, 1);
 
 		break;
 	}
 
 	//게임 실행이 끝났을 때
 	logger->PrintGameOver(LogEnum::GameEnd);
-	return;
+	return 0;
 }

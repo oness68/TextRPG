@@ -14,6 +14,7 @@ BattleManager* BattleManager::GetInstance()
 
 }
 
+
 void BattleManager::BeginBattle(Character* player, int stage)
 {
 	
@@ -22,8 +23,7 @@ void BattleManager::BeginBattle(Character* player, int stage)
 	{
 		if (stage == 20)
 		{
-			//BossBattle playBattle;
-			//playBattle.Fight(player, stage);
+			
 
 		}
 		else
@@ -36,42 +36,86 @@ void BattleManager::BeginBattle(Character* player, int stage)
 	else
 	{
 		
-		NormalMonster monster = CreateNormalMonster();
-		//NormalBattle n;
+		/*NormalMonster monster = CreateNormalMonster();
+		NormalBattle B;*/
+		//B.setTarget(monster);
+
 	}
 
 
 }
 
-NormalMonster BattleManager::CreateNormalMonster()
+void BattleManager::CreateMonster(bool isNamde,int stage)
 {
-	Goblin goblin;
-	Orc orc;
-	Troll troll;
-	Wolf wolf;
-	Slime slime;
-
-	int num = (rand() % 5)+1;
-	
-	switch (num)
+	int range;
+	if (isNamde)
 	{
-	case 1:
-		return goblin;
+		range = 3;
 
-	case 2:
-		return orc;
 
-	case 3:
-		return troll;
+		int random = rand() % range;
+		switch (random)
+		{
+		case 0:
 
-	case 4:
-		return wolf;
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		range = 5;
+		Goblin goblin;
+		/*Wolf wolf;
+		Troll troll;
+		Slime slime;
+		Orc orc;
+		int random = rand() % range;
+		switch (random)
+		{
+		case 0:
+			readMonster(goblin.GetName(), goblin.GetHealth(), goblin.GetDamage(), goblin.GetExperience(), goblin.GetGold());
+			break;
+		case 1:
+			readMonster(wolf.GetName(), wolf.GetHealth(), wolf.GetDamage(), wolf.GetExperience(), wolf.GetGold());
 
-	case 5:
-		return slime;
+			break;
+		case 2:
+			readMonster(troll.GetName(), troll.GetHealth(), troll.GetDamage(), troll.GetExperience(), troll.GetGold());
 
-	default:
-		return goblin;
+
+			break;
+		case 3:
+			readMonster(slime.GetName(), slime.GetHealth(), slime.GetDamage(), slime.GetExperience(), slime.GetGold());
+
+			break;
+		case 4:
+			readMonster(orc.GetName(), orc.GetHealth(), orc.GetDamage(), orc.GetExperience(), orc.GetGold());
+
+			break;
+		default:
+			break;
+		}*/
 	}
 
+	
+
 }
+
+void BattleManager::readMonster(string _name,int hp, int _attackPower,int _experience,int _gold)
+{
+	this->monster.name = _name;
+	this->monster.HP = hp;
+	this->monster.attackPower = _attackPower;
+	this->monster.experience = _experience;
+	this->monster.gold = _gold;
+}
+
+
+
+
