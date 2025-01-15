@@ -7,6 +7,7 @@
 //#include "Log.h"
 #include "Item.h"
 #include "EquipableItem.h"
+#include "ExceptionHandler.h"
 
 using namespace std;
 
