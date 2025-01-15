@@ -52,11 +52,36 @@ void Shop::BuyItem(Character& player)
 	//logger->PrintLog("===========구매 가능===========\n\n", false);
 
 	vector<string>menuItems = {};
+	vector<function<void()>> actions;
 	for (int i=0;i < shopInven.size();i++)
 	{
 		menuItems.push_back(format("{} - {} gold [{}]\n", shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType()));
+
+		actions.push_back([&]() {
+			player.BuyItem(shopInven[i]);
+			string logMessage = format("[{}]을(를) 구매했습니다!\n\n", shopInven[i]->GetName());
+			logger->PrintLog(logMessage, (int)EShop, true);
+			logger->PrintLog(format("남은 보유금 {} gold\n", player.GetGold()), false);
+
+			shopInven.erase(shopInven.begin() + (i));
+			});
 	}
 	menuItems.push_back("나가기");
+	Menu menuSystem(menuItems, actions);
+
+	// 메뉴 실행
+	while (true) {
+		menuSystem.DisplayMenu((int)EShop, true);
+		menuSystem.RunMenu((int)EShop, true);
+
+		if (menuSystem.GetSelectedIndex() == 3) {
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
+
+
 
 	/*for (int i = 0; i < shopInven.size(); i++)
 	{
@@ -75,18 +100,18 @@ void Shop::BuyItem(Character& player)
 	/*string logMessage = format("{}.나가기\n", shopInven.size() + 1);
 	logger->PrintLog(logMessage, false);*/
 
-	int choice;
-	cout << "선택 : ";
-	cin >> choice;
+	//int choice;
+	//cout << "선택 : ";
+	//cin >> choice;
 
-	if (choice == shopInven.size() + 1)
-	{
-		logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
-		Sleep(2000);
-		return;
-	}
+	//if (choice == shopInven.size() + 1)
+	//{
+	//	logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
+	//	Sleep(2000);
+	//	return;
+	//}
 
-	if (choice < 1 || choice>shopInven.size() + 1)
+	/*if (choice < 1 || choice>shopInven.size() + 1)
 	{
 		logger->PrintLog("잘못된 선택입니다.", (int)EShop, false);
 		Sleep(2000);
@@ -109,7 +134,7 @@ void Shop::BuyItem(Character& player)
 			logger->PrintLog("골드가 부족합니다.\n", false);
 		}
 		Sleep(2000);
-	}
+	}*/
 }
 
 void Shop::SellItem(Character& player)
