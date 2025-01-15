@@ -62,7 +62,7 @@ public:
 	
 	int GetPrice() { return this->price; }
 	double GetDepreciationRate() { return this->depreciationRate; }
-	int GetSellPrice() { return depreciationRate == 0 ? price : (int)(price / depreciationRate); }
+	int GetSellPrice() { return depreciationRate == 0 ? price : (int)(price * depreciationRate); }
 
 protected:
 	string name = "";

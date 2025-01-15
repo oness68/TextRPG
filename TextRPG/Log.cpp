@@ -1,9 +1,9 @@
 ﻿#include "Log.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
+ 
 Log* Log::instance = nullptr;
-
+ 
 Log* Log::GetInstance()
 {
 	if (instance == nullptr)
@@ -71,6 +71,12 @@ int Log::GetClosestColorIndex(int r, int g, int b) {
 		}
 	}
 	return closestIndex;
+}
+
+void Log::SetCursorPosition(int x, int y)
+{
+	COORD pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 //모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)

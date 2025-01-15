@@ -28,14 +28,14 @@ EquipableItem* Enchancer::EnchanceItem(EquipableItem* item)
 		return item;
 	}
 }
-vector<Item*> Enchancer::GetEnchanceableItems(map<Item*, int>& inventory)
+vector<Item*> Enchancer::GetEnchanceableItems(map<string, class Inventory>& inventory)
 {
 	vector<Item*> equipableItems;
 	for (auto& item : inventory)
 	{
-		if (item.first->GetType() == ItemType::Equipable)
+		if (item.second.item->GetType() == ItemType::Equipable)
 		{
-			equipableItems.push_back(item.first);
+			equipableItems.push_back(item.second.item);
 		}
 	}
 	return equipableItems;

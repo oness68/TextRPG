@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AllItem.cpp" />
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -142,9 +141,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseEquipableItem.h" />
     <ClInclude Include="Battle.h" />
     <ClInclude Include="BattleManager.h" />
     <ClInclude Include="Character.h" />
@@ -153,13 +152,19 @@
     <ClInclude Include="EnumCollection.h" />
     <ClInclude Include="EquipableItem.h" />
     <ClInclude Include="EquipableItemDecorator.h" />
-    <ClInclude Include="ExceptionHandler.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Shop.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project_T.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StagePlot.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
