@@ -39,10 +39,12 @@ public:
 	int GetCurrentHP();
 	int GetMaxHP();
 	const int& GetAttackPower();
+	int GetRequiredLevelUpExp();
 
 	void SetCurrentHP(int hp);
 	void SetMaxHP(int hp);
 	void SetAttackPower(int attackPower);
+	void SetRequiredLevelUpExp(int requiredLevelUpExp);
 
 	void TakeDamage(const int& damage);
 	void TakeExp(const int& exp);

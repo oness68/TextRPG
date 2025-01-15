@@ -101,37 +101,117 @@ namespace GameManger {
     // 버프룸 방문 함수
     void GameManger::VisitBuffRoom(Character* player)
     {
-        // TODO: 구현 필요
-        Log* logger = Log::GetInstance();
-        std::random_device random;
-        std::mt19937 generator(random());
+        //auto buffRoom = GenerateRandomRoom(buffRoomProbabilities);  //랜덤으로 방 생성
 
-        auto buffRoom = GenerateRandomRoom(buffRoomProbabilities);
-        cout << endl << BuffRoomToString(buffRoom);
+        //cout << endl << BuffRoomToString(buffRoom); //무슨 방인지 확인용입니다.(개발용)
 
-        std::uniform_int_distribution<int> distribution(1, 6);
-        //int diceResult = distribution(generator);
-        for(int i=0; i<20; i++)
-            cout << distribution(generator) << endl;
-        switch (buffRoom)
-        {
-        case Dice:
-            
-            break;
-        case Number:
-            break;
-        case Rand:
-            break;
-        case Game:
-            break;
-        default:
-            break;
-        }
+        BuffDice(player);
+        //switch (buffRoom)
+        //{
+        //case Dice:
+        //    BuffDice(player);
+        //    break;
+        //case Number:
+        //    //BuffNumber();
+        //    break;
+        //case Rand:
+        //    //BuffRand();
+        //    break;
+        //case Game:
+        //    //BuffGame();
+        //    break;
+        //default:
+        //    break;
+        //}
         /*for (size_t i = 0; i < buffRooms.size(); ++i) {
             std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
         }*/
     }
 
+    void GameManger::BuffDice(Character* player)
+    {
+        //1 : 깎인 체력의 절반 회복
+        //2 : 공격력 5 증가
+        //3 : 골드 1000 획득
+        //4 : 현재 체력의 5분의 1만큼 체력 감소
+        //5 : 공격력 5 감소
+        //6 : 골드 1000 획득
+        Log* logger = Log::GetInstance();
+        std::random_device random;
+        std::mt19937 generator(random());
+        int diceResult;
+        int currentHP = player->GetCurrentHP()-60;
+        int maxHP = player->GetMaxHP();
+
+        int healAmount = (maxHP - currentHP) / 2;
+        int damage = (currentHP) / 5;         
+        int goldTake = 1000;
+
+        string diceLog = "랜덤 주사위 방에 도착했습니다.(1~3 : 이로운 효과, 4~6 : 해로운 효과)";
+        diceLog += "\n당신의 운을 시험해보세요.";
+        logger->PrintLog(diceLog, EBuff);
+        
+        std::uniform_int_distribution<int> distribution(1, 6);  //랜덤 주사위 값
+        diceResult = distribution(generator);
+
+        diceLog += "\n주사위 값 : " + to_string(diceResult) + "\n";
+        switch (diceResult)
+        {
+        case 1:
+            diceLog += "플레이어의 체력을 깎인 체력의 반 만큼 회복합니다.\n";
+            if (currentHP == maxHP)
+            {
+                diceLog += "이미 플레이어의 체력이 최대입니다.\n";
+                Sleep(4000);
+                logger->PrintLog(diceLog, EBuff);
+                break;
+            }
+            else
+            {
+                diceLog += "깎인 체력을 반(" + to_string(healAmount) + ") 회복했습니다.\n";
+                Sleep(4000);
+                logger->PrintLog(diceLog, EBuff);
+            }
+            break;
+        case 2:
+            player->SetAttackPower(player->GetAttackPower() + 5);
+            diceLog += "플레이어의 공격력이 5만큼 상승합니다.";
+            diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
+            Sleep(4000);
+            logger->PrintLog(diceLog, EBuff);
+            break;
+        case 3:
+            player->TakeGold(goldTake);
+            diceLog += to_string(goldTake) + "gold를 획득했습니다!\n";
+            Sleep(4000);
+            logger->PrintLog(diceLog, EBuff);
+            break;
+        case 4:
+            player->SetCurrentHP(currentHP - damage);   //현재 체력의 5분의 1만큼 체력 감소
+            diceLog += "현재 체력의 5분의 1만큼 체력이 감소합니다.\n";
+            diceLog +="\n현재 체력 : " + to_string(player->GetCurrentHP()) + "\n";
+            Sleep(4000);
+            logger->PrintLog(diceLog, EDeBuff);
+            break;
+        case 5:
+            player->SetAttackPower(player->GetAttackPower() - 5);
+            diceLog += "플레이어의 공격력이 5만큼 감소합니다.\n";
+            diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
+            Sleep(4000);
+            logger->PrintLog(diceLog, EDeBuff);
+            break;
+        case 6:
+            player->TakeGold(goldTake * -1);
+            diceLog += to_string(goldTake) + "gold를 잃었습니다!\n";
+            Sleep(4000);
+            logger->PrintLog(diceLog, EDeBuff);
+            break;
+        default:
+            cout << "주사위 값 범위 이탈 에러 발생\n";  //예외처리 프로그램 종료
+            exit(1);
+            break;
+        }
+    }
     // 현재 스테이지 반환 함수
     int GameManger::GetCurrentStage() 
     {

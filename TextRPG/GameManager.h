@@ -96,6 +96,7 @@ namespace GameManger {
 			default: return "Unknown";
 			}
 		};
+		void BuffDice(Character* player);
 	};
 
 } // namespace GameManger
