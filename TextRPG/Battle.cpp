@@ -185,7 +185,7 @@ void Battle::LootAction(Character* Player)
 	Player->TakeExp(battleMonster->GetExperience());
 	Player->TakeGold(battleMonster->GetGold());
 	string item = battleMonster->GetRandomItem();
-	Player->TakeItem()
+	//Player->TakeItem()
 	//battleMonster.
 }
 
