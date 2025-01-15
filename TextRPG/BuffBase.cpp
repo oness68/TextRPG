@@ -3,13 +3,18 @@
 
 BuffBase::BuffBase(BuffStat stat, int duration)
 {
-	buffStat = buffStat;
-	duration = duration;
+	this->buffStat = stat;
+	this->duration = duration;
 }
 
 BuffType BuffBase::GetBuffType()
 {
 	return this->buffType;
+}
+
+BuffStat BuffBase::GetBuffStat()
+{
+	return this->buffStat;
 }
 
 

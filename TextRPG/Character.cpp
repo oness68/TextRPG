@@ -14,7 +14,8 @@ Character::Character(const string& name)
 	this->name = name;
 	DisplayStatus();
 	InitEquipMentItem();
-	DisplayStatus();
+	//DisplayStatus();
+
 	//cout << "캐릭터 " << name << " 생성 완료!";
 	//cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
 }
@@ -24,13 +25,30 @@ void Character::InitEquipMentItem()
 	Item* startItem = ItemFactory::GetInstance().GenerateItem("모험가의장검");
 	TakeItem(startItem);
 	EquipItem(dynamic_cast<EquipableItem*>(startItem));
+	DisplayStatus();
+
+	//Item* archiveItem = ItemFactory::GetInstance().GenerateItem("고블린족장의유물");
+	//TakeItem(archiveItem);
+	//DisplayStatus();
+
+	//Item* trollsBlood = ItemFactory::GetInstance().GenerateItem("트롤의심장");
+	//TakeItem(trollsBlood);
+	//DisplayStatus();
+
+	//Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("LowAttackPotion");
+	//Item* middleAttackBooster = ItemFactory::GetInstance().GenerateItem("MiddleAttackPotion");
+
+	//TakeItem(lowAttackBooster);
+	//TakeItem(middleAttackBooster);
+
+	//UseItem("LowAttackPotion");
 }
 
 Character::~Character() {}
 
 void Character::DisplayStatus()
 {
-	Log::GetInstance() -> PrintLog(GetCharacterStatusString(), false);
+	Log::GetInstance()->PrintLog(GetCharacterStatusString(), false);
 }
 
 const string Character::GetCharacterStatusString()
@@ -50,10 +68,9 @@ const string Character::GetCharacterStatusString()
 
 const int& Character::GetCurrentHP() { return this->currentHP; }
 const int& Character::GetMaxHP()
-{ 
-	//int calculateMaxHP = this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
+{
 	int calculateMaxHP = this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
-	return calculateMaxHP;//this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
+	return calculateMaxHP;
 }
 
 const int& Character::GetAttackPower()
@@ -74,13 +91,22 @@ void Character::SetCurrentHP(int hp)
 		this->currentHP = hp;
 	}
 }
-void Character::SetMaxHP(int hp) { this->maxHP = hp; }
+void Character::SetMaxHP(int hp)
+{
+	this->maxHP = hp;
+}
 void Character::AddMaxHP(int amount)
 {
 	this->maxHP += amount;
 }
-void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
-void Character::SetRequiredLevelUpExp(int requiredLevelUpExp) { this->requiredLevelUpExp = requiredLevelUpExp; }
+void Character::SetAttackPower(int attackPower)
+{
+	this->attackPower = attackPower;
+}
+void Character::AddAttackPower(int amount)
+{
+	this->attackPower += amount;
+}
 
 void Character::TakeDamage(const int& damage)
 {
@@ -143,7 +169,7 @@ void Character::DisplayInventory()
 {
 	//Log* logger = Log::GetInstance();
 	//Log::GetInstance()->PrintLog("The shop is out of items!\n", (int)EShop, false);
-	
+
 	//cout << "======= 인벤토리 목록 =======" << endl;
 	int index = 1;
 	for (auto item : inventory)
@@ -151,7 +177,7 @@ void Character::DisplayInventory()
 		cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
 		index++;
 	}
-	
+
 }
 
 const int& Character::GetGold() { return this->gold; }
@@ -166,6 +192,7 @@ void Character::TakeItem(Item* item)
 		if (inventory[itemName].itemType == ItemType::Archive)
 		{
 			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
+			Log::GetInstance()->PrintLog("Archive 아이템이 추가됐습니다.\n", false);
 		}
 
 		//cout << format("신규 아이템이 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
@@ -249,12 +276,40 @@ void Character::ReduceInventory(const string& itemKey)
 
 void Character::TurnEnd()
 {
-
+	TryRemoveBuff();
 }
 
 void Character::TryAddBuff(BuffBase& buffBase)
 {
-	buffContainer.push_back(buffBase);
+	// Log::GetInstance()->PrintLog(format("Buff가 발동했습니다! 지속시간 : {}\n", buffBase.duration), false);
+	if (buffBase.duration == 0)
+	{
+		// Log::GetInstance()->PrintLog(format("Buff가 아무런 도움이 되지 않습니다.\n"), false);
+	}
+	else
+	{
+		buffContainer.push_back(buffBase);
+		buffStat += buffBase.buffStat;
+
+		string temp = format("Buff 효과 발동!!\n");
+		if (buffBase.buffStat.attackPower != 0)
+		{
+			temp += format("Attack Power Up!! : {}\n", buffBase.buffStat.attackPower);
+		}
+
+		if (buffBase.buffStat.armor != 0)
+		{
+			temp += format("Armor Up!! : {}\n", buffBase.buffStat.armor);
+		}
+
+		if (buffBase.buffStat.maxHP != 0)
+		{
+			temp += format("Max HP Up!! : {}\n", buffBase.buffStat.maxHP);
+		}
+
+		// Log::GetInstance()->PrintLog(temp, false);
+		DisplayStatus();
+	}
 }
 
 void Character::TryRemoveBuff()
@@ -266,6 +321,9 @@ void Character::TryRemoveBuff()
 		{
 			auto removedBuff = *it;
 			buffStat -= removedBuff.buffStat;
+
+			Log::GetInstance()->PrintLog(format("Buff의 지속시간이 끝났습니다!\n"), false);
+			DisplayStatus();
 
 			it = buffContainer.erase(it);
 		}
@@ -303,6 +361,7 @@ void Character::EquipItem(EquipableItem* equipableItem)
 		equipItemContainer[equipableItem->GetType()] = equipableItem;
 		equipmentBuffStat += equipableItem->GetBuffStat();
 		equipableItem->SetEquipping(true);
+		Log::GetInstance()->PrintLog("장비아이템이 장착됐습니다!\n", false);
 	}
 }
 

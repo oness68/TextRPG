@@ -67,6 +67,7 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 		if (myTurn)
 		{
 			PlayerAction(Player);
+			Player->TurnEnd();
 			Sleep(2000);
 
 			//플레이어턴

@@ -11,6 +11,7 @@ enum class EffectType
 	Unknown,
 	HealCurrentHP,
 	IncreaseMaxHP,
+	IncreaseAttackPower,
 	DamageUp
 };
 
@@ -19,6 +20,7 @@ class ConsumableItem : public Item
 public:
 	ConsumableItem();
 	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue);
+	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration);
 	virtual ~ConsumableItem();
 
 	EffectType GetEffectType();
@@ -28,39 +30,8 @@ public:
 
 protected:
 	EffectType effectType = EffectType::Unknown;
-	int effectValue;
+	int effectValue = 0;
+	int duration = 0;
 };
-
-class AttackBoost : public ConsumableItem
-{
-public:
-	AttackBoost(string name, int price, Rarity rarity, int effectValue);
-	virtual ~AttackBoost();
-
-	virtual void Use(Character* character);
-private:
-	int duration;
-};
-
-//class HealPotion : public ConsumableItem
-//{
-//public:
-//	HealPotion(string name, int price, Rarity rarity, int effectValue);
-//	virtual ~HealPotion();
-//
-//	void Use(Character* character);
-//private:
-//};
-//
-//class Elixir : public ConsumableItem
-//{
-//public:
-//	Elixir(string name, int price, enum Rarity rarity, int effectValue);
-//	virtual ~Elixir();
-//
-//	void Use(Character* character);
-//private:
-//};
-
 
 #endif // !CONSUMABLE_ITEM_H_
