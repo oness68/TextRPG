@@ -9,7 +9,7 @@ using namespace std;
 
 int main() 
 {
-	// SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
+	SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
 
 	// 스테이지 로드
 
