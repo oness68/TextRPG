@@ -80,7 +80,7 @@ void Log::Initialize()
 	COORD bufferSize;
 	bufferSize.X = bufferWidth;
 	bufferSize.Y = bufferHeight;
-	cout << bufferSize.X << ", " << bufferSize.Y << endl;
+	//cout << bufferSize.X << ", " << bufferSize.Y << endl;
 	SetConsoleScreenBufferSize(consoleHandle, bufferSize);
 	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//내부의 크기 조절
 	SetConsoleWindowInfo(consoleHandle, true, &windowSize);
@@ -167,13 +167,15 @@ void Log::PrintImage(vector<string>& data)
 
 void Log::PrintLog(string orderLog)
 {
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
+	system("cls");
+	this->SetLog(orderLog);
 	cout << this->log;
 }
 
 void Log::PrintLog(string orderLog, int caseNumber)
 {
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
+	system("cls");
+	this->SetLog(orderLog);
 
 	switch (caseNumber)
 	{
@@ -215,6 +217,7 @@ void Log::PrintLog(string orderLog, int caseNumber)
 //미구현
 void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
 {
+	system("cls");
 	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
 
 	/*switch (caseNumber1)
