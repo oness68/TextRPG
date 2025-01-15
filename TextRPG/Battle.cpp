@@ -1,4 +1,4 @@
-#include "Battle.h"
+ï»¿#include "Battle.h"
 //Common
 
 
@@ -41,40 +41,40 @@ int Battle::Input(int min,int max)
 	if (min > input || max < input)
 	{
 		input = 0;
-		logger->PrintLog("ÀÔ·Â ¹üÀ§ ¿À·ù ´Ù½Ã ¼±ÅÃÇÏ¼¼¿ä.\n", false);
+		logger->PrintLog("ì…ë ¥ ë²”ìœ„ ì˜¤ë¥˜ ë‹¤ì‹œ ì„ íƒí•˜ì„¸ìš”.\n", false);
 
 	}
 
 	return input;
 }
-void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // ÀüÅõ
+void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // ì „íˆ¬
 {
 	Log* logger = Log::GetInstance();
 	BattleManager* BM = BattleManager::GetInstance();
 	this->battleMonster = monster;
 	StageOfDifficulty(stage);
 	saveCharacterState(Player);
-	logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ) µîÀåÇß´Ù!\n", BM->getMonsterImage(), false);
+	logger->PrintLog(battleMonster->GetName() + "ê°€(ì´) ë“±ì¥í–ˆë‹¤!\n", BM->getMonsterImage(), false);
 	Sleep(1000);
 	while (!endBattle)
 	{
 		//logger->PrintLog();
 		logger->PrintLog("", BM->getMonsterImage(), true);
-		logger->PrintLog("ÇÃ·¹ÀÌ¾î Ã¼·Â :" + to_string(Player->GetCurrentHP()) + " : " + to_string(Player->GetMaxHP()) + " ÇÃ·¹ÀÌ¾î °ø°İ·Â : " + to_string(Player->GetAttackPower())+"\n",false);
-		logger->PrintLog(battleMonster->GetName() + " Ã¼·Â : " + to_string(battleMonster->GetHealth()) + " °ø°İ·Â : " + to_string(battleMonster->GetDamage())+"\n",false);
+		logger->PrintLog("í”Œë ˆì´ì–´ ì²´ë ¥ :" + to_string(Player->GetCurrentHP()) + " : " + to_string(Player->GetMaxHP()) + " í”Œë ˆì´ì–´ ê³µê²©ë ¥ : " + to_string(Player->GetAttackPower())+"\n",false);
+		logger->PrintLog(battleMonster->GetName() + " ì²´ë ¥ : " + to_string(battleMonster->GetHealth()) + " ê³µê²©ë ¥ : " + to_string(battleMonster->GetDamage())+"\n",false);
 		if (myTurn)
 		{
 			PlayerAction(Player);
 			Sleep(2000);
 
-			//ÇÃ·¹ÀÌ¾îÅÏ
+			//í”Œë ˆì´ì–´í„´
 		}
 		else
 		{
 			Sleep(1500);
 
 			MonsterAction(Player);
-			//¸ó½ºÅÍ ÅÏ
+			//ëª¬ìŠ¤í„° í„´
 			Sleep(2500);
 		}
 
@@ -98,7 +98,7 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // ÀüÅõ
 void Battle::PlayerAction(Character* Player)
 {
 	Log* logger = Log::GetInstance();
-	logger->PrintLog("¹«¾ùÀ» ÇØ¾ßÇÒ±î?\n1.°ø°İ\t2.¾ÆÀÌÅÛ»ç¿ë\n",false);
+	logger->PrintLog("ë¬´ì—‡ì„ í•´ì•¼í• ê¹Œ?\n1.ê³µê²©\t2.ì•„ì´í…œì‚¬ìš©\n",false);
 	int choice = Input(1, 2);
 	switch (choice)
 	{
@@ -106,8 +106,8 @@ void Battle::PlayerAction(Character* Player)
 		AttackSystem(Player);
 		break;
 	case 2:
-		logger->PrintLog("¾ÆÀÌÅÛ»ç¿ë!\n",false);
-		//¾ÆÀÌÅÛ
+		logger->PrintLog("ì•„ì´í…œì‚¬ìš©!\n",false);
+		//ì•„ì´í…œ
 		break;
 	default:
 		break;
@@ -119,14 +119,14 @@ void Battle::MonsterAction(Character* Player)
 	Log* logger = Log::GetInstance();
 	
 	
-	//logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ) °ø°İÇß´Ù!\n",false);
+	//logger->PrintLog(battleMonster->GetName() + "ê°€(ì´) ê³µê²©í–ˆë‹¤!\n",false);
 
 	state = (MonsterState)battleMonster->TakeAction();
 	switch (state)
 	{
 	case Enums::EAttack:
 		Player->TakeDamage(battleMonster->GetDamage());
-		logger->PrintLog("ÇÃ·¹ÀÌ¾î°¡ " + to_string(battleMonster->GetDamage()) + "ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú´Ù.\n", false);
+		logger->PrintLog("í”Œë ˆì´ì–´ê°€ " + to_string(battleMonster->GetDamage()) + "ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤.\n", false);
 
 		break;
 	case Enums::EDefence:
@@ -146,7 +146,7 @@ void Battle::MonsterAction(Character* Player)
 
 }
 
-void Battle::MonsterSkill(Character* Player) // Æ¯¼öÆĞÅÏ
+void Battle::MonsterSkill(Character* Player) // íŠ¹ìˆ˜íŒ¨í„´
 {
 	Log* logger = Log::GetInstance();
 	int choice = Input(1, 3);
@@ -159,21 +159,21 @@ void Battle::MonsterSkill(Character* Player) // Æ¯¼öÆĞÅÏ
 	if (result==1)
 	{
 		battleMonster->TakeDamage(Player->GetAttackPower() * 3);
-		logger->PrintLog("ÁÁÀº ¼±ÅÃÀÌ¾ú´Ù!\n", false);
-		logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ)" + to_string(Player->GetAttackPower() * 3) + "ÀÇ Ä¡¸íÀûÀÎ ÇÇÇØ¸¦ ÀÔ¾ú´Ù!\n", false);
+		logger->PrintLog("ì¢‹ì€ ì„ íƒì´ì—ˆë‹¤!\n", false);
+		logger->PrintLog(battleMonster->GetName() + "ê°€(ì´)" + to_string(Player->GetAttackPower() * 3) + "ì˜ ì¹˜ëª…ì ì¸ í”¼í•´ë¥¼ ì…ì—ˆë‹¤!\n", false);
 
 	}
 	else if (result == 2)
 	{
-		logger->PrintLog("³ª»ÚÁö ¾ÊÀº ¼±ÅÃÀÌ¾ú´Ù!\n", false);
-		logger->PrintLog(battleMonster->GetName() + " ¿¡°Ô ÇÇÇØ¸¦ ÀÔÁö ¾Ê¾Ò´Ù.\n", false);
+		logger->PrintLog("ë‚˜ì˜ì§€ ì•Šì€ ì„ íƒì´ì—ˆë‹¤!\n", false);
+		logger->PrintLog(battleMonster->GetName() + " ì—ê²Œ í”¼í•´ë¥¼ ì…ì§€ ì•Šì•˜ë‹¤.\n", false);
 
 	}
 	else
 	{
 		Player->TakeDamage(battleMonster->GetDamage()*2);
-		logger->PrintLog("³ª»Û ¼±ÅÃÀÌ¾ú´Ù.\n", false);
-		logger->PrintLog("ÇÃ·¹ÀÌ¾î°¡ " +battleMonster->GetName()+" "+ to_string(battleMonster->GetDamage()*2) + "ÀÇ Ä¡¸íÀûÀÎ ÇÇÇØ¸¦ ÀÔ¾ú´Ù.\n", false);
+		logger->PrintLog("ë‚˜ìœ ì„ íƒì´ì—ˆë‹¤.\n", false);
+		logger->PrintLog("í”Œë ˆì´ì–´ê°€ " +battleMonster->GetName()+" "+ to_string(battleMonster->GetDamage()*2) + "ì˜ ì¹˜ëª…ì ì¸ í”¼í•´ë¥¼ ì…ì—ˆë‹¤.\n", false);
 
 	}
 
@@ -209,7 +209,7 @@ bool Battle::RandomSuccess(int probability)
 void Battle::AttackSystem(Character* Player)
 {
 	Log* logger = Log::GetInstance();
-	logger->PrintLog("¾î´À°÷À» °ø°İÇÒ±î?\n1.¸Ó¸®(40%)\t2.¸öÅë(80%)\n",false);
+	logger->PrintLog("ì–´ëŠê³³ì„ ê³µê²©í• ê¹Œ?\n1.ë¨¸ë¦¬(40%)\t2.ëª¸í†µ(80%)\n",false);
 	bool flag = false;
 	bool isHit;
 	while (!flag)
@@ -222,13 +222,13 @@ void Battle::AttackSystem(Character* Player)
 			if (isHit)
 			{
 				battleMonster->TakeDamage(Player->GetAttackPower() * 2);
-				logger->PrintLog("¸Ó¸® °ø°İÀÌ ¼º°øÇß´Ù!\n",false);
-				logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ)"+ to_string(Player->GetAttackPower() * 2)+"ÀÇ Ä¡¸íÀûÀÎ ÇÇÇØ¸¦ ÀÔ¾ú´Ù!\n",false);
+				logger->PrintLog("ë¨¸ë¦¬ ê³µê²©ì´ ì„±ê³µí–ˆë‹¤!\n",false);
+				logger->PrintLog(battleMonster->GetName() + "ê°€(ì´)"+ to_string(Player->GetAttackPower() * 2)+"ì˜ ì¹˜ëª…ì ì¸ í”¼í•´ë¥¼ ì…ì—ˆë‹¤!\n",false);
 			}
 			else
 			{
-				logger->PrintLog("°ø°İÀÌ ºø³ª°¬´Ù.\n",false);
-				logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ) ÇÇÇØ¸¦ ÀÔÁö ¾Ê¾Ò´Ù.\n",false);
+				logger->PrintLog("ê³µê²©ì´ ë¹—ë‚˜ê°”ë‹¤.\n",false);
+				logger->PrintLog(battleMonster->GetName() + "ê°€(ì´) í”¼í•´ë¥¼ ì…ì§€ ì•Šì•˜ë‹¤.\n",false);
 			}
 			
 			flag = true;
@@ -239,13 +239,13 @@ void Battle::AttackSystem(Character* Player)
 			if (isHit)
 			{
 				battleMonster->TakeDamage(Player->GetAttackPower() * 2);
-				logger->PrintLog("°ø°İÀÌ ¼º°øÇß´Ù!\n",false);
-				logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ)" + to_string(Player->GetAttackPower()) + "ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú´Ù!\n",false);
+				logger->PrintLog("ê³µê²©ì´ ì„±ê³µí–ˆë‹¤!\n",false);
+				logger->PrintLog(battleMonster->GetName() + "ê°€(ì´)" + to_string(Player->GetAttackPower()) + "ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤!\n",false);
 			}
 			else
 			{
-				logger->PrintLog("°ø°İÀÌ ºø³ª°¬´Ù.\n",false);
-				logger->PrintLog(battleMonster->GetName() + "°¡(ÀÌ) ÇÇÇØ¸¦ ÀÔÁö ¾Ê¾Ò´Ù.\n",false);
+				logger->PrintLog("ê³µê²©ì´ ë¹—ë‚˜ê°”ë‹¤.\n",false);
+				logger->PrintLog(battleMonster->GetName() + "ê°€(ì´) í”¼í•´ë¥¼ ì…ì§€ ì•Šì•˜ë‹¤.\n",false);
 			}
 			flag = true;
 			//log
@@ -269,16 +269,16 @@ void Battle::isEndBattle(Character* Player)
 
 	if (endBattle)
 	{
-		if (Player->GetCurrentHP() > 0)//½Â¸®
+		if (Player->GetCurrentHP() > 0)//ìŠ¹ë¦¬
 		{
-			logger->PrintLog("ÀüÅõ¿¡¼­ ½Â¸®Çß´Ù!\n", false);
+			logger->PrintLog("ì „íˆ¬ì—ì„œ ìŠ¹ë¦¬í–ˆë‹¤!\n", false);
 			isWin = true;
 			Sleep(2000);
 
 		}
-		else //ÆĞ¹è
+		else //íŒ¨ë°°
 		{
-			logger->PrintLog("ÇÃ·¹ÀÌ¾î »ç¸Á.\n",false);
+			logger->PrintLog("í”Œë ˆì´ì–´ ì‚¬ë§.\n",false);
 			isWin = false;
 			Player = nullptr;
 			Sleep(2000);
