@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "GameManager.h"
 #include "Log.h"
@@ -11,19 +12,34 @@ int main()
 {
 	//SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
 
-	// 스테이지 로드
-
 	using GM = GameManger::GameManger;
-
 	GM& gameManager = GM::GetInstance();
 
 	Log* logger = Log::GetInstance();
 	logger->Initialize();
-	Character player1 = *new Character("정의된 용사");
+	
+	// Debug
+	// Character player1 = *new Character("정의된 용사");
 
 	int menuOption;
 	bool isGameRun = false;		//게임의 실행여부
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함
+	string characterName;
+
+	while (true) {
+		logger->PrintLog("... 당신은 누구입니까?\n");
+		getline(cin, characterName);
+
+		if (characterName.length() >= 0 && characterName.length() <= 10) {
+			logger->PrintLog("너의 이름은? " + characterName + "\n");
+			break;
+		}
+		else {
+			logger->PrintLog("말도 안되는 이름입니다.\n");
+		}
+	}
+
+	Character player1 = *new Character(characterName);
 
 	// 1. 게임시작, 2. 종료
 	while (!isGameStart)
@@ -36,8 +52,6 @@ int main()
 			isGameStart = true;	//시작화면 루프 벗어나기 위함
 			isGameRun = true;	//게임 시작
 			logger->PrintStartMenu(EStart);
-
-			//TODO: 케릭터 이름 입력받는 부분 필요
 
 			gameManager.BeginPlay(&player1);
 			break;

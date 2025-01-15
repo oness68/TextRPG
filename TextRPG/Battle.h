@@ -5,7 +5,10 @@
 #include<algorithm>
 #include"EnumCollection.h"
 #include"BattleManager.h"
-
+#include<format>
+#include"consumableItem.h"
+#include"ItemFactory.h"
+#include"Item.h"
 class Battle
 {
 	struct saveStatus {
@@ -20,7 +23,7 @@ class Battle
 	bool myTurn = true;
 	bool isWin = false;
 	BaseMonster* battleMonster;
-	
+	bool nextTurn;
 public:
 	
 	void restoreCharacterState(Character* player);
@@ -36,6 +39,7 @@ public:
 	void LootAction(Character* Player);
 	bool RandomSuccess(int probability);
 	void MonsterSkill(Character* Player);
+	void UseItem(Character* Player);
 };
 
 

@@ -93,22 +93,24 @@ void BaseMonster::TakeDamage(int damage)
 
 void NormalMonster::InitializeDropTable()
 {
-	dropTable.push_back({ 50,"Portion" });
-	dropTable.push_back({ 50,"Rare Sword" });
+	dropTable.push_back({ 70,"LowHPPotion" });
+	dropTable.push_back({ 20,"MiddleHPPotion" });
+	dropTable.push_back({ 10,"모험가의장검" });
 }
 
 void BossMonster::InitializeDropTable()
 {
-	dropTable.push_back({ 50,"Epic Sword" });
-	dropTable.push_back({ 50,"Elixir" });
+
+	dropTable.push_back({ 50,"LowHPPotion Sword" });
+	dropTable.push_back({ 50,"MiddleHPPotion" });
 }
 
 void Dragon::InitializeDropTable()
 {
-	dropTable.push_back({ 10,"Dragon Sword" });
-	dropTable.push_back({ 10,"Dragon Heart" });
-	dropTable.push_back({ 40,"Dragon Bone" });
-	dropTable.push_back({ 40,"Dragon Skin" });
+	dropTable.push_back({ 10,"LowHPPotion" });
+	dropTable.push_back({ 10,"MiddleHPPotion" });
+	dropTable.push_back({ 40,"HightHPPotion" });
+	dropTable.push_back({ 40,"HightHPPotion" });
 }
 
 int NormalMonster::TakeAction() const

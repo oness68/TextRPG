@@ -48,7 +48,17 @@ const int& Character::GetAttackPower()
 }
 int Character::GetRequiredLevelUpExp() { return this->requiredLevelUpExp; }
 
-void Character::SetCurrentHP(int hp) { this->currentHP = hp; }
+void Character::SetCurrentHP(int hp)
+{
+	if (hp > maxHP)
+	{
+		this->currentHP = maxHP;
+	}
+	else
+	{
+		this->currentHP = hp;
+	}
+}
 void Character::SetMaxHP(int hp) { this->maxHP = hp; }
 void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
 void Character::SetRequiredLevelUpExp(int requiredLevelUpExp) { this->requiredLevelUpExp = requiredLevelUpExp; }
