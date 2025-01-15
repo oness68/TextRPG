@@ -447,7 +447,7 @@ void Character::TryAddBuff(BuffBase& buffBase)
 		buffStat += buffBase.buffStat;
 	
 		string temp = format("************* 디/버프 효과 발동 ****************");
-		DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
+		DisplayStatus(temp, buffStat.maxHP, buffBase.buffStat.attackPower);
 	}
 }
 
