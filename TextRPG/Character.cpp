@@ -80,6 +80,7 @@ void Character::AddMaxHP(int amount)
 	this->maxHP += amount;
 }
 void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
+void Character::SetRequiredLevelUpExp(int requiredLevelUpExp) { this->requiredLevelUpExp = requiredLevelUpExp; }
 
 void Character::TakeDamage(const int& damage)
 {

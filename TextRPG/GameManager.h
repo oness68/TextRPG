@@ -110,7 +110,7 @@ namespace GameManger {
 		void BuffDice(Character* player);
 		void BuffNumber(Character* player);
 		void BuffRand(Character* player);
-		void BuffGame(Character* player);
+		void BuffCoinToss(Character* player);
 
 		void BeginPlay(Character* player);
 		

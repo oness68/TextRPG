@@ -161,13 +161,12 @@ void Log::PrintImage(vector<string>& data)
 	{
 		for (int j = 0; j < data.size(); j++)	//IMAGE_SIDE_LENGTH 32
 		{
-			int colorIndex = this->CharToIndex(data[i][j]);		//알파벳을 인덱스로 변환
+			colorIndex = this->CharToIndex(data[i][j]);		//알파벳을 인덱스로 변환
 			if (colorIndex >= 0 && colorIndex <= NUMBER_OF_COLOR)	//NUMBER_OF_COLOR 16
 			{
 				SetConsoleTextAttribute(consoleHandle, colorIndex);	//색상에 해당하는 인덱스값을 넣어 콘솔 텍스트의 색상 변경
-				cout << "■";	//각 색상에 맞는 도트 출력
+				cout << "\u25A0";	//각 색상에 맞는 도트 출력
 			}
-
 		}
 		cout << "\n";	//줄 변경
 	}

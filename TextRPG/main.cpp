@@ -11,7 +11,7 @@ using namespace std;
 
 int main() 
 {
-	// SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
+	//SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
 
 	using GM = GameManger::GameManger;
 	GM& gameManager = GM::GetInstance();
