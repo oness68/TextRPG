@@ -140,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseEquipableItem.h" />
@@ -153,9 +154,17 @@
     <ClInclude Include="EquipableItemDecorator.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Shop.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project_T.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StagePlot.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
