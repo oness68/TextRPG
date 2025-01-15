@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
-//#include "Log.h"
+
 #include "BuffBase.h"
 #include "Item.h"
 #include "EquipableItem.h"
@@ -60,6 +60,11 @@ public:
 	map<string, class Inventory> GetInventory();
 
 	void DisplayInventory();
+	void DisplayEquipMentItem();
+	void DisplayConsumableItem();
+	void DisplayArchiveItem();
+	void DisplayEtcItem();
+
 	const int& GetGold();
 
 	void TakeItem(Item* item);
