@@ -23,8 +23,7 @@ class Battle
 	bool myTurn = true;
 	bool isWin = false;
 	BaseMonster* battleMonster;
-	int MonsterArmor = 5;
-	
+	bool nextTurn;
 public:
 	
 	void restoreCharacterState(Character* player);

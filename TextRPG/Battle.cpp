@@ -29,8 +29,10 @@ void Battle::StageOfDifficulty(int stage)
 
 void Battle::NextTurn()
 {
-
-	myTurn = !myTurn;
+	if (nextTurn)
+	{
+		myTurn = !myTurn;
+	}
 }
 
 int Battle::Input(int min,int max)
@@ -114,6 +116,7 @@ void Battle::PlayerAction(Character* Player)
 		{
 		case 1:
 			AttackSystem(Player);
+			nextTurn = true;
 			flag = true;
 			break;
 
@@ -127,6 +130,7 @@ void Battle::PlayerAction(Character* Player)
 			{
 				logger->PrintLog("사용 아이템이 없습니다.\n", false);
 			}
+			nextTurn = false;
 			//아이템
 
 			break;
@@ -144,17 +148,19 @@ void Battle::MonsterAction(Character* Player)
 	
 	
 	//logger->PrintLog(battleMonster->GetName() + "가(이) 공격했다!\n",false);
-
+	int Damage = 0;
 	state = (MonsterState)battleMonster->TakeAction();
 	switch (state)
 	{
 	case Enums::EAttack:
-		Player->TakeDamage(battleMonster->GetDamage());
-		logger->PrintLog("플레이어가 " + to_string(battleMonster->GetDamage()) + "의 피해를 입었다.\n", false);
+		Damage = battleMonster->GetDamage();
 
+		Player->TakeDamage(Damage);
+		logger->PrintLog("플레이어가 " + to_string(Damage) + "의 피해를 입었다.\n", false);
+		state = EAttack;
 		break;
 	case Enums::EDefence:
-
+		state = EDefence;
 		break;
 
 	case Enums::EMonsterSkill:
@@ -166,7 +172,7 @@ void Battle::MonsterAction(Character* Player)
 	}
 	//logger->PrintLog();
 
-	
+	nextTurn = true;
 
 }
 
@@ -233,6 +239,7 @@ void Battle::UseItem(Character* Player)
 
 void Battle::LootAction(Character* Player)
 {
+	Log* logger = Log::GetInstance();
 	ItemFactory &IFactory = ItemFactory::GetInstance();
 	Player->TakeExp(battleMonster->GetExperience());
 	Player->TakeGold(battleMonster->GetGold());
@@ -240,6 +247,12 @@ void Battle::LootAction(Character* Player)
 	
 	Item* item = IFactory.GenerateItem(itemName);
 	Player->TakeItem(item);
+
+	logger->PrintLog(format("{} 에게 {}경험치를 얻었다!\n", battleMonster->GetName(), battleMonster->GetExperience()), false);
+	logger->PrintLog(format("{} 에게 {}골드를 얻었다!\n", battleMonster->GetName(), battleMonster->GetGold()), false);
+	logger->PrintLog(format("{} 에게 {}을(를) 얻었다\n", battleMonster->GetName(), itemName), false);
+	Sleep(2000);
+	logger->PrintLog("");
 	//Player->TakeItem()
 	//battleMonster.
 }
@@ -267,6 +280,7 @@ void Battle::AttackSystem(Character* Player)
 	logger->PrintLog("어느곳을 공격할까?\n1.머리(40%)\t2.몸통(80%)\n",false);
 	bool flag = false;
 	bool isHit;
+	int Damage = 0;
 	while (!flag)
 	{
 		int choice = Input(1, 2);
@@ -276,9 +290,17 @@ void Battle::AttackSystem(Character* Player)
 			isHit = RandomSuccess(40);
 			if (isHit)
 			{
-				battleMonster->TakeDamage(Player->GetAttackPower() * 2);
-				logger->PrintLog("머리 공격이 성공했다!\n",false);
-				logger->PrintLog(battleMonster->GetName() + "가(이)"+ to_string(Player->GetAttackPower() * 2)+"의 치명적인 피해를 입었다!\n",false);
+				logger->PrintLog("머리 공격이 성공했다!\n", false);
+				Damage = Player->GetAttackPower() * 2;
+				if (state == EDefence)
+				{
+					logger->PrintLog("몬스터가 방어태세를 취했습니다. 감소된 피해를 입힙니다.\n", false);
+
+					Damage *= 0.6;
+				}
+				battleMonster->TakeDamage(Damage);
+
+				logger->PrintLog(battleMonster->GetName() + "가(이)"+ to_string(Damage)+"의 피해를 입었다!\n",false);
 			}
 			else
 			{
@@ -293,9 +315,17 @@ void Battle::AttackSystem(Character* Player)
 			isHit = RandomSuccess(80);
 			if (isHit)
 			{
-				battleMonster->TakeDamage(Player->GetAttackPower() * 2);
-				logger->PrintLog("공격이 성공했다!\n",false);
-				logger->PrintLog(battleMonster->GetName() + "가(이)" + to_string(Player->GetAttackPower()) + "의 피해를 입었다!\n",false);
+				logger->PrintLog("공격이 성공했다!\n", false);
+				Damage = Player->GetAttackPower();
+				if (state == EDefence)
+				{
+					logger->PrintLog("몬스터가 방어태세를 취했습니다. 감소된 피해를 입힙니다.\n", false);
+					Damage *= 0.6;
+				}
+				battleMonster->TakeDamage(Damage);
+
+				logger->PrintLog(battleMonster->GetName() + "가(이)" + to_string(Damage) + "의 피해를 입었다!\n", false);
+
 			}
 			else
 			{
