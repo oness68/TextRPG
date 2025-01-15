@@ -11,62 +11,62 @@ using namespace std;
 class LowHPPotion : public ConsumableItem
 {
 public:
-	LowHPPotion() : ConsumableItem("Low HP Potion", 50, 3, "Healing HP", 20) {}
+	LowHPPotion() : ConsumableItem("Low HP Potion", 50, Rarity::C, EffectType::HealCurrentHP, 20) {}
 };
 
 class MiddleHPPotion : public ConsumableItem
 {
 public:
-	MiddleHPPotion() : ConsumableItem("Middle HP Potion", 100, 2, "Healing HP", 40) {}
+	MiddleHPPotion() : ConsumableItem("Middle HP Potion", 100, Rarity::R, EffectType::HealCurrentHP, 40) {}
 };
 
 class HighHPPotion : public ConsumableItem
 {
 public:
-	HighHPPotion() : ConsumableItem("High HP Potion", 200, 1, "Healing HP", 100) {}
+	HighHPPotion() : ConsumableItem("High HP Potion", 200, Rarity::SR, EffectType::HealCurrentHP, 100) {}
 };
 
 class LowHPElixer : public ConsumableItem
 {
 public:
-	LowHPElixer() : ConsumableItem("Low HP Elixer", 100, 3, "Max HP Up", 10) {}
+	LowHPElixer() : ConsumableItem("Low HP Elixer", 100, Rarity::C, EffectType::IncreaseMaxHP, 10) {}
 };
 
 class MiddleHPElixer : public ConsumableItem
 {
 public:
-	MiddleHPElixer() : ConsumableItem("Middle HP Elixer", 150, 2, "Max HP Up", 20) {}
+	MiddleHPElixer() : ConsumableItem("Middle HP Elixer", 150, Rarity::R, EffectType::IncreaseMaxHP, 20) {}
 };
 
 class HighHPElixer : public ConsumableItem
 {
 public:
-	HighHPElixer() : ConsumableItem("High HP Elixer", 200, 1, "Max HP Up", 50) {}
+	HighHPElixer() : ConsumableItem("High HP Elixer", 200, Rarity::SR, EffectType::IncreaseMaxHP, 50) {}
 };
 
 class DamageUPpotion : public ConsumableItem
 {
 public:
-	DamageUPpotion() : ConsumableItem("Damage UP Potion", 150, 1, "Damage Up", 5) {}
+	DamageUPpotion() : ConsumableItem("Damage UP Potion", 150, Rarity::C, EffectType::DamageUp, 5) {}
 };
 
 //EquipableItem
 class ShortSword : public EquipableItem
 {
 public:
-	ShortSword() :EquipableItem("Short Sword", 300, 3, "Weapon", { {"Damage", 10} }, 0) {}
+	ShortSword() :EquipableItem("Short Sword", 300, Rarity::C, "Weapon", { {"Damage", 10} }, 0) {}
 };
 
 class LongSword : public EquipableItem
 {
 public:
-	LongSword() :EquipableItem("Long Sword", 500, 2, "Weapon", { {"Damage", 20} }, 0) {}
+	LongSword() :EquipableItem("Long Sword", 500, Rarity::R, "Weapon", { {"Damage", 20} }, 0) {}
 };
 
 class TwoHandedSword : public EquipableItem
 {
 public:
-	TwoHandedSword() :EquipableItem("Two Handed Sword", 1000, 1, "Weapon", { {"Damage", 50} }, 0) {}
+	TwoHandedSword() :EquipableItem("Two Handed Sword", 1000, Rarity::SSR, "Weapon", { {"Damage", 50} }, 0) {}
 };
 /*class LeatherArmor : public EquipableItem
 {

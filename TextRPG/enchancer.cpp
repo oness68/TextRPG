@@ -33,7 +33,7 @@ vector<Item*> Enchancer::GetEnchanceableItems(map<Item*, int>& inventory)
 	vector<Item*> equipableItems;
 	for (auto& item : inventory)
 	{
-		if (item.first->GetItemType() == "EquipableItem")
+		if (item.first->GetType() == ItemType::Equipable)
 		{
 			equipableItems.push_back(item.first);
 		}
