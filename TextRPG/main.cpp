@@ -36,7 +36,7 @@ int main()
 			isGameStart = true;	//시작화면 루프 벗어나기 위함
 			isGameRun = true;	//게임 시작
 			logger->PrintStartMenu(EStart);
-			gameManager.BeginPlay(&player1);
+			gameManager.BeginBattle(&player1, 5);
 			break;
 		case 2:
 			logger->PrintGameOver(EGameEnd);	//플레이어의 사망과 게임 재시작 여부 물어보는 출력문

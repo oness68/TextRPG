@@ -6,19 +6,16 @@
 #include <string>
 #include <map>
 #include <vector>
-
-
-
-
+#include"EnumCollection.h"
 
 class BattleManager
 {
 	
-	
 private:
 
 	BaseMonster* monster;
-
+	
+	EnumPrintLog MonsterImage;
 	static BattleManager* Battleinstance;
 
 	BattleManager() = default;
@@ -32,6 +29,9 @@ public:
 	void setMonster(BaseMonster* monster);
 	void BeginBattle(Character* player, int stage);
 	void CreateMonster(bool isNamde, int stage);
+	EnumPrintLog getMonsterImage() { return MonsterImage; }
+	void setMonsterImage(EnumPrintLog imageData) { this->MonsterImage = imageData; }
+
 };
 
 
