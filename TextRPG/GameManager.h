@@ -7,10 +7,12 @@
 #include <vector>
 #include <map>
 #include <optional>
+#include <random>
 
 #include "BattleManager.h"
 #include "Character.h"
 #include "Shop.h"
+#include "Menu.h"
 
 namespace GameManger {
 	enum StageRooms {
