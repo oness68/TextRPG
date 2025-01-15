@@ -84,13 +84,19 @@ namespace GameManger {
 		int currentHP = player->GetCurrentHP();
 		int maxHP = player->GetMaxHP();
 
+		Log* logger = Log::GetInstance();
+
 		if (maxHP / 2 > currentHP)
 		{
 			player->SetCurrentHP(currentHP + (maxHP / 2));
+			logger->PrintLog("플레이어의 체력이 " + maxHP / 2, ERest);
+			logger->PrintLog("향상되었습니다.\n", ERest, false);
 		}
 		else
 		{
 			player->SetCurrentHP(maxHP);
+			logger->PrintLog("플레이어의 체력이 " + maxHP, ERest);
+			logger->PrintLog("향상되었습니다.\n", ERest, false);
 		}
 	}
 
