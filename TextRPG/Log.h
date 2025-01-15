@@ -64,6 +64,8 @@ private:
 	vector<string> deBuffData;
 	//상점 이미지
 	vector<string> shopData;
+	//휴식 이미지
+	vector<string> restData;
 	int sleepVar = 2000;
 
 private:
