@@ -174,3 +174,9 @@ int BossMonster::TakeAction() const
 	}
 }
 
+int BossMonster::GetResponseScore(int option) const
+{
+	//플레이어의 선택지 입력 값을 받아 그에 따른 점수 반환
+	return responseResultJudgment.at(option-1);
+}
+

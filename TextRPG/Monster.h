@@ -23,6 +23,7 @@ public:
 	virtual void TakeDamage(int damage) = 0;
 	virtual int TakeAction() const = 0;
 	virtual string GetRandomItem() const = 0;
+	virtual int GetResponseScore(int option) const = 0;
 };
 
 class BaseMonster : public Monster
@@ -108,6 +109,7 @@ public:
 	BossMonster(string n, int hp, int atk, int exp, int g) :
 		BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
+	int GetResponseScore(int option) const override;
 };
 
 class GoblinRider : public BossMonster 
