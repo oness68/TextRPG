@@ -53,11 +53,11 @@ void Shop::BuyItem(Character& player)
 
 	vector<string>menuItems = {};
 	vector<function<void()>> actions;
-	for (int i=0;i < shopInven.size();i++)
+	for (int i=0; i < shopInven.size(); i++)
 	{
 		menuItems.push_back(format("{} - {} gold [{}]\n", shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType()));
-
 		actions.push_back([&]() {
+			cout << "Action Executed: " << shopInven[i]->GetName() << endl;
 			player.BuyItem(shopInven[i]);
 			string logMessage = format("[{}]을(를) 구매했습니다!\n\n", shopInven[i]->GetName());
 			logger->PrintLog(logMessage, (int)EShop, true);
@@ -67,6 +67,8 @@ void Shop::BuyItem(Character& player)
 			});
 	}
 	menuItems.push_back("나가기");
+	actions.push_back([&]() {});
+
 	Menu menuSystem(menuItems, actions);
 
 	// 메뉴 실행
@@ -74,14 +76,10 @@ void Shop::BuyItem(Character& player)
 		menuSystem.DisplayMenu((int)EShop, true);
 		menuSystem.RunMenu((int)EShop, true);
 
-		if (menuSystem.GetSelectedIndex() == 3) {
-			break;
-		}
+		break;
 
-		cout << endl; // 메뉴 간격 조정
+		std::cout << endl; // 메뉴 간격 조정
 	}
-
-
 
 	/*for (int i = 0; i < shopInven.size(); i++)
 	{

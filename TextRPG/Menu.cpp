@@ -15,7 +15,7 @@ void Menu::ShowMenu(int selectedIndex, int caseNumber, bool clear) {
 
     for (int i = 0; i < menuItems.size(); ++i) {
         if (i == selectedIndex) {
-            cout << "> " << menuItems[i] << " <" << endl;
+            cout << menuItems[i] << " <" << endl;
         }
         else {
             cout << menuItems[i] << endl;
@@ -68,7 +68,7 @@ void Menu::RunMenu(int caseNumber, bool clear) {
                 }
             }
             else if (c == ENTER) {  // 엔터키 입력
-                
+                /*
                 cout << "Selected Index: " << selectedIndex << endl;
                 cout << "Executing Action: " << menuItems[selectedIndex] << endl;
 
@@ -91,9 +91,15 @@ void Menu::RunMenu(int caseNumber, bool clear) {
                         cout << "Empty/Null Function" << endl;  // 함수가 없는 경우
                     }
                 }
-                
+
+                cout << "selectedIndex: " << selectedIndex << ", actions.size(): " << actions.size() << endl;
+                */
                 if (selectedIndex >= 0 && selectedIndex < actions.size()) {
+                    // cout << "Executing action for index: " << selectedIndex << endl;
                     actions[selectedIndex]();  // 선택된 항목의 동작 실행
+                }
+                else {
+                    cout << "Invalid selection!" << endl;  // 범위를 벗어난 경우 처리
                 }
 
                 // 메뉴 종료 후 반복문을 탈출
