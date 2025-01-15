@@ -102,14 +102,34 @@ namespace GameManger {
     void GameManger::VisitBuffRoom(Character* player)
     {
         // TODO: 구현 필요
-        std::cout << "버프방 들어왔니?" << std::endl;
+        Log* logger = Log::GetInstance();
+        std::random_device random;
+        std::mt19937 generator(random());
 
-        auto buffRooms = GenerateTwoRandomRooms(buffRoomProbabilities, std::optional<BuffRooms>(BuffRooms::Dice));
+        auto buffRoom = GenerateRandomRoom(buffRoomProbabilities);
+        cout << endl << BuffRoomToString(buffRoom);
 
-        for (size_t i = 0; i < buffRooms.size(); ++i) {
-            std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
+        std::uniform_int_distribution<int> distribution(1, 6);
+        //int diceResult = distribution(generator);
+        for(int i=0; i<20; i++)
+            cout << distribution(generator) << endl;
+        switch (buffRoom)
+        {
+        case Dice:
+            
+            break;
+        case Number:
+            break;
+        case Rand:
+            break;
+        case Game:
+            break;
+        default:
+            break;
         }
-
+        /*for (size_t i = 0; i < buffRooms.size(); ++i) {
+            std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
+        }*/
     }
 
     // 현재 스테이지 반환 함수
@@ -128,18 +148,16 @@ namespace GameManger {
     void GameManger::BeginPlay(Character* player)
     {
         int stage = 1;
-
         player->DisplayStatus();
-
         Log* logger = Log::GetInstance();
-        
-        // VisitBuffRoom(player);
+
+        VisitBuffRoom(player);
 
        // VisitShop(player);
 
         SetStage(stage);
 
-        while (stage <= 20)
+        /*while (stage <= 20)
         {
             auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
 
@@ -179,20 +197,24 @@ namespace GameManger {
             }
 
             SetStage(++stage);
-        }
+        }*/
     }
 
     template <typename RoomType>
     RoomType  GameManger::GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
         double totalProbability = 0.0;
 
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
+        //std::srand(static_cast<unsigned>(std::time(nullptr)));
+        std::random_device random;
+        std::mt19937 generator(random());
 
         for (const auto& room : roomProbabilities) {
             totalProbability += room.second;
         }
 
-        double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
+        //double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
+        std::uniform_real_distribution<double> distribution(0.0, totalProbability);
+        double randomValue = distribution(generator);
         double cumulativeProbability = 0.0;
 
         for (const auto& room : roomProbabilities) {

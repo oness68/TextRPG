@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <optional>
+#include <random>
 
 #include "BattleManager.h"
 #include "Character.h"
