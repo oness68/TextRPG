@@ -231,6 +231,75 @@ void Log::PrintLog(string orderLog, int caseNumber)
 	cout << this->log;
 }
 
+void Log::PrintLog(string orderLog, bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+	cout << this->log;
+}
+
+void Log::PrintLog(string orderLog, int caseNumber, bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+
+	switch (caseNumber)
+	{
+	case ECharacter:
+		this->PrintImage(playerData);
+		break;
+	case EGoblin:
+		this->PrintImage(goblinData);
+		break;
+	case EOrc:
+		this->PrintImage(orcData);
+		break;
+	case ETroll:
+		this->PrintImage(trollData);
+		break;
+	case EWolf:
+		this->PrintImage(wolfData);
+		break;
+	case ESlime:
+		this->PrintImage(slimeData);
+		break;
+	case EGoblinRider:
+		this->PrintImage(goblinRiderData);
+		break;
+	case ETwinHeadTroll:
+		this->PrintImage(twinHeadTrollData);
+		break;
+	case ETreant:
+		this->PrintImage(treantData);
+		break;
+	case EDragon:
+		this->PrintImage(dragonData);
+		break;
+	case EBuff:
+		this->PrintImage(buffData);
+		break;
+	case EDeBuff:
+		this->PrintImage(deBuffData);
+		break;
+	case EShop:
+		this->PrintImage(shopData);
+		break;
+	case ERest:
+		this->PrintImage(restData);
+		break;
+	default:
+		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
+		break;
+	}
+	cout << this->log;
+}
+
 //미구현
 void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
 {

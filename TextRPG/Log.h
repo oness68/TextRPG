@@ -90,6 +90,8 @@ public:
 	void PrintLog(string orderLog);
 	void PrintLog(string orderLog, int caseNumber);						//이미지가 있을 경우
 	void PrintLog(string orderLog, int caseNumber1, int caseNumber2);	//이미지가 두 개인 경우, 미구현
+	void PrintLog(string orderLog, bool clear);
+	void PrintLog(string orderLog, int caseNumber, bool clear);
 };
 
 #endif
