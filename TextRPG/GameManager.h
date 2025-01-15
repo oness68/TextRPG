@@ -8,12 +8,13 @@
 #include <map>
 #include <optional>
 
-#include"BattleManager.h"
-#include"Character.h"
+#include "BattleManager.h"
+#include "Character.h"
+#include "Shop.h"
 
 namespace GameManger {
 	enum StageRooms {
-		Shop = 1,
+		Market = 1,
 		Rest = 2,
 		Buff = 3,
 		Battle = 4  
@@ -62,7 +63,7 @@ namespace GameManger {
 		GameManger& operator=(GameManger&&) = delete;
 
 		std::map<StageRooms, double> roomProbabilities = {
-			{Shop, 20.0},
+			{Market, 20.0},
 			{Rest, 10.0},
 			{Buff, 10.0},
 			{Battle, 60.0}
@@ -70,7 +71,7 @@ namespace GameManger {
 
 		std::string StageRoomToString(StageRooms room) {
 			switch (room) {
-			case Shop: return "상점";
+			case Market: return "상점";
 			case Rest: return "휴식";
 			case Buff: return "그냥방";
 			case Battle: return "전투";

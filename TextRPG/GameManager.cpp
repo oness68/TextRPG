@@ -22,6 +22,8 @@ namespace GameManger {
     {
         int input;
 
+        Shop shop;
+
         while (true) {
             // 메뉴 출력
             cout << "1. 구매" << endl;
@@ -147,7 +149,7 @@ namespace GameManger {
                 StageRooms selectedRoom = stageRooms[choice - 1];
 
                 switch (selectedRoom) {
-                case Shop:
+                case Market:
                     std::cout << "상점에 도착했습니다!" << std::endl;
                     VisitShop(player);
                     break;
