@@ -20,7 +20,7 @@ ItemFactory::ItemFactory()
 	// Heal Potion
 	items.insert(make_pair("LowHPPotion", new ConsumableItem("LowHPPotion", 50, Rarity::C, EffectType::HealCurrentHP, 30)));
 	items.insert(make_pair("MiddleHPPotion", new ConsumableItem("MiddleHPPotion", 100, Rarity::R, EffectType::HealCurrentHP, 50)));
-	items.insert(make_pair("HightHPPotion", new ConsumableItem("MiddleHPPotion", 200, Rarity::SR, EffectType::HealCurrentHP, 100)));
+	items.insert(make_pair("HightHPPotion", new ConsumableItem("HightHPPotion", 200, Rarity::SR, EffectType::HealCurrentHP, 100)));
 	
 	//Attack Power Up Potion
 	items.insert(make_pair("LowAttackPotion", new ConsumableItem("LowAttackPotion", 20, Rarity::C, EffectType::DamageUp, 30)));

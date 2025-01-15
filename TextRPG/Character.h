@@ -76,7 +76,7 @@ private:
 	int level = 1;
 	int currentHP = 100;
 	int maxHP = 100;
-	int attackPower = 10;
+	int attackPower = 30;
 	int gold = 5000;
 	int currentExp = 0;
 	int requiredLevelUpExp = 100;
