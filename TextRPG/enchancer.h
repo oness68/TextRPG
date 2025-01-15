@@ -15,7 +15,7 @@ public:
 	Enchancer();
 	EquipableItem* EnchanceItem(EquipableItem* item);
 
-	vector<Item*> GetEnchanceableItems(map<Item*, int>& inventory);
+	vector<Item*> GetEnchanceableItems(map<string, class Inventory>& inventory);
 };
 
 #endif // !ENCHANCER_H_
