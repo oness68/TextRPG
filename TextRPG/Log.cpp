@@ -99,6 +99,7 @@ void Log::Initialize()
 	this->buffData = PNGImageToData("Images/Buff.png");
 	this->deBuffData = PNGImageToData("Images/Debuff.png");
 	this->shopData = PNGImageToData("Images/Shop.png");
+	this->restData = PNGImageToData("Images/Rest.png");
 }
 
 const string& Log::GetLog()
@@ -152,7 +153,7 @@ void Log::PrintImage(vector<string>& data)
 	int colorIndex = 0;
 	for (int i = 0; i < data.size(); ++i)
 	{
-		for (int j = 0; j < IMAGE_SIDE_LENGTH; j++)	//IMAGE_SIDE_LENGTH 32
+		for (int j = 0; j < data.size(); j++)	//IMAGE_SIDE_LENGTH 32
 		{
 			int colorIndex = this->CharToIndex(data[i][j]);		//알파벳을 인덱스로 변환
 			if (colorIndex >= 0 && colorIndex <= NUMBER_OF_COLOR)	//NUMBER_OF_COLOR 16
@@ -219,6 +220,9 @@ void Log::PrintLog(string orderLog, int caseNumber)
 		break;
 	case EShop:
 		this->PrintImage(shopData);
+		break;
+	case ERest:
+		this->PrintImage(restData);
 		break;
 	default:
 		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
