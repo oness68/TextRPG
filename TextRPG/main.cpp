@@ -48,9 +48,7 @@ void main()
 	//게임 실행 코드
 	while (isGameStart)
 	{
-		//테스트로 한 번 Log 출력 해보겠습니다.
 		gameManager.BeginBattle(&player1, 1);
-		logger->PrintLog("테스트 출력입니다~", EDragon);
 		break;
 	}
 

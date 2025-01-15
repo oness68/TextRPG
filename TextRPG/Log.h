@@ -55,6 +55,7 @@ private:
 	vector<string> twinHeadTrollData;
 	vector<string> treantData;
 	vector<string> dragonData;
+	int sleepVar = 2000;
 
 private:
 	Log() {};
