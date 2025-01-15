@@ -23,7 +23,7 @@ void Shop::BuyItem(Character& player)
 	cout << "Select the items you want to buy!" << endl;
 	for (int i = 0;i < shopInven.size();i++)
 	{
-		cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold" << "[" << shopInven[i]->GetItemType() << "]" << endl;
+		cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold" << "[" << (int)shopInven[i]->GetType() << "]" << endl;
 	}
 	int choice;
 	cin >> choice;
@@ -53,8 +53,9 @@ void Shop::BuyItem(Character& player)
 
 void Shop::SellItem(Character& player)
 {
-	map<Item*, int> inventory = player.GetInventory();
-	if (inventory.empty()) {
+	auto inventory = player.GetInventory();
+	if (inventory.empty())
+	{
 		cout << "You have no items to sell!" << endl;
 		return;
 	}
@@ -63,8 +64,8 @@ void Shop::SellItem(Character& player)
 	vector <Item*> invenItems;
 	for (const auto& item : inventory)
 	{
-		cout << index << ". " << item.first << " (x" << item.second << ")" << " [Price at Sale : " << item.first->GetSellPrice() << "gold]" << endl;
-		invenItems.push_back(item.first);
+		//cout << index << ". " << item.first << " (x" << item.second.Count << ")" << " [Price at Sale : " << item.second.item.GetSellPrice() << "gold]" << endl;
+		invenItems.push_back(item.second.item);
 		index++;
 	}
 	cout << "Select the item you want to sell!" << endl;
@@ -78,47 +79,45 @@ void Shop::SellItem(Character& player)
 	int sellPrice = selectedItem->GetSellPrice();
 
 	player.TakeGold(sellPrice);
-	player.RemoveItem(selectedItem);
+	player.SellItem(selectedItem->GetName());
 	cout << "You sold " << selectedItem->GetName() << " for " << sellPrice << "gold!" << endl;
 	cout << "Left gold : " << player.GetGold() << endl;
 }
 
-void Shop::UseEnchancer(Character& player)
-{
-	Enchancer enchancer;
-	map<Item*, int> inventory = player.GetInventory();
-	vector<Item*> enchantableItems = enchancer.GetEnchanceableItems(inventory);
-
-	if (enchantableItems.empty())
-	{
-		cout << "No Items for enchancement" << endl;
-		return;
-	}
-	cout << "Select an item to Enchance!" << endl;
-	for (int i = 0;i < enchantableItems.size();i++)
-	{
-		cout << i + 1 << ". " << enchantableItems[i]->GetName() << "(+" << dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel() << ")" << endl;
-	}
-	int choice;
-	cin >> choice;
-	if (choice<1 || choice>enchantableItems.size())
-	{
-		cout << "Invalid choice!" << endl;
-		return;
-	}
-	EquipableItem* itemToEnchant = dynamic_cast<EquipableItem*>(enchantableItems[choice - 1]);
-	EquipableItem* enchantedItem = enchancer.EnchanceItem(itemToEnchant);
-
-	if (enchantedItem != itemToEnchant)
-	{
-		player.RemoveItem(itemToEnchant);
-		player.TakeItem(enchantedItem);
-		cout << "Item enchanted successfully!" << endl;
-	}
-	else
-	{
-		cout << "Item enchantment failed! No changes made to the item!" << endl;
-	}
-
-
-}
+//void Shop::UseEnchancer(Character& player)
+//{
+//	Enchancer enchancer;
+//	auto inventory = player.GetInventory();
+//	vector<Item*> enchantableItems = enchancer.GetEnchanceableItems(inventory);
+//
+//	if (enchantableItems.empty())
+//	{
+//		cout << "No Items for enchancement" << endl;
+//		return;
+//	}
+//	cout << "Select an item to Enchance!" << endl;
+//	for (int i = 0;i < enchantableItems.size();i++)
+//	{
+//		cout << i + 1 << ". " << enchantableItems[i]->GetName() << "(+" << dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel() << ")" << endl;
+//	}
+//	int choice;
+//	cin >> choice;
+//	if (choice<1 || choice>enchantableItems.size())
+//	{
+//		cout << "Invalid choice!" << endl;
+//		return;
+//	}
+//	EquipableItem* itemToEnchant = dynamic_cast<EquipableItem*>(enchantableItems[choice - 1]);
+//	EquipableItem* enchantedItem = enchancer.EnchanceItem(itemToEnchant);
+//
+//	if (enchantedItem != itemToEnchant)
+//	{
+//		player.RemoveItem(itemToEnchant);
+//		player.TakeItem(enchantedItem);
+//		cout << "Item enchanted successfully!" << endl;
+//	}
+//	else
+//	{
+//		cout << "Item enchantment failed! No changes made to the item!" << endl;
+//	}
+//}

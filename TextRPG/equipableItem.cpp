@@ -8,7 +8,7 @@ EquipableItem::EquipableItem()
 {
 }
 
-EquipableItem::EquipableItem(string name, int price, int rarity, string equipType, map<string, int> baseStat, int enchantLevel)
+EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int> baseStat, int enchantLevel)
 {
 	this->name = name;
 	this->price = price;
