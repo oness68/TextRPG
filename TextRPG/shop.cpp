@@ -41,15 +41,18 @@ void Shop::BuyItem(Character& player)
 		cin >> choice;
 		return;
 	}
+
 	logger->PrintLog("구매할 아이템을 선택해주세요!\n\n", false);
 	logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), (int)EShop, true);
 	logger->PrintLog("===========구매 가능===========\n\n", false);
+
 	for (int i = 0; i < shopInven.size(); i++)
 	{
 		string logMessage = format("{}.{} - {} gold [{}]\n", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType());
 		logger->PrintLog(logMessage, false);
 
 	}
+
 	logger->PrintLog("\n==============================\n", false);
 	string logMessage = format("{}.나가기\n", shopInven.size() + 1);
 	logger->PrintLog(logMessage, false);
@@ -92,6 +95,7 @@ void Shop::BuyItem(Character& player)
 		cin >> choice;
 	}
 }
+
 void Shop::SellItem(Character& player)
 {
 	auto inventory = player.GetInventory();
@@ -155,6 +159,7 @@ void Shop::SellItem(Character& player)
 	cout << "\n아무 키나 눌러 확인\n";
 	cin >> choice2;
 }
+
 void Shop::UseEnchancer(Character& player)
 {
 	Enchancer enchancer;
