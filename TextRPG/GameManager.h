@@ -9,7 +9,6 @@
 
 #include"BattleManager.h"
 #include"Character.h"
-
 namespace GameManger {
 	enum StageRooms {
 		Shop = 1,
@@ -25,18 +24,15 @@ namespace GameManger {
 		StageRooms GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities);
 		std::vector<StageRooms> GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities);
 
-		void VisitShop();
-		void VisitRest();
-		void VisitBuffRoom();
-		void BeginBattle();
-
-		void VisiteBuffRoom();
+		void VisitShop(Character* player);
+		void VisitRest(Character* player);
+		void VisitBuffRoom(Character* player);
 		void BeginBattle(Character* player,int stage);
 
-		void BeginPlay();
+		void BeginPlay(Character* player);
 		
 		void SetStage(int num);
-		int getCurrentStage();
+		int GetCurrentStage();
 
 	private:
 		int stage;
@@ -67,4 +63,4 @@ namespace GameManger {
 
 } // namespace GameManger
 
-#endif
+#endif // !GAMEMANAGER_H

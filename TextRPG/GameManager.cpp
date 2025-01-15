@@ -1,6 +1,9 @@
 ﻿#include "GameManager.h"
+#include "Log.h"
 
 #include <iostream>
+#include <string>
+
 using namespace std;
 
 namespace GameManger {
@@ -14,7 +17,7 @@ namespace GameManger {
     }
 
     // 상점 방문 함수
-    void GameManger::VisitShop() 
+    void GameManger::VisitShop(Character* player)
     {
         // TODO: 구현 필요
     }
@@ -25,54 +28,117 @@ namespace GameManger {
         BattleManager* BM = BattleManager::GetInstance();
 
         BM->BeginBattle(player, stage);
-        // TODO: 구현 필요
+        // TODO: 리턴 처리
     }
 
     // 휴식 장소 방문 함수
-    void GameManger::VisitRest() 
+    void GameManger::VisitRest(Character* player)
     {
         // TODO: 구현 필요
+        int currentHP = player->GetCurrentHP();
+        int maxHP = player->GetMaxHP();
+
+        if (maxHP / 2 > currentHP)
+        {
+            player->SetCurrentHP(currentHP + (maxHP / 2));
+        }
+        else
+        {
+            player->SetCurrentHP(maxHP);
+        }
     }
 
     // 버프룸 방문 함수
-    void GameManger::VisitBuffRoom() 
+    void GameManger::VisitBuffRoom(Character* player)
     {
         // TODO: 구현 필요
     }
 
-    // 캐릭터 생성 함수
-    //Character GameManger::GenerateCharacter(string name)
-    //{
-    //    // TODO: 구현 필요
-    //    return Character::Character(name);
-    //}
-
     // 현재 스테이지 반환 함수
-    int GameManger::getCurrentStage() 
+    int GameManger::GetCurrentStage() 
     {
-        // TODO: 구현 필요
         return stage;
     }
 
     // 스테이지 단계 설정
     void GameManger::SetStage(int num)
     {
-        // TODO: 구현 필요
+        stage = num;
     }
 
     // 게임시작
-    void GameManger::BeginPlay()
+    void GameManger::BeginPlay(Character* player)
     {
-        // TODO: 구현 필요
-        SetStage(1);
+        int stage = 1;
 
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
-        std::vector<StageRooms> selectedRooms = GenerateTwoRandomRooms(roomProbabilities);
+        player->DisplayStatus();
 
-        cout << "Room: " << StageRoomToString(selectedRooms[0]) << endl;
-        cout << "Room: " << StageRoomToString(selectedRooms[1]) << endl;
+        Log* logger = Log::GetInstance();
+        
+        SetStage(stage);
 
+        while (stage <= 20)
+        {
+            std::srand(static_cast<unsigned>(std::time(nullptr)));
+            std::vector<StageRooms> selectedRooms = GenerateTwoRandomRooms(roomProbabilities);
 
+            cout << "1. Room: " << StageRoomToString(selectedRooms[0]) << endl;
+            cout << "2. Room: " << StageRoomToString(selectedRooms[1]) << endl;
+
+            int choice;
+            std::cout << "선택할 방 번호 (1 또는 2 입력): ";
+            std::cin >> choice;
+
+            if (choice == 1) {
+                // 첫 번째 방에 대한 처리
+                switch (selectedRooms[0]) {
+                case Shop:
+                    std::cout << "상점에 도착했습니다!" << std::endl;
+                    break;
+                case Rest:
+                    std::cout << "휴식을 취합니다." << std::endl;
+                    VisitRest(player);
+                    break;
+                case Buff:
+                    std::cout << "버프를 받았습니다!" << std::endl;
+                    break;
+                case Battle:
+                    std::cout << "전투가 시작되었습니다!" << std::endl;
+                    BeginBattle(player, stage);
+                    break;
+                default:
+                    std::cout << "알 수 없는 방입니다." << std::endl;
+                    break;
+                }
+            }
+            else if (choice == 2) {
+                // 두 번째 방에 대한 처리
+                switch (selectedRooms[1]) {
+                case Shop:
+                    std::cout << "상점에 도착했습니다!" << std::endl;
+                    break;
+                case Rest:
+                    std::cout << "휴식을 취합니다." << std::endl;
+                    VisitRest(player);
+                    break;
+                case Buff:
+                    std::cout << "버프를 받았습니다!" << std::endl;
+                    break;
+                case Battle:
+                    std::cout << "전투가 시작되었습니다!" << std::endl;
+                    BeginBattle(player, stage);
+                    break;
+                default:
+                    std::cout << "알 수 없는 방입니다." << std::endl;
+                    break;
+                }
+            }
+            else {
+                std::cout << "잘못된 입력입니다. 다시 시도하세요." << std::endl;
+            }
+
+            SetStage(++stage);
+        }
     }
 
     StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
