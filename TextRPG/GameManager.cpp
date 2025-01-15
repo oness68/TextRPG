@@ -81,22 +81,20 @@ namespace GameManger {
 	// 휴식 장소 방문 함수
 	void GameManger::VisitRest(Character* player)
 	{
-		int currentHP = player->GetCurrentHP();
+		int currentHP = player->GetCurrentHP() - 70;
 		int maxHP = player->GetMaxHP();
-
 		Log* logger = Log::GetInstance();
-
 		if (maxHP / 2 > currentHP)
 		{
 			player->SetCurrentHP(currentHP + (maxHP / 2));
-			logger->PrintLog("플레이어의 체력이 " + maxHP / 2, ERest);
-			logger->PrintLog("향상되었습니다.\n", ERest, false);
+			string restLog = "플레이어의 체력이 " + to_string(maxHP / 2) + "회복되었습니다.(현재 체력 : " + to_string(player->GetCurrentHP()) + ")\n";
+			logger->PrintLog(restLog, ERest);
 		}
 		else
 		{
 			player->SetCurrentHP(maxHP);
-			logger->PrintLog("플레이어의 체력이 " + maxHP, ERest);
-			logger->PrintLog("향상되었습니다.\n", ERest, false);
+			string restLog = "플레이어의 체력이 최대(" + to_string(maxHP) + ")로 회복되었습니다.\n";
+			logger->PrintLog(restLog, ERest);
 		}
 	}
 
