@@ -13,7 +13,7 @@ Log* Log::GetInstance()
 	return instance;
 }
 
-//ÀÌ¹ÌÁö Ãâ·ÂÀ» À§ÇØ ¾ËÆÄºªÀ» ÀÎµ¦½º·Î ÀüÈ¯½ÃÄÑÁÖ´Â ¸Ş¼­µå
+//ì´ë¯¸ì§€ ì¶œë ¥ì„ ìœ„í•´ ì•ŒíŒŒë²³ì„ ì¸ë±ìŠ¤ë¡œ ì „í™˜ì‹œì¼œì£¼ëŠ” ë©”ì„œë“œ
 int Log::CharToIndex(char c)
 {
 	return c - 'a';
@@ -23,27 +23,27 @@ vector<string> Log::PNGImageToData(string filePath)
 {
 	vector<string> data;
 	string line;
-	const char alphabet[] = "abcdefghijklmnop";		//»ö»ó ¼ø¼­´ë·Î ¾ËÆÄºªÀ¸·Î ÀüÈ¯µÊ
-	// PNG ÆÄÀÏ ·Îµù
+	const char alphabet[] = "abcdefghijklmnop";		//ìƒ‰ìƒ ìˆœì„œëŒ€ë¡œ ì•ŒíŒŒë²³ìœ¼ë¡œ ì „í™˜ë¨
+	// PNG íŒŒì¼ ë¡œë”©
 	int width, height, channels;
-	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, 3); // RGB Çü½ÄÀ¸·Î¸¸ ÀĞ±â
+	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, 3); // RGB í˜•ì‹ìœ¼ë¡œë§Œ ì½ê¸°
 	if (!image) {
-		std::cerr << "ÀÌ¹ÌÁö ÀĞ¾î¿À±â ½ÇÆĞ" << std::endl;
+		std::cerr << "ì´ë¯¸ì§€ ì½ì–´ì˜¤ê¸° ì‹¤íŒ¨" << std::endl;
 		exit(1);
 	}
 
-	//ÀÌ¹ÌÁö¸¦ ÇÈ¼¿º°·Î ¹®ÀÚ·Î º¯È¯
+	//ì´ë¯¸ì§€ë¥¼ í”½ì…€ë³„ë¡œ ë¬¸ìë¡œ ë³€í™˜
 	for (int y = 0; y < height; y++)
 	{
 		line += "\"";
 		for (int x = 0; x < width; x++)
 		{
-			int pixelIndex = (y * width + x) * 3;	//3Ã¤³Î RGB
+			int pixelIndex = (y * width + x) * 3;	//3ì±„ë„ RGB
 			int r = image[pixelIndex + 0];
 			int g = image[pixelIndex + 1];
 			int b = image[pixelIndex + 2];
 
-			//ÇÈ¼¿ÀÇ RGB°ª°ú °¡Àå °¡±î¿î »ö»ó ÀÎµ¦½º Ã£±â
+			//í”½ì…€ì˜ RGBê°’ê³¼ ê°€ì¥ ê°€ê¹Œìš´ ìƒ‰ìƒ ì¸ë±ìŠ¤ ì°¾ê¸°
 			int closestColor = GetClosestColorIndex(r, g, b);
 
 			line += alphabet[closestColor];
@@ -54,7 +54,7 @@ vector<string> Log::PNGImageToData(string filePath)
 	return data;
 }
 
-// RGB »ö»ó°ú ÆÈ·¹Æ® »ö»ó °£ÀÇ À¯Å¬¸®µå °Å¸® °è»ê
+// RGB ìƒ‰ìƒê³¼ íŒ”ë ˆíŠ¸ ìƒ‰ìƒ ê°„ì˜ ìœ í´ë¦¬ë“œ ê±°ë¦¬ ê³„ì‚°
 int Log::GetClosestColorIndex(int r, int g, int b) {
 	int closestIndex = 0;
 	int minDistance = INT_MAX;
@@ -73,7 +73,7 @@ int Log::GetClosestColorIndex(int r, int g, int b) {
 	return closestIndex;
 }
 
-//¸ğ´ÏÅÍ Å©±âÀÇ 4ºĞÀÇ 1 Å©±â·Î ÄÜ¼Ö Ã¢ Å©±â¸¦ ¼³Á¤ÇÏ°í ¸ğ´ÏÅÍ °¡¿îµ¥·Î ¶ç¿öÁÜ, °¢ stringÅ¸ÀÔ º¤ÅÍ¿¡ ÀÌ¹ÌÁö ÅØ½ºÆ® ÃÊ±âÈ­(32X32 PNGÆÄÀÏÀ» 0~15ÀÇ »ö»ó¿¡ µû¶ó ¾ËÆÄºªÀ¸·Î º¯È¯ -> ÄÜ¼Ö »ö»ó º¯È¯À» À§ÇØ)
+//ëª¨ë‹ˆí„° í¬ê¸°ì˜ 4ë¶„ì˜ 1 í¬ê¸°ë¡œ ì½˜ì†” ì°½ í¬ê¸°ë¥¼ ì„¤ì •í•˜ê³  ëª¨ë‹ˆí„° ê°€ìš´ë°ë¡œ ë„ì›Œì¤Œ, ê° stringíƒ€ì… ë²¡í„°ì— ì´ë¯¸ì§€ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”(32X32 PNGíŒŒì¼ì„ 0~15ì˜ ìƒ‰ìƒì— ë”°ë¼ ì•ŒíŒŒë²³ìœ¼ë¡œ ë³€í™˜ -> ì½˜ì†” ìƒ‰ìƒ ë³€í™˜ì„ ìœ„í•´)
 void Log::Initialize()
 {
 	//SetConsoleOutputCP(CP_UTF8);
@@ -81,10 +81,10 @@ void Log::Initialize()
 	bufferSize.Y = bufferHeight;
 	//cout << bufferSize.X << ", " << bufferSize.Y << endl;
 	SetConsoleScreenBufferSize(consoleHandle, bufferSize);
-	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//³»ºÎÀÇ Å©±â Á¶Àı
+	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//ë‚´ë¶€ì˜ í¬ê¸° ì¡°ì ˆ
 	SetConsoleWindowInfo(consoleHandle, true, &windowSize);
 
-	MoveWindow(console, moniterScreenWidth / 4, moniterScreenHeight / 4, consoleWidth, consoleHeight, true);	//È­¸é °¡¿îµ¥·Î ¶ç¿ì°í, Å©±â Á¶Àı
+	MoveWindow(console, moniterScreenWidth / 4, moniterScreenHeight / 4, consoleWidth, consoleHeight, true);	//í™”ë©´ ê°€ìš´ë°ë¡œ ë„ìš°ê³ , í¬ê¸° ì¡°ì ˆ
 
 	this->playerData = PNGImageToData("Images/Player.png");
 	this->goblinData = PNGImageToData("Images/Goblin.png");
@@ -112,36 +112,36 @@ void Log::SetLog(string log)
 	this->log = log;
 }
 
-//°ÔÀÓ ½ÃÀÛ ¸Ş´º Ãâ·Â
+//ê²Œì„ ì‹œì‘ ë©”ë‰´ ì¶œë ¥
 void Log::PrintStartMenu(int caseNumber)
 {
 	switch (caseNumber)
 	{
 	case EMenu:
-		cout << "°ÔÀÓ ¸Ş´º" << endl;
-		cout << "1. °ÔÀÓ½ÃÀÛ" << endl;
-		cout << "2. °ÔÀÓÁ¾·á" << endl;
+		cout << "ê²Œì„ ë©”ë‰´" << endl;
+		cout << "1. ê²Œì„ì‹œì‘" << endl;
+		cout << "2. ê²Œì„ì¢…ë£Œ" << endl;
 		break;
 	case EStart:
-		cout << "°ÔÀÓÀÌ ½ÃÀÛµË´Ï´Ù." << endl;
+		cout << "ê²Œì„ì´ ì‹œì‘ë©ë‹ˆë‹¤." << endl;
 	}
 }
 
 void Log::PrintInputError()
 {
-	cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä." << endl;
+	cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ ì£¼ì„¸ìš”." << endl;
 }
 
-void Log::PrintGameOver(int caseNumber)	//ÇÃ·¹ÀÌ¾îÀÇ »ç¸Á °æ¿ì¿Í °ÔÀÓÀÇ Á¾·á¿¡ ´ëÇÑ ·Î±× Ãâ·Â
+void Log::PrintGameOver(int caseNumber)	//í”Œë ˆì´ì–´ì˜ ì‚¬ë§ ê²½ìš°ì™€ ê²Œì„ì˜ ì¢…ë£Œì— ëŒ€í•œ ë¡œê·¸ ì¶œë ¥
 {
 	switch (caseNumber)
 	{
 	case EGameOver:
-		cout << "»ç¸ÁÇÏ¿´½À´Ï´Ù." << endl;
-		cout << "»õ·Î¿î °ÔÀÓÀ» ½ÃÀÛÇÏ½Ã°Ú½À´Ï±î?" << endl;
+		cout << "ì‚¬ë§í•˜ì˜€ìŠµë‹ˆë‹¤." << endl;
+		cout << "ìƒˆë¡œìš´ ê²Œì„ì„ ì‹œì‘í•˜ì‹œê² ìŠµë‹ˆê¹Œ?" << endl;
 		break;
 	case EGameEnd:
-		cout << "°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù..." << endl;
+		cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤..." << endl;
 		break;
 	default:
 		break;
@@ -155,17 +155,17 @@ void Log::PrintImage(vector<string>& data)
 	{
 		for (int j = 0; j < data.size(); j++)	//IMAGE_SIDE_LENGTH 32
 		{
-			int colorIndex = this->CharToIndex(data[i][j]);		//¾ËÆÄºªÀ» ÀÎµ¦½º·Î º¯È¯
+			int colorIndex = this->CharToIndex(data[i][j]);		//ì•ŒíŒŒë²³ì„ ì¸ë±ìŠ¤ë¡œ ë³€í™˜
 			if (colorIndex >= 0 && colorIndex <= NUMBER_OF_COLOR)	//NUMBER_OF_COLOR 16
 			{
-				SetConsoleTextAttribute(consoleHandle, colorIndex);	//»ö»ó¿¡ ÇØ´çÇÏ´Â ÀÎµ¦½º°ªÀ» ³Ö¾î ÄÜ¼Ö ÅØ½ºÆ®ÀÇ »ö»ó º¯°æ
-				cout << "¡á";	//°¢ »ö»ó¿¡ ¸Â´Â µµÆ® Ãâ·Â
+				SetConsoleTextAttribute(consoleHandle, colorIndex);	//ìƒ‰ìƒì— í•´ë‹¹í•˜ëŠ” ì¸ë±ìŠ¤ê°’ì„ ë„£ì–´ ì½˜ì†” í…ìŠ¤íŠ¸ì˜ ìƒ‰ìƒ ë³€ê²½
+				cout << "â– ";	//ê° ìƒ‰ìƒì— ë§ëŠ” ë„íŠ¸ ì¶œë ¥
 			}
 
 		}
-		cout << "\n";	//ÁÙ º¯°æ
+		cout << "\n";	//ì¤„ ë³€ê²½
 	}
-	SetConsoleTextAttribute(consoleHandle, 15);		//ÀÌ¹ÌÁö Ãâ·ÂÀÌ ³¡³µÀ¸¹Ç·Î ´Ù½Ã Èò »ö»ó(index:15)À¸·Î º¯°æ
+	SetConsoleTextAttribute(consoleHandle, 15);		//ì´ë¯¸ì§€ ì¶œë ¥ì´ ëë‚¬ìœ¼ë¯€ë¡œ ë‹¤ì‹œ í° ìƒ‰ìƒ(index:15)ìœ¼ë¡œ ë³€ê²½
 }
 
 void Log::PrintLog(string orderLog)
@@ -225,17 +225,86 @@ void Log::PrintLog(string orderLog, int caseNumber)
 		this->PrintImage(restData);
 		break;
 	default:
-		cout << "ÇØ´ç ÀÌ¹ÌÁö ¾ø½À´Ï´Ù.(È®ÀÎ ¿ä¸Á)" << endl;
+		cout << "í•´ë‹¹ ì´ë¯¸ì§€ ì—†ìŠµë‹ˆë‹¤.(í™•ì¸ ìš”ë§)" << endl;
 		break;
 	}
 	cout << this->log;
 }
 
-//¹Ì±¸Çö
+void Log::PrintLog(string orderLog, bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+	cout << this->log;
+}
+
+void Log::PrintLog(string orderLog, int caseNumber, bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+
+	switch (caseNumber)
+	{
+	case ECharacter:
+		this->PrintImage(playerData);
+		break;
+	case EGoblin:
+		this->PrintImage(goblinData);
+		break;
+	case EOrc:
+		this->PrintImage(orcData);
+		break;
+	case ETroll:
+		this->PrintImage(trollData);
+		break;
+	case EWolf:
+		this->PrintImage(wolfData);
+		break;
+	case ESlime:
+		this->PrintImage(slimeData);
+		break;
+	case EGoblinRider:
+		this->PrintImage(goblinRiderData);
+		break;
+	case ETwinHeadTroll:
+		this->PrintImage(twinHeadTrollData);
+		break;
+	case ETreant:
+		this->PrintImage(treantData);
+		break;
+	case EDragon:
+		this->PrintImage(dragonData);
+		break;
+	case EBuff:
+		this->PrintImage(buffData);
+		break;
+	case EDeBuff:
+		this->PrintImage(deBuffData);
+		break;
+	case EShop:
+		this->PrintImage(shopData);
+		break;
+	case ERest:
+		this->PrintImage(restData);
+		break;
+	default:
+		cout << "í•´ë‹¹ ì´ë¯¸ì§€ ì—†ìŠµë‹ˆë‹¤.(í™•ì¸ ìš”ë§)" << endl;
+		break;
+	}
+	cout << this->log;
+}
+
+//ë¯¸êµ¬í˜„
 void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
 {
 	system("cls");
-	this->SetLog(orderLog);				//°¢ °´Ã¼¿¡¼­ SetLog¸¦ Á÷Á¢ È£ÃâÇÏ±âº¸´Ü, PrintLog¸¦ È£Ãâ¿¡¼­ Set°ú Ãâ·ÂÀÌ µ¿½Ã¿¡ ÀÌ·ç¾îÁöµµ·Ï ÇÔ
+	this->SetLog(orderLog);				//ê° ê°ì²´ì—ì„œ SetLogë¥¼ ì§ì ‘ í˜¸ì¶œí•˜ê¸°ë³´ë‹¨, PrintLogë¥¼ í˜¸ì¶œì—ì„œ Setê³¼ ì¶œë ¥ì´ ë™ì‹œì— ì´ë£¨ì–´ì§€ë„ë¡ í•¨
 
 	/*switch (caseNumber1)
 	{
