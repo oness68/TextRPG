@@ -32,6 +32,8 @@ private:
 	//콘솔 버퍼의 크기를 문자 크기로 맞춰줌. 이러면 문자열 길이에 따라 스크롤 발생하지 않음(게임이기 때문에 화면 스크롤 발생하지 않도록)
 	int bufferWidth = consoleWidth / charWidth;
 	int bufferHeight = consoleHeight / charHeight;
+	//문자 크기로 콘솔 버퍼 크기 정하고 창 크기 설정해줌
+	COORD bufferSize;
 	//콘솔 핸들 변수
 	HWND console = GetConsoleWindow();
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -45,7 +47,9 @@ private:
 	{255, 0, 0}, {255, 0, 255}, {255, 255, 0}, {255, 255, 255}
 	};
 	//알파벳으로 변환된 문자열을 담을 vector<string> 변수, 한줄(32)을 인덱스 멤버 하나로 32개 가짐(32x32)
+	//캐릭터 이미지
 	vector<string> playerData;
+	//몬스터 이미지
 	vector<string> goblinData;
 	vector<string> orcData;
 	vector<string> trollData;
@@ -55,6 +59,9 @@ private:
 	vector<string> twinHeadTrollData;
 	vector<string> treantData;
 	vector<string> dragonData;
+	//버프 이미지
+	vector<string> buffData;
+	vector<string> deBuffData;
 	int sleepVar = 2000;
 
 private:

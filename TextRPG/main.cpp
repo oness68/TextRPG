@@ -51,7 +51,7 @@ void main()
 		gameManager.BeginBattle(&player1, 1);
 		break;
 	}
-
+	
 	//게임 실행이 끝났을 때
 	logger->PrintGameOver(EGameEnd);
 	return;

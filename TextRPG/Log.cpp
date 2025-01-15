@@ -76,8 +76,7 @@ int Log::GetClosestColorIndex(int r, int g, int b) {
 //모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
 void Log::Initialize()
 {
-	//문자 크기로 콘솔 버퍼 크기 정하고 창 크기 설정해줌
-	COORD bufferSize;
+	//SetConsoleOutputCP(CP_UTF8);
 	bufferSize.X = bufferWidth;
 	bufferSize.Y = bufferHeight;
 	//cout << bufferSize.X << ", " << bufferSize.Y << endl;
@@ -97,6 +96,8 @@ void Log::Initialize()
 	this->twinHeadTrollData = PNGImageToData("Images/TwinHeadTroll.png");
 	this->treantData = PNGImageToData("Images/Treant.png");
 	this->dragonData = PNGImageToData("Images/Dragon.png");
+	this->buffData = PNGImageToData("Images/Buff.png");
+	this->deBuffData = PNGImageToData("Images/Debuff.png");
 }
 
 const string& Log::GetLog()
@@ -208,7 +209,15 @@ void Log::PrintLog(string orderLog, int caseNumber)
 		break;
 	case EDragon:
 		this->PrintImage(dragonData);
+		break;
+	case EBuff:
+		this->PrintImage(buffData);
+		break;
+	case EDeBuff:
+		this->PrintImage(deBuffData);
+		break;
 	default:
+		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
 		break;
 	}
 	cout << this->log;
