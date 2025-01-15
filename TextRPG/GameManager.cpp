@@ -78,7 +78,7 @@ namespace GameManger {
 		// TODO: 리턴 처리
 	}
 
-	// 휴식 장소 방문 함수
+	// 휴식 장소 방문 함수 구현 완료 - 채규혁
 	void GameManger::VisitRest(Character* player)
 	{
 		int currentHP = player->GetCurrentHP() - 70;
@@ -123,7 +123,7 @@ namespace GameManger {
 		}
 	}
 
-	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(자체적으로 캐릭터에 버프가 적용되는데, 방향성이 다름) - 채규혁
+	//구현 완료 - 채규혁
 	void GameManger::BuffDice(Character* player)
 	{
 		//1 : 깎인 체력의 절반 회복
@@ -202,7 +202,7 @@ namespace GameManger {
 		Sleep(4000);
 	}
 
-	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(버프 미적용) - 채규혁
+	//구현 완료 - 채규혁
 	void GameManger::BuffNumber(Character* player)
 	{
 		Log* logger = Log::GetInstance();
@@ -281,7 +281,7 @@ namespace GameManger {
 		Sleep(3000);
 	}
 
-	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(버프 미적용) - 채규혁
+	//구현 완료 - 채규혁
 	void GameManger::BuffCoinToss(Character* player)
 	{
 		Log* logger = Log::GetInstance();
