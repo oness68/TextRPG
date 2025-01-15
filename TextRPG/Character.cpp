@@ -41,13 +41,23 @@ const string& Character::GetCharacterStatusString()
 
 
 int Character::GetCurrentHP() { return this->currentHP; }
-int Character::GetMaxHP() { return 0; }
+int Character::GetMaxHP() { return this->maxHP; }
 const int& Character::GetAttackPower()
 {
 	return this->attackPower; // + 아이템 + 버프
 }
 
-void Character::SetCurrentHP(int hp) { this->currentHP = hp; }
+void Character::SetCurrentHP(int hp)
+{
+	if (hp > maxHP)
+	{
+		this->currentHP = maxHP;
+	}
+	else
+	{
+		this->currentHP = hp;
+	}
+}
 void Character::SetMaxHP(int hp) { this->maxHP = hp; }
 void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
 
