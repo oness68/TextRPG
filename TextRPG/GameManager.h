@@ -6,9 +6,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <optional>
 
 #include"BattleManager.h"
 #include"Character.h"
+
 namespace GameManger {
 	enum StageRooms {
 		Shop = 1,
@@ -35,44 +37,10 @@ namespace GameManger {
 		*/
 
 		template <typename RoomType>
-		RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
-			double totalProbability = 0.0;
-
-			std::srand(static_cast<unsigned>(std::time(nullptr)));
-
-			for (const auto& room : roomProbabilities) {
-				totalProbability += room.second;
-			}
-
-			double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
-			double cumulativeProbability = 0.0;
-
-			for (const auto& room : roomProbabilities) {
-				cumulativeProbability += room.second;
-				if (randomValue <= cumulativeProbability) {
-					return room.first;
-				}
-			}
-
-			return roomProbabilities.begin()->first;
-		}
+		RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities);
 
 		template <typename RoomType>
-		std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, RoomType allowDuplicateRoom = RoomType()) {
-			std::vector<RoomType> selectedRooms;
-
-			RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
-			selectedRooms.push_back(firstRoom);
-
-			RoomType secondRoom;
-			do {
-				secondRoom = GenerateRandomRoom(roomProbabilities);
-			} while (secondRoom == firstRoom && allowDuplicateRoom != firstRoom);
-
-			selectedRooms.push_back(secondRoom);
-
-			return selectedRooms;
-		};
+		std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom = std::nullopt);
 
 		void VisitShop(Character* player);
 		void VisitRest(Character* player);

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include <optional>
 
 using namespace std;
 
@@ -94,7 +93,7 @@ namespace GameManger {
         // TODO: 구현 필요
         std::cout << "버프방 들어왔니?" << std::endl;
 
-        auto buffRooms = GenerateTwoRandomRooms(buffRoomProbabilities, Dice);
+        auto buffRooms = GenerateTwoRandomRooms(buffRoomProbabilities);
 
         for (size_t i = 0; i < buffRooms.size(); ++i) {
             std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
@@ -129,7 +128,7 @@ namespace GameManger {
 
         while (stage <= 20)
         {
-            auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, Battle);
+            auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
 
             for (size_t i = 0; i < stageRooms.size(); ++i) {
                 std::cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << std::endl;
@@ -169,6 +168,48 @@ namespace GameManger {
             SetStage(++stage);
         }
     }
+
+    template <typename RoomType>
+    RoomType  GameManger::GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
+        double totalProbability = 0.0;
+
+        std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+        for (const auto& room : roomProbabilities) {
+            totalProbability += room.second;
+        }
+
+        double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
+        double cumulativeProbability = 0.0;
+
+        for (const auto& room : roomProbabilities) {
+            cumulativeProbability += room.second;
+            if (randomValue <= cumulativeProbability) {
+                return room.first;
+            }
+        }
+
+        return roomProbabilities.begin()->first;
+    }
+
+    template <typename RoomType>
+    std::vector<RoomType> GameManger::GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom) {
+        std::vector<RoomType> selectedRooms;
+
+        RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
+        selectedRooms.push_back(firstRoom);
+
+        RoomType secondRoom;
+        do {
+            secondRoom = GenerateRandomRoom(roomProbabilities);
+
+        } while (secondRoom == firstRoom && allowDuplicateRoom != firstRoom);
+
+        selectedRooms.push_back(secondRoom);
+
+        return selectedRooms;
+    };
+
     /*
     StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
     {
