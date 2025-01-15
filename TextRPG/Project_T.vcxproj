@@ -135,7 +135,9 @@
     <ClCompile Include="ConsumableItem.cpp" />
     <ClCompile Include="Enchancer.cpp" />
     <ClCompile Include="EquipableItem.cpp" />
+    <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
