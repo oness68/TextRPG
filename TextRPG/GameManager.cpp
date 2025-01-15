@@ -21,6 +21,8 @@ namespace GameManger {
     void GameManger::VisitShop(Character* player)
     {
         int input;
+        
+        Log::GetInstance()->PrintLog("상점에 방문했습니다!\n", (int)EShop, true);
 
         Shop shop;
 
@@ -38,21 +40,25 @@ namespace GameManger {
             switch (input) {
             case 1:
                 cout << "구매를 선택했습니다." << endl;
+                shop.BuyItem(*player);
                 // 구매 관련 로직 추가
                 break;
             case 2:
                 cout << "판매를 선택했습니다." << endl;
+                shop.SellItem(*player);
                 // 판매 관련 로직 추가
                 break;
             case 3:
                 cout << "강화를 선택했습니다." << endl;
+                shop.UseEnchancer(*player);
                 // 강화 관련 로직 추가
                 break;
             case 4:
                 cout << "인벤토리를 확인합니다." << endl;
                 // 인벤토리 관련 로직 추가
 
-                player->GetInventory();
+                //player->GetInventory();
+                player->DisplayInventory();
 
                 break;
             case 5:
