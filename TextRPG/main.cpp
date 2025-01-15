@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Character.h"
 #include "EnumCollection.h"
+#include "shop.h"
 
 using namespace std;
 
@@ -25,8 +26,16 @@ int main()
 	bool isGameRun = false;		//게임의 실행여부
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함
 
+	Shop shop;
+	gameManager.VisitShop(&player1);
+	//shop.BuyItem(player1);
+
+	//shop.SellItem(player1);
+
+	//shop.UseEnchancer(player1);
+
 	// 1. 게임시작, 2. 종료
-	while (!isGameStart)
+	/*while (!isGameStart)
 	{
 		logger->PrintStartMenu(EMenu);
 		cin >> menuOption;
@@ -48,7 +57,7 @@ int main()
 		default:
 			logger->PrintInputError();	//잘못된 입력 안내 출력
 		}
-	}
+	}*/
 	
 	//게임 실행이 끝났을 때
 	logger->PrintGameOver(EGameEnd);
