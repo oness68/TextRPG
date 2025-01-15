@@ -7,14 +7,12 @@
 
 using namespace std;
 
-void main()
+int main() 
 {
 	using GM = GameManger::GameManger;
 
 	GM& gameManager = GM::GetInstance();
 
-	// 배틀 매니저, 케릭터 생성
-	gameManager.GenerateBattleManager();
 	Log* logger = Log::GetInstance();
 	logger->Initialize();
 	Character player1 = *new Character("한정혁");
@@ -53,6 +51,6 @@ void main()
 	}
 	
 	//게임 실행이 끝났을 때
-	logger->PrintGameOver(EGameEnd);
-	return;
+	logger->PrintGameOver(LogEnum::EGameOver);
+	return 0;
 }

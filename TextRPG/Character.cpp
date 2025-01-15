@@ -127,8 +127,14 @@ void Character::RemoveItem(Item* item)//추가 이인화---------
 		}
 	}
 }
+/*
+void Character::EquipItem(EquipableItem* item)
+{
 
-void Character::LevelUp()
+<<<<<<< HEAD
+};
+*/
+void Character::TakeExp(const int& exp)
 {
 	if (level < maxLevel)
 	{
