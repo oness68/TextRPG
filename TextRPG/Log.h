@@ -10,7 +10,6 @@
 #include <time.h>
 #include <type_traits>
 
-
 #define IMAGE_SIDE_LENGTH 32	//사용되는 이미지파일은 무조건 32X32 픽셀 사이즈만 사용
 #define NUMBER_OF_COLOR 16
 using namespace std;
