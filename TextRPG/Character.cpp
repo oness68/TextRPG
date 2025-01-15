@@ -3,9 +3,9 @@
 #include "ItemFactory.h"
 #include "ConsumableItem.h"
 #include "EquipableItem.h"
+#include "Log.h"
 #include <format>
 #include <iostream>
-
 
 using namespace std;
 
@@ -78,7 +78,7 @@ map<string, class Inventory> Character::GetInventory()
 	return this->inventory;
 }
 
-vector<Inventory> Character::GetInventoryItems(enum class ItemType type = ItemType::Unknown)
+vector<Inventory> Character::GetInventoryItems(enum class ItemType type)
 {
 	vector<Inventory> inventoryItems;
 
@@ -106,6 +106,21 @@ vector<Inventory> Character::GetInventoryItems(enum class ItemType type = ItemTy
 		break;
 	}
 	return inventoryItems;
+}
+
+void Character::DisplayInventory()
+{
+	Log* logger = Log::GetInstance();
+	logger->PrintLog("The shop is out of items!\n", (int)EShop, false);
+	
+	cout << "======= 인벤토리 목록 =======" << endl;
+	int index = 1;
+	for (auto item : inventory)
+	{
+		cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
+		index++;
+	}
+	
 }
 
 const int& Character::GetGold() { return this->gold; }

@@ -14,9 +14,10 @@ EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equip
 	this->price = price;
 	this->rarity = rarity;
 	this->equipType = equipType;
-	this->itemType = ItemType::Equipable;
 	this->baseStat = baseStat;
 	this->enchantLevel = enchantLevel;
+
+	this->itemType = ItemType::Equipable;
 }
 
 EquipableItem::~EquipableItem()

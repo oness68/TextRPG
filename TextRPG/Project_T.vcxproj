@@ -144,7 +144,6 @@
     <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseEquipableItem.h" />
     <ClInclude Include="Battle.h" />
     <ClInclude Include="BattleManager.h" />
     <ClInclude Include="Character.h" />

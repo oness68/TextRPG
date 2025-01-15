@@ -2,10 +2,15 @@
 #include "Item.h"
 #include "Enchancer.h"
 #include "ItemFactory.h"
+#include "Log.h"
+#include <format>
+
+Log* logger = Log::GetInstance();
 
 Shop::Shop()
 {
 	shopInven = ItemFactory::GetInstance().GenerateRandomItems(3);
+
 }
 
 Shop::~Shop()
@@ -16,16 +21,24 @@ Shop::~Shop()
 	}
 }
 
+void Shop::operator=(Shop&& rhs) noexcept
+{
+
+}
+
 void Shop::DisplayItem()
 {
 	if (shopInven.empty())
 	{
-		cout << "\nThe shop is out of items!\n" << endl;
+		logger->PrintLog("The shop is out of items!", (int)EShop, false);//cout << "\nThe shop is out of items!\n" << endl;
 		return;
 	}
 	for (int i = 0; i < shopInven.size(); i++)
 	{
-		cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold" << " [" << (int)shopInven[i]->GetType() << "]" << endl;
+		string logMessage = format("{}. {} - {} gold [{}]", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType());
+		logger->PrintLog(logMessage, (int)EShop, false);
+
+		//cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold" << " [" << (int)shopInven[i]->GetType() << "]" << endl;
 	}
 }
 
@@ -37,8 +50,10 @@ void Shop::BuyItem(Character& player)
 		return;
 	}
 
-	cout << "You have " << player.GetGold() << "gold\n" << endl;
-	cout << "Select the items you want to buy!" << endl;
+	logger->PrintLog(format("You have {} gold\n", player.GetGold()),(int)EShop, true);
+	logger->PrintLog("Select the items you want to buy!\n", false);
+	//cout << "You have " << player.GetGold() << "gold\n" << endl;
+	//cout << "Select the items you want to buy!" << endl;
 
 	for (int i = 0; i < shopInven.size(); i++)
 	{
