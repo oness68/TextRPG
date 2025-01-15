@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <conio.h>
 
 using namespace std;
 
@@ -19,7 +20,15 @@ namespace GameManger {
     // 상점 방문 함수
     void GameManger::VisitShop(Character* player)
     {
-        // TODO: 구현 필요
+        int input;
+        cout << "1. 구매" << endl;
+        cout << "2. 판매" << endl;
+        cout << "3. 강화" << endl;
+        cout << "4. 인벤토리" << endl;
+        cout << "5. 나가기" << endl;
+        cin >> input;
+
+
     }
 
     // 전투 시작 함수
@@ -34,7 +43,6 @@ namespace GameManger {
     // 휴식 장소 방문 함수
     void GameManger::VisitRest(Character* player)
     {
-        // TODO: 구현 필요
         int currentHP = player->GetCurrentHP();
         int maxHP = player->GetMaxHP();
 
@@ -75,6 +83,10 @@ namespace GameManger {
 
         Log* logger = Log::GetInstance();
         
+        // logger->PrintLog("HI", 1);
+
+        VisitShop(player);
+        
         SetStage(stage);
 
         while (stage <= 20)
@@ -94,6 +106,7 @@ namespace GameManger {
                 switch (selectedRooms[0]) {
                 case Shop:
                     std::cout << "상점에 도착했습니다!" << std::endl;
+                    VisitShop(player);
                     break;
                 case Rest:
                     std::cout << "휴식을 취합니다." << std::endl;

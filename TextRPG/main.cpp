@@ -36,6 +36,9 @@ int main()
 			isGameStart = true;	//시작화면 루프 벗어나기 위함
 			isGameRun = true;	//게임 시작
 			logger->PrintStartMenu(EStart);
+
+			//TODO: 케릭터 이름 입력받는 부분 필요
+
 			gameManager.BeginPlay(&player1);
 			break;
 		case 2:
