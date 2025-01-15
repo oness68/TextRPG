@@ -26,6 +26,50 @@ namespace GameManger {
 
         Shop shop;
 
+        vector<string> menuItems = {
+            "구매",
+            "판매",
+            "강화",
+            "인벤토리",
+            "나가기"
+        };
+
+        vector<function<void()>> actions = {
+            [&]() {
+                cout << "구매를 선택했습니다." << endl;
+                shop.BuyItem(*player);
+            },
+            [&]() {
+                cout << "판매를 선택했습니다." << endl;
+                shop.SellItem(*player);
+            },
+            [&]() {
+                cout << "강화를 선택했습니다." << endl;
+                shop.UseEnchancer(*player);
+            },
+            [&]() {
+                cout << "인벤토리를 확인합니다." << endl;
+                player->DisplayInventory();
+            },
+            [&]() {
+                cout << "상점을 떠납니다." << endl;
+            }
+        };
+
+        Menu menuSystem(menuItems, actions);
+
+        // 메뉴 실행
+        while (true) {
+            menuSystem.DisplayMenu((int)EShop, true);
+            menuSystem.RunMenu((int)EShop, true);
+
+            if (menuSystem.GetSelectedIndex() == 4) {
+                break;
+            }
+
+            cout << endl; // 메뉴 간격 조정
+        }
+        /*
         while (true) {
             // 메뉴 출력
             cout << "1. 구매" << endl;
@@ -71,6 +115,7 @@ namespace GameManger {
 
             cout << endl; // 메뉴 간격 조정
         }
+        */
     }
 
     // 전투 시작 함수
@@ -125,13 +170,13 @@ namespace GameManger {
     {
         int stage = 1;
 
-        player->DisplayStatus();
+        //player->DisplayStatus();
 
         Log* logger = Log::GetInstance();
         
         // VisitBuffRoom(player);
 
-       // VisitShop(player);
+        VisitShop(player);
 
         SetStage(stage);
         BeginBattle(player, stage);
