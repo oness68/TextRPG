@@ -9,11 +9,11 @@ ConsumableItem::ConsumableItem()
 ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue)
 {
 	this->name = name;
-	this->itemType = ItemType::Consumable;
 	this->price = price;
 	this->rarity = rarity;
 	this->effectType = effectType;
 	this->effectValue = effectValue;
+	this->itemType = ItemType::Consumable;
 }
 
 ConsumableItem::~ConsumableItem() {}
@@ -28,15 +28,11 @@ void ConsumableItem::ConsumeEffect(Character& player)
 	{
 	case EffectType::HealCurrentHP:
 		player.SetCurrentHP(player.GetCurrentHP() + this->effectValue);
-		if (player.GetCurrentHP() > player.GetMaxHP())
-		{
-			player.SetCurrentHP(player.GetMaxHP());
-		}
 		cout << "You used a " << name << "!" << endl;
 		cout << "Healing HP" << effectValue << "! Current HP : " << player.GetCurrentHP() << "/" << player.GetMaxHP() << endl;
 		break;
 	case EffectType::IncreaseMaxHP:
-		player.SetMaxHP(player.GetMaxHP() + effectValue);
+		player.AddMaxHP(effectValue);
 		cout << "You used a " << name << "!" << endl;
 		cout << "Max HP Up " << effectValue << "! Max HP : " << player.GetMaxHP() << endl;
 		break;

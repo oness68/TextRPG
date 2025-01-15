@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 //#include "Log.h"
+#include "BuffBase.h"
 #include "Item.h"
 #include "EquipableItem.h"
 #include "ExceptionHandler.h"
@@ -27,6 +28,7 @@ public:
 	int Count = 0;
 };
 
+
 class Character
 {
 public:
@@ -34,15 +36,16 @@ public:
 	~Character();
 
 	void DisplayStatus();
-	const string& GetCharacterStatusString();
+	const string GetCharacterStatusString();
 
-	int GetCurrentHP();
-	int GetMaxHP();
+	const int& GetCurrentHP();
+	const int& GetMaxHP();
 	const int& GetAttackPower();
-	int GetRequiredLevelUpExp();
+	const int& GetRequiredLevelUpExp();
 
 	void SetCurrentHP(int hp);
 	void SetMaxHP(int hp);
+	void AddMaxHP(int amount);
 	void SetAttackPower(int attackPower);
 	void SetRequiredLevelUpExp(int requiredLevelUpExp);
 
@@ -65,13 +68,9 @@ public:
 
 	void ReduceInventory(const string& itemKey);
 
-	//추가 이인화--------------
-	//void RemoveItem(Item* item);//추가 이인화
-	//EquipableItem* GetWeaponSlot();
-	//void SetWeaponSlot(EquipableItem* item);
-	//EquipableItem* GetArmorSlot();
-	//void SetArmorSlot(EquipableItem* item);
-	//void EquipItem(EquipableItem* item);//추가 이인화
+	void TurnEnd();
+	void TryAddBuff(BuffBase& buffBase);
+	void TryRemoveBuff();
 
 private:
 	string name;
@@ -79,16 +78,24 @@ private:
 	int currentHP = 100;
 	int maxHP = 100;
 	int attackPower = 30;
+	int armor = 0;
 	int gold = 5000;
 	int currentExp = 0;
 	int requiredLevelUpExp = 100;
 	int maxLevel = 10;
 
 	map<string, class Inventory> inventory;
-	
-	//map<EquipmentType, int> equipmentItems;
-	//EquipableItem* weaponSlot = nullptr;
-	//EquipableItem* armorSlot = nullptr;
+
+	map<enum class EquipmentType, class EquipableItem*> equipItemContainer;
+	BuffStat equipmentBuffStat;				// 장비 아이템 추가 Stat
+	BuffStat archiveBuffStat;				// 도감 아이템 추가 Stat
+	vector<class BuffBase> buffContainer;	// 턴이 있는 Buff 아이템 추가 Stat
+	BuffStat buffStat;
+
+	void InitEquipMentItem();
+	void EquipItem(EquipableItem* equipableItem);
+
+	int GetEquipAddAmount();
 
 	void LevelUp();
 	void IncreaseMaxHP(const int& level);

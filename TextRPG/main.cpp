@@ -20,11 +20,10 @@ int main()
 	logger->Initialize();
 	
 	// Debug
-	// Character player1 = *new Character("정의된 용사");
-	// Character player1 = *new Character("aaa");
-	// Shop shop;
-	// gameManager.VisitShop(&player1);
-
+	//Character player1 = *new Character("정의된 용사");
+	//Shop shop;
+	//gameManager.VisitShop(&player1);
+	
 	int menuOption;
 	bool isGameRun = false;		//게임의 실행여부
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함

@@ -23,12 +23,14 @@ enum class Rarity
 enum class EquipmentType
 {
 	Weapone = 0,	// 무기
-	// Armor,		// 방어구
-	Ring,			// 반지 => 공격력만증가
+
+	Armor,			// 방어구
 	// Head,		// 머리 보호대
-	// Glove,		// 장갑
-	// Shoes,		// 신발
-	// EarRing,		// 귀걸이
+	Glove,			// 장갑
+	Shoes,			// 신발
+
+	Ring,			// 반지 => 공격력만증가
+	EarRing,		// 귀걸이
 };
 
 enum class ElixirType
@@ -49,16 +51,27 @@ public:
 	Item(string name, int price, Rarity rarity)
 	{
 		this->name = name;
-		this->itemType = ItemType::Default;
 		this->rarity = rarity;
 		this->price = price;
+
+		this->itemType = ItemType::Default;
 		this->depreciationRate = 0.6;
 	}
+	Item(string name, int price, Rarity rarity, double depreciationRate)
+	{
+		this->name = name;
+		this->rarity = rarity;
+		this->price = price;
+		this->depreciationRate = depreciationRate;
+
+		this->itemType = ItemType::Default;
+	}
+
 	virtual ~Item() {}
 
 	string GetName() { return this->name; }
-	enum class ItemType GetType() { return this->itemType; }
-	enum class Rarity GetRarity() { return this->rarity; }
+	ItemType GetType() { return this->itemType; }
+	Rarity GetRarity() { return this->rarity; }
 	
 	int GetPrice() { return this->price; }
 	double GetDepreciationRate() { return this->depreciationRate; }
@@ -66,11 +79,31 @@ public:
 
 protected:
 	string name = "";
-	enum class ItemType itemType = ItemType::Unknown;
+	ItemType itemType = ItemType::Unknown;
 	Rarity rarity = Rarity::C;
 
 	int price = 0;
-	double depreciationRate = 0;
+	double depreciationRate = 1;
+};
+
+#include "BuffBase.h"
+class ArchiveItem : public Item
+{
+public:
+	ArchiveItem() {};
+	ArchiveItem(string name, int price, Rarity rarity, BuffStat buffStat)
+	{
+		this->name = name;
+		this->rarity = rarity;
+		this->price = price;
+		this->buffStat = buffStat;
+
+		this->itemType = ItemType::Archive;
+	}
+
+	BuffStat GetBuffStat() { return this->buffStat; }
+private:
+	BuffStat buffStat;
 };
 
 #endif // !ITEM_H_

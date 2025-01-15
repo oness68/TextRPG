@@ -26,18 +26,20 @@ ItemFactory::ItemFactory()
 	items.insert(make_pair("LowAttackPotion", new ConsumableItem("LowAttackPotion", 20, Rarity::C, EffectType::DamageUp, 30)));
 	items.insert(make_pair("MiddleAttackPotion", new ConsumableItem("MiddleAttackPotion", 40, Rarity::R, EffectType::DamageUp, 50)));
 	items.insert(make_pair("HightAttackPotion", new ConsumableItem("HightAttackPotion", 60, Rarity::SR, EffectType::DamageUp, 100)));
-
+	
 	// Elixir
 	items.insert(make_pair("LowElixir", new ConsumableItem("LowElixir", 50, Rarity::C, EffectType::IncreaseMaxHP, 100)));
 	items.insert(make_pair("MiddleElixir", new ConsumableItem("MiddleElixir", 100, Rarity::R, EffectType::IncreaseMaxHP, 200)));
 	items.insert(make_pair("HightElixir", new ConsumableItem("HightElixir", 200, Rarity::SR, EffectType::IncreaseMaxHP, 400)));
-
+	
 	// Default Item
 	items.insert(make_pair("고블린가죽", new Item("고블린가죽", 50, Rarity::C)));
 	items.insert(make_pair("고블린귀", new Item("고블린귀", 50, Rarity::C)));
 	items.insert(make_pair("고블린라이더의안장", new Item("고블린라이더의안장", 50, Rarity::C)));
 
-	items.insert(make_pair("모험가의장검", new EquipableItem("모험가의장검", 300, Rarity::C, "Weapon", { {"Damage", 50} }, 0)));
+	items.insert(make_pair("고블린족장의유물", new ArchiveItem("고블린라이더의안장", 50, Rarity::C, BuffStat(5, 0, 0))));
+
+	items.insert(make_pair("모험가의장검", new EquipableItem("모험가의장검", 300, Rarity::C, "Weapon", { {"Damage", 50} }, 0, BuffStat(10, 0, 0))));
 
 	/*items.push_back(new LeatherArmor());
 	items.push_back(new ChainMail());
@@ -77,7 +79,7 @@ Item* ItemFactory::GenerateItem(string itemName)
 	}
 	else
 	{
-		throw ExceptionHandler(ErrorCode::NullItemKey, format("생성하려는 아이템이 아이템 목록에 없습니다. 아이템 이름 :{}\n", itemName));
+		//throw ExceptionHandler(ErrorCode::NullItemKey, format("생성하려는 아이템이 아이템 목록에 없습니다. 아이템 이름 :{}\n", itemName));
 	}
 
 	return item;

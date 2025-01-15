@@ -81,7 +81,7 @@ namespace GameManger {
 	// 휴식 장소 방문 함수
 	void GameManger::VisitRest(Character* player)
 	{
-		int currentHP = player->GetCurrentHP()-70;
+		int currentHP = player->GetCurrentHP() - 70;
 		int maxHP = player->GetMaxHP();
 		Log* logger = Log::GetInstance();
 		if (maxHP / 2 > currentHP)
@@ -210,7 +210,6 @@ namespace GameManger {
 	void GameManger::BuffNumber(Character* player)
 	{
 		Log* logger = Log::GetInstance();
-
 		std::random_device random;
 		std::mt19937 generator(random());
 		std::uniform_int_distribution<int> distribution(1, 100);
@@ -219,19 +218,16 @@ namespace GameManger {
 		int attempts = 3;
 		int score = 0;
 		string numberLog = "";
-
 		numberLog += "숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n";
 		numberLog += "1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n";
-			/*logger->PrintLog("숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n", EBuff);
-			logger->PrintLog("1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n", EBuff);*/
-
+		/*logger->PrintLog("숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n", EBuff);
+		logger->PrintLog("1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n", EBuff);*/
 		logger->PrintLog(numberLog, EBuff);
 		Sleep(3000);
 		numberLog = "";
 		for (int i = 1; i <= attempts; ++i) {
 			logger->PrintLog(to_string(i) + "번째 시도: ", EBuff);
 			cin >> guess;
-
 			if (guess == secretNumber) {
 				/*logger->PrintLog("축하합니다! 숫자를 맞췄습니다!\n", EBuff);
 				score = (attempts - i + 1) * 50;
@@ -266,7 +262,9 @@ namespace GameManger {
 
 	void GameManger::BuffRand(Character* player)
 	{
-		//TODO: 아이템 랜덤 변경 (등급상향)
+		//TODO: 아이템 랜덤 변경
+
+
 	}
 
 	void GameManger::BuffCoinToss(Character* player)
