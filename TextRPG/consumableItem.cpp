@@ -40,21 +40,21 @@ void ConsumableItem::ConsumeEffect(Character& player)
 	{
 	case EffectType::HealCurrentHP:
 		player.SetCurrentHP(player.GetCurrentHP() + this->effectValue);
-		cout << "You used a " << name << "!" << endl;
-		cout << "Healing HP" << effectValue << "! Current HP : " << player.GetCurrentHP() << "/" << player.GetMaxHP() << endl;
+		//cout << "You used a " << name << "!" << endl;
+		//cout << "Healing HP" << effectValue << "! Current HP : " << player.GetCurrentHP() << "/" << player.GetMaxHP() << endl;
 		break;
 	case EffectType::IncreaseMaxHP:
 		player.AddMaxHP(effectValue);
-		cout << "You used a " << name << "!" << endl;
-		cout << "Max HP Up " << effectValue << "! Max HP : " << player.GetMaxHP() << endl;
+		//cout << "You used a " << name << "!" << endl;
+		//cout << "Max HP Up " << effectValue << "! Max HP : " << player.GetMaxHP() << endl;
 		break;
 	case EffectType::DamageUp:
 		{
 		BuffBase buffbase = BuffBase(BuffStat(this->effectValue, 0, 0), this->duration);
 		player.TryAddBuff(buffbase);
 		}
-		cout << "You used a " << name << "!" << endl;
-		cout << "Damage Up " << effectValue << "! AttackPower : " << player.GetAttackPower() << endl;
+		//cout << "You used a " << name << "!" << endl;
+		//cout << "Damage Up " << effectValue << "! AttackPower : " << player.GetAttackPower() << endl;
 		break;
 	case EffectType::Unknown:
 		break;

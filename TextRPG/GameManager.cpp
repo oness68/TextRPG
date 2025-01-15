@@ -168,7 +168,7 @@ namespace GameManger {
 			}
 			break;
 		case 2:
-			player->SetAttackPower(player->GetAttackPower() + 5);
+			player->AddAttackPower(5);
 			diceLog += "플레이어의 공격력이 5만큼 상승합니다.";
 			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
 			Sleep(3000);
@@ -188,7 +188,7 @@ namespace GameManger {
 			logger->PrintLog(diceLog, EDeBuff);
 			break;
 		case 5:
-			player->SetAttackPower(player->GetAttackPower() - 5);
+			player->AddAttackPower(-5);
 			diceLog += "플레이어의 공격력이 5만큼 감소합니다.\n";
 			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
 			Sleep(3000);
@@ -379,112 +379,112 @@ namespace GameManger {
 
 		Log* logger = Log::GetInstance();
 
-		// player->DisplayStatus();
-		 VisitBuffRoom(player);
+		player->DisplayStatus();
+		// VisitBuffRoom(player);
 		// VisitShop(player);
 		// VisitRest(player);
-		/*
+		
 		SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);
-		*/
-		//while (stage <= 20)
-		//{
-		//	auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
-		//	
-		//	for (size_t i = 0; i < stageRooms.size(); ++i) {
-		//		cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
-		//	}
+		
+		while (stage <= 20)
+		{
+			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
+			
+			for (size_t i = 0; i < stageRooms.size(); ++i) {
+				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
+			}
 
-		//	vector<string> menu = {
-		//		StageRoomToString(stageRooms[0]),
-		//		StageRoomToString(stageRooms[1])
-		//	};
+			vector<string> menu = {
+				StageRoomToString(stageRooms[0]),
+				StageRoomToString(stageRooms[1])
+			};
 
-		//	vector<function<void()>> actions;
+			vector<function<void()>> actions;
 
-		//	for (const auto stage : stageRooms)
-		//	{
-		//		switch (stage)
-		//		{
-		//		case Market:
-		//			// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("이상한 건물에 들어섰다.\n");
-		//				VisitShop(player);
-		//			});
-		//			break;
-		//		case Rest:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-		//				VisitRest(player);
-		//			});
-		//			break;
-		//		case Battle:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("어맛!\n");
-		//				BeginBattle(player, stage);
-		//			});
-		//			break;
-		//		default:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("여긴 어디지...?\n");
-		//				VisitBuffRoom(player);
-		//			});
-		//			break;
-		//		}
-		//	}
+			for (const auto stage : stageRooms)
+			{
+				switch (stage)
+				{
+				case Market:
+					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
+					actions.push_back([&]() {
+						logger->PrintLog("이상한 건물에 들어섰다.\n");
+						VisitShop(player);
+					});
+					break;
+				case Rest:
+					actions.push_back([&]() {
+						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+						VisitRest(player);
+					});
+					break;
+				case Battle:
+					actions.push_back([&]() {
+						logger->PrintLog("어맛!\n");
+						BeginBattle(player, stage);
+					});
+					break;
+				default:
+					actions.push_back([&]() {
+						logger->PrintLog("여긴 어디지...?\n");
+						VisitBuffRoom(player);
+					});
+					break;
+				}
+			}
 
-		//	Menu menuSystem(menu, actions);
+			Menu menuSystem(menu, actions);
 
-		//	// 메뉴 실행
-		//	while (true) {
-		//		menuSystem.DisplayMenu((int)ECharacter, true);
-		//		menuSystem.RunMenu((int)ECharacter, true);
+			// 메뉴 실행
+			while (true) {
+				menuSystem.DisplayMenu((int)ECharacter, true);
+				menuSystem.RunMenu((int)ECharacter, true);
 
-		//		if (menuSystem.GetSelectedIndex() == 4) {
-		//			break;
-		//		}
+				if (menuSystem.GetSelectedIndex() == 4) {
+					break;
+				}
 
-		//		cout << endl; // 메뉴 간격 조정
-		//	}
+				cout << endl; // 메뉴 간격 조정
+			}
 
-		//	SetStage(++stage);
-		//	/*
-		//	int choice;
-		//	cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
-		//	std::cin >> choice;
+			SetStage(++stage);
+			/*
+			int choice;
+			cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
+			std::cin >> choice;
 
-		//	if (choice == 1 || choice == 2) {
-		//		StageRooms selectedRoom = stageRooms[choice - 1];
+			if (choice == 1 || choice == 2) {
+				StageRooms selectedRoom = stageRooms[choice - 1];
 
-		//		switch (selectedRoom) {
-		//		case Market:
-		//			logger->PrintLog("이상한 건물에 들어섰다.\n");
-		//			VisitShop(player);
-		//			break;
-		//		case Rest:
-		//			logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-		//			VisitRest(player);
-		//			break;
-		//		case Battle:
-		//			logger->PrintLog("어맛!\n");
-		//			BeginBattle(player, stage);
-		//			break;
-		//		default:
-		//			logger->PrintLog("여긴 어디지...?\n");
-		//			VisitBuffRoom(player);
-		//			break;
-		//		}
-		//	}
-		//	else {
-		//		logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
-		//		continue;
-		//	}
+				switch (selectedRoom) {
+				case Market:
+					logger->PrintLog("이상한 건물에 들어섰다.\n");
+					VisitShop(player);
+					break;
+				case Rest:
+					logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+					VisitRest(player);
+					break;
+				case Battle:
+					logger->PrintLog("어맛!\n");
+					BeginBattle(player, stage);
+					break;
+				default:
+					logger->PrintLog("여긴 어디지...?\n");
+					VisitBuffRoom(player);
+					break;
+				}
+			}
+			else {
+				logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
+				continue;
+			}
 
-		//	SetStage(++stage);
-		//	*/
-		//}
+			SetStage(++stage);
+			*/
+		}
 	}
 	
 } // namespace GameManger

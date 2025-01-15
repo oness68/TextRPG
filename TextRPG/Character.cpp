@@ -25,7 +25,9 @@ void Character::InitEquipMentItem()
 	Item* startItem = ItemFactory::GetInstance().GenerateItem("모험가의장검");
 	TakeItem(startItem);
 	EquipItem(dynamic_cast<EquipableItem*>(startItem));
-	DisplayStatus();
+
+	TakeExp(140);
+	//DisplayStatus();
 
 	//Item* archiveItem = ItemFactory::GetInstance().GenerateItem("고블린족장의유물");
 	//TakeItem(archiveItem);
@@ -35,13 +37,13 @@ void Character::InitEquipMentItem()
 	//TakeItem(trollsBlood);
 	//DisplayStatus();
 
-	//Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("LowAttackPotion");
+	Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("LowAttackPotion");
 	//Item* middleAttackBooster = ItemFactory::GetInstance().GenerateItem("MiddleAttackPotion");
 
-	//TakeItem(lowAttackBooster);
+	TakeItem(lowAttackBooster);
 	//TakeItem(middleAttackBooster);
 
-	//UseItem("LowAttackPotion");
+	UseItem("LowAttackPotion");
 }
 
 Character::~Character() {}
@@ -50,6 +52,53 @@ void Character::DisplayStatus()
 {
 	Log::GetInstance()->PrintLog(GetCharacterStatusString(), false);
 }
+
+void Character::DisplayStatus(string reason, int hp, int power, int level, int exp)
+{
+	string temp = reason += "\n";
+	temp += format("이름 : {}\n", name);
+
+	if (level != 0)
+	{
+		temp += format("레벨 : {} + (1)\n", level + 1);
+	}
+	else
+	{
+		temp += format("레벨 : {}\n", level);
+	}
+
+	if (hp != 0)
+	{
+		temp += format("HP : {}/{} + ({})\n", currentHP, GetMaxHP(), hp);
+	}
+	else
+	{
+		temp += format("HP : {}/{}\n", currentHP, GetMaxHP());
+	}
+
+	if (power != 0)
+	{
+		temp += format("공격력 : {} + ({})\n", GetAttackPower(), power);
+	}
+	else
+	{
+		temp += format("공격력 : {}\n", GetAttackPower());
+	}
+
+	temp += format("Gold : {}\n", gold);
+
+	if (exp != 0)
+	{
+		temp += format("경험치 : {}/{} + ({})\n", currentExp, requiredLevelUpExp, exp);
+	}
+	else
+	{
+		temp += format("경험치 : {}/{}\n", currentExp, requiredLevelUpExp);
+	}
+
+	Log::GetInstance()->PrintLog(temp, false);
+}
+
 
 const string Character::GetCharacterStatusString()
 {
@@ -72,13 +121,13 @@ const int& Character::GetMaxHP()
 	int calculateMaxHP = this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
 	return calculateMaxHP;
 }
-
 const int& Character::GetAttackPower()
 {
 	int calculateAP = this->attackPower + equipmentBuffStat.attackPower + archiveBuffStat.attackPower + buffStat.attackPower;
 	return calculateAP;
 }
 const int& Character::GetRequiredLevelUpExp() { return this->requiredLevelUpExp; }
+
 
 void Character::SetCurrentHP(int hp)
 {
@@ -99,6 +148,8 @@ void Character::AddMaxHP(int amount)
 {
 	this->maxHP += amount;
 }
+
+
 void Character::SetAttackPower(int attackPower)
 {
 	this->attackPower = attackPower;
@@ -108,12 +159,12 @@ void Character::AddAttackPower(int amount)
 	this->attackPower += amount;
 }
 
+
 void Character::TakeDamage(const int& damage)
 {
 	// TODO : 방어력에 대한 데미지 계산식 적용
-	currentHP -= damage;
+	currentHP -= (damage - armor);
 }
-
 void Character::TakeExp(const int& exp)
 {
 	currentExp += exp;
@@ -122,7 +173,6 @@ void Character::TakeExp(const int& exp)
 		LevelUp();
 	}
 }
-
 void Character::TakeGold(const int& gold)
 {
 	this->gold += gold;
@@ -167,14 +217,10 @@ vector<Inventory> Character::GetInventoryItems(enum class ItemType type)
 
 void Character::DisplayInventory()
 {
-	//Log* logger = Log::GetInstance();
-	//Log::GetInstance()->PrintLog("The shop is out of items!\n", (int)EShop, false);
-
-	//cout << "======= 인벤토리 목록 =======" << endl;
 	int index = 1;
 	for (auto item : inventory)
 	{
-		cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
+		//cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
 		index++;
 	}
 
@@ -192,7 +238,9 @@ void Character::TakeItem(Item* item)
 		if (inventory[itemName].itemType == ItemType::Archive)
 		{
 			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
-			Log::GetInstance()->PrintLog("Archive 아이템이 추가됐습니다.\n", false);
+
+			string temp = format("************* 도감 아이템 획득 ****************");
+			DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
 		}
 
 		//cout << format("신규 아이템이 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
@@ -235,7 +283,7 @@ void Character::BuyItem(Item* item)
 {
 	if (gold < item->GetPrice())
 	{
-		// cout << "소지 골드가 부족합니다"
+		Log::GetInstance()->PrintLog("소지 골드가 부족합니다.\n", false);
 	}
 	else
 	{
@@ -281,34 +329,18 @@ void Character::TurnEnd()
 
 void Character::TryAddBuff(BuffBase& buffBase)
 {
-	// Log::GetInstance()->PrintLog(format("Buff가 발동했습니다! 지속시간 : {}\n", buffBase.duration), false);
+	Log::GetInstance()->PrintLog(format("\n[ 디/버프가 추가됐습니다!! 지속턴수 : {} ]\n\n", buffBase.duration), false);
 	if (buffBase.duration == 0)
 	{
-		// Log::GetInstance()->PrintLog(format("Buff가 아무런 도움이 되지 않습니다.\n"), false);
+		Log::GetInstance()->PrintLog(format("[ Buff가 아무런 영향을 주지 않습니다. ]\n"), false);
 	}
 	else
 	{
 		buffContainer.push_back(buffBase);
 		buffStat += buffBase.buffStat;
-
-		string temp = format("Buff 효과 발동!!\n");
-		if (buffBase.buffStat.attackPower != 0)
-		{
-			temp += format("Attack Power Up!! : {}\n", buffBase.buffStat.attackPower);
-		}
-
-		if (buffBase.buffStat.armor != 0)
-		{
-			temp += format("Armor Up!! : {}\n", buffBase.buffStat.armor);
-		}
-
-		if (buffBase.buffStat.maxHP != 0)
-		{
-			temp += format("Max HP Up!! : {}\n", buffBase.buffStat.maxHP);
-		}
-
-		// Log::GetInstance()->PrintLog(temp, false);
-		DisplayStatus();
+	
+		string temp = format("************* 디/버프 효과 발동 ****************");
+		DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
 	}
 }
 
@@ -322,8 +354,8 @@ void Character::TryRemoveBuff()
 			auto removedBuff = *it;
 			buffStat -= removedBuff.buffStat;
 
-			Log::GetInstance()->PrintLog(format("Buff의 지속시간이 끝났습니다!\n"), false);
-			DisplayStatus();
+			string temp = format("************* 버프 종료 ****************");
+			DisplayStatus(temp, -buffStat.maxHP, -buffStat.attackPower);
 
 			it = buffContainer.erase(it);
 		}
@@ -340,37 +372,32 @@ void Character::EquipItem(EquipableItem* equipableItem)
 	{
 		for (auto equipedItem : equipItemContainer)
 		{
-			if (equipItemContainer.find(equipedItem.first) == equipItemContainer.end())
-			{
-
-			}
-			else
+			if (equipItemContainer.find(equipedItem.first) != equipItemContainer.end())
 			{
 				equipedItem.second->SetEquipping(false);
 				equipmentBuffStat -= equipedItem.second->GetBuffStat();
 				equipItemContainer.erase(equipedItem.first);
 			}
 
-			equipItemContainer[equipableItem->GetType()] = equipableItem;
-			equipmentBuffStat += equipableItem->GetBuffStat();
-			equipableItem->SetEquipping(true);
+			Equip(equipableItem);
 		}
 	}
 	else
 	{
-		equipItemContainer[equipableItem->GetType()] = equipableItem;
-		equipmentBuffStat += equipableItem->GetBuffStat();
-		equipableItem->SetEquipping(true);
-		Log::GetInstance()->PrintLog("장비아이템이 장착됐습니다!\n", false);
+		Equip(equipableItem);
 	}
 }
 
-int Character::GetEquipAddAmount()
+void Character::Equip(EquipableItem* equipableItem)
 {
-	return 0;
+	BuffStat buffStat = equipableItem->GetBuffStat();
+	equipItemContainer[equipableItem->GetType()] = equipableItem;
+	equipmentBuffStat += equipableItem->GetBuffStat();
+	equipableItem->SetEquipping(true);
+
+	string temp = "************* 장비 장착 ****************";
+	DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
 }
-
-
 
 void Character::LevelUp()
 {
@@ -378,11 +405,14 @@ void Character::LevelUp()
 	{
 		currentExp -= requiredLevelUpExp;
 
-		IncreaseMaxHP(level);
-		IncreaseAttackPower(level);
-		IncreaseRequireLevelUpExp(level);
+		IncreaseMaxHP();
+		IncreaseAttackPower();
+		IncreaseRequireLevelUpExp();
+		
+		string temp = "************* 레벨업 ****************";
+		DisplayStatus(temp, increaseMaxHPAmount, increaseAPAmount, level, increaseExpAmount);
 
-		level++;
+		this->level++;
 		if (level == maxLevel)
 		{
 			currentExp = requiredLevelUpExp;
@@ -395,18 +425,19 @@ void Character::LevelUp()
 	}
 }
 
-void Character::IncreaseMaxHP(const int& level)
+void Character::IncreaseMaxHP()
 {
-	maxHP += level * 20;
+	
+	this->maxHP += increaseMaxHPAmount;
 }
 
-void Character::IncreaseAttackPower(const int& level)
+void Character::IncreaseAttackPower()
 {
-	attackPower += level * 5;
+	this->attackPower += increaseAPAmount;
 }
 
-void Character::IncreaseRequireLevelUpExp(const int& level)
+void Character::IncreaseRequireLevelUpExp()
 {
-	requiredLevelUpExp += level * 10;
+	this->requiredLevelUpExp += increaseExpAmount;
 }
 

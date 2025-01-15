@@ -36,6 +36,7 @@ public:
 	~Character();
 
 	void DisplayStatus();
+	void DisplayStatus(string reason, int hp, int power, int level = 0, int exp = 0);
 	const string GetCharacterStatusString();
 
 	const int& GetCurrentHP();
@@ -88,20 +89,23 @@ private:
 	map<string, class Inventory> inventory;
 
 	map<enum class EquipmentType, class EquipableItem*> equipItemContainer;
-	BuffStat equipmentBuffStat;				// 장비 아이템 추가 Stat
+	BuffStat equipmentBuffStat;				// 장비 아이템 추가 Stats
 	BuffStat archiveBuffStat;				// 도감 아이템 추가 Stat
 	vector<class BuffBase> buffContainer;	// 턴이 있는 Buff 아이템 추가 Stat
 	BuffStat buffStat;
 
 	void InitEquipMentItem();
 	void EquipItem(EquipableItem* equipableItem);
-
-	int GetEquipAddAmount();
+	void Equip(EquipableItem* equipableItem);
 
 	void LevelUp();
-	void IncreaseMaxHP(const int& level);
-	void IncreaseAttackPower(const int& level);
-	void IncreaseRequireLevelUpExp(const int& level);
+
+	void IncreaseMaxHP();
+	void IncreaseAttackPower();
+	void IncreaseRequireLevelUpExp();
+	int increaseMaxHPAmount = level * 20;
+	int increaseAPAmount = level * 5;
+	int increaseExpAmount = level * 10;
 };
 
 #endif // !CHARACTER_H_
