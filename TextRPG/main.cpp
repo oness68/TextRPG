@@ -13,9 +13,6 @@ int main()
 
 	GM& gameManager = GM::GetInstance();
 
-	// 배틀 매니저, 케릭터 생성
-	gameManager.GenerateBattleManager();
-
 	Log* logger = Log::GetInstance();
 	logger->Initialize();
 	Character player1 = *new Character("한정혁");
@@ -54,11 +51,6 @@ int main()
 	}
 
 	//게임 실행이 끝났을 때
-<<<<<<< HEAD
-	logger->PrintGameOver(LogEnum::GameEnd);
+	logger->PrintGameOver(LogEnum::EGameOver);
 	return 0;
-=======
-	logger->PrintGameOver(EGameEnd);
-	return;
->>>>>>> e1e55e7f8e65481cf3f2e5a58b12d10f56bb0252
 }

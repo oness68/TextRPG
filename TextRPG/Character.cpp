@@ -135,9 +135,6 @@ void Character::EquipItem(EquipableItem* item)
 };
 */
 void Character::TakeExp(const int& exp)
-=======
-void Character::LevelUp()
->>>>>>> e1e55e7f8e65481cf3f2e5a58b12d10f56bb0252
 {
 	if (level < maxLevel)
 	{
