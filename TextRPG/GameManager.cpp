@@ -49,6 +49,9 @@ namespace GameManger {
             case 4:
                 cout << "인벤토리를 확인합니다." << endl;
                 // 인벤토리 관련 로직 추가
+
+                player->GetInventory();
+
                 break;
             case 5:
                 cout << "프로그램을 종료합니다." << endl;
@@ -93,7 +96,7 @@ namespace GameManger {
         // TODO: 구현 필요
         std::cout << "버프방 들어왔니?" << std::endl;
 
-        auto buffRooms = GenerateTwoRandomRooms(buffRoomProbabilities);
+        auto buffRooms = GenerateTwoRandomRooms(buffRoomProbabilities, std::optional<BuffRooms>(BuffRooms::Dice));
 
         for (size_t i = 0; i < buffRooms.size(); ++i) {
             std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
@@ -123,6 +126,8 @@ namespace GameManger {
         Log* logger = Log::GetInstance();
         
         // VisitBuffRoom(player);
+
+       // VisitShop(player);
 
         SetStage(stage);
 
