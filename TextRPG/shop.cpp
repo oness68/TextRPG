@@ -1,6 +1,5 @@
-#include"Shop.h"
-#include"Item.h"
-#include"AllItem.cpp"
+#include "Shop.h"
+#include "Item.h"
 #include "Enchancer.h"
 #include "ItemFactory.h"
 
@@ -52,11 +51,6 @@ void Shop::BuyItem(Character& player)
 			cout << i + 1 << ". Invalid Item" << endl;
 		}
 	}
-
-	//for (int i = 0;i < shopInven.size();i++)
-	//{
-	//	cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold" << "[" << (int)shopInven[i]->GetType() << "]" << endl;
-	//}
 
 	cout << shopInven.size() + 1 << ". Leave the shop" << endl;
 

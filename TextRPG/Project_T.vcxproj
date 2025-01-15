@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AllItem.cpp" />
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="Character.cpp" />
