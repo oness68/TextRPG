@@ -102,7 +102,7 @@ void Battle::PlayerAction(Character* Player)
 {
 	Log* logger = Log::GetInstance();
 	ItemFactory& IFactory = ItemFactory::GetInstance();
-	Item* item = IFactory.GenerateItem("LowHPPotion");
+	Item* item = IFactory.GenerateItem("하급체력회복포션");
 	Player->TakeItem(item);
 	vector<Inventory> cosumableItems = Player->GetInventoryItems(ItemType::Consumable);
 

@@ -1,9 +1,11 @@
 ﻿#include "Character.h"
-#include "Item.h"
+
 #include "ItemFactory.h"
 #include "ConsumableItem.h"
 #include "EquipableItem.h"
 #include "Log.h"
+#include "Menu.h"
+
 #include <format>
 #include <iostream>
 
@@ -37,13 +39,13 @@ void Character::InitEquipMentItem()
 	//TakeItem(trollsBlood);
 	//DisplayStatus();
 
-	Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("LowAttackPotion");
-	//Item* middleAttackBooster = ItemFactory::GetInstance().GenerateItem("MiddleAttackPotion");
+	Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("하급공격부스터");
+	//Item* middleAttackBooster = ItemFactory::GetInstance().GenerateItem("중급공격부스터");
 
 	TakeItem(lowAttackBooster);
 	//TakeItem(middleAttackBooster);
 
-	UseItem("LowAttackPotion");
+	UseItem("하급공격부스터");
 }
 
 Character::~Character() {}
@@ -217,13 +219,118 @@ vector<Inventory> Character::GetInventoryItems(enum class ItemType type)
 
 void Character::DisplayInventory()
 {
-	int index = 1;
-	for (auto item : inventory)
-	{
-		//cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
-		index++;
+	vector<string> menuItems = {
+	"장비",
+	"소모품",
+	"도감",
+	"기타",
+	"나가기"
+	};
+
+	vector<function<void()>> actions = {
+	[&]() {
+		//cout << "******* 장비아이템 ********" << endl;
+		DisplayEquipMentItem();
+	},
+	[&]() {
+		//cout << "******* 소모품 ********" << endl;
+		DisplayConsumableItem();
+	},
+	[&]() {
+		//cout << "******* 도감 ********" << endl;
+		DisplayArchiveItem();
+	},
+	[&]() {
+		//cout << "******* 기타 ********" << endl;
+		DisplayEtcItem();
+	},
+	[&]() {
+		cout << "인벤토리를 종료합니다." << endl;
+	}
+	};
+
+	Menu menuSystem(menuItems, actions);
+
+	while (true) {
+		menuSystem.DisplayMenu((int)EBag, true);
+		menuSystem.RunMenu((int)EBag, true);
+
+		if (menuSystem.GetSelectedIndex() == 4) {
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
 	}
 
+	//int index = 1;
+	//for (auto item : inventory)
+	//{
+	//	//cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
+	//	index++;
+	//}
+
+}
+
+void Character::DisplayEquipMentItem()
+{
+	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Equipable);
+	vector<string> menuItems;
+	vector<function<void()>> actions;
+
+	if (displayInventory.size() > 0)
+	{
+		for (Inventory inventory : displayInventory)
+		{
+			EquipableItem* item = dynamic_cast<EquipableItem*>(inventory.item);
+			BuffStat itemStat = item->GetBuffStat();
+
+			string temp = format("{} [{}] {}ea\n", item->GetName(), item->GetEnchantLevel(), inventory.Count);
+			temp += format("공격력+{}, 방어력+{}, 체력+{}", itemStat.attackPower, itemStat.armor, itemStat.maxHP);
+			menuItems.push_back(temp);
+
+			actions.push_back([&]()
+				{
+					string s;
+					Log::GetInstance()->PrintLog(format("[{}] 아이템이 선택됨!!", item->GetName()), (int)EBag, true);
+					// TO DO : 아이템에대한 상세정보 표시, 장착 버튼 구현
+					cin >> s;
+					return;
+				});
+		}
+	}
+	else
+	{
+		menuItems.push_back("장비아이템이 텅 비어있습니다~");
+		actions.push_back([&]() {});
+	}
+
+	menuItems.push_back("\n[인벤토리로 돌아가기]");
+	actions.push_back([&]() { });
+
+	Menu menuSystem(menuItems, actions);
+	while (true) {
+		menuSystem.DisplayMenu((int)EBag, true);
+		menuSystem.RunMenu((int)EBag, true);
+
+		if (menuSystem.GetSelectedIndex() == menuItems.size() -1) 
+		{
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
+}
+
+void Character::DisplayConsumableItem()
+{
+}
+
+void Character::DisplayArchiveItem()
+{
+}
+
+void Character::DisplayEtcItem()
+{
 }
 
 const int& Character::GetGold() { return this->gold; }

@@ -83,7 +83,7 @@ protected:
 	Rarity rarity = Rarity::C;
 
 	int price = 0;
-	double depreciationRate = 1;
+	double depreciationRate = 0.6;
 };
 
 #include "BuffBase.h"

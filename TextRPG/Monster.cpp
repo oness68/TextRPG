@@ -93,24 +93,24 @@ void BaseMonster::TakeDamage(int damage)
 
 void NormalMonster::InitializeDropTable()
 {
-	dropTable.push_back({ 70,"LowHPPotion" });
-	dropTable.push_back({ 20,"MiddleHPPotion" });
+	dropTable.push_back({ 70,"하급체력회복포션" });
+	dropTable.push_back({ 20,"중급체력회복포션" });
 	dropTable.push_back({ 10,"모험가의장검" });
 }
 
 void BossMonster::InitializeDropTable()
 {
 
-	dropTable.push_back({ 50,"LowHPPotion Sword" });
-	dropTable.push_back({ 50,"MiddleHPPotion" });
+	dropTable.push_back({ 50,"하급체력회복포션 Sword" });
+	dropTable.push_back({ 50,"중급체력회복포션" });
 }
 
 void Dragon::InitializeDropTable()
 {
-	dropTable.push_back({ 10,"LowHPPotion" });
-	dropTable.push_back({ 10,"MiddleHPPotion" });
-	dropTable.push_back({ 40,"HightHPPotion" });
-	dropTable.push_back({ 40,"HightHPPotion" });
+	dropTable.push_back({ 10,"하급체력회복포션" });
+	dropTable.push_back({ 10,"중급체력회복포션" });
+	dropTable.push_back({ 40,"상급체력회복포션" });
+	dropTable.push_back({ 40,"상급체력회복포션" });
 }
 
 int NormalMonster::TakeAction() const
