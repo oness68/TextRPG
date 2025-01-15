@@ -4,25 +4,28 @@
 #include"Log.h"
 #include<algorithm>
 #include"EnumCollection.h"
-
+#include"BattleManager.h"
 
 class Battle
 {
-	struct saveState {
+	struct saveStatus {
 		int Power;
 		int CurrentHP;
 		int MaxHP;
 	};
-	saveState CharacterData;
+
+	MonsterState state;
+	saveStatus CharacterData;
 	bool endBattle = false;
 	bool myTurn = true;
 	bool isWin = false;
 	BaseMonster* battleMonster;
+	
 public:
 	
 	void restoreCharacterState(Character* player);
 	void saveCharacterState(Character* player);
-	void StageOfDifficulty();
+	void StageOfDifficulty(int stage);
 	void NextTurn();
 	int Input(int min,int max);
 	void Fight(Character* Player,BaseMonster* monster, int stage);
@@ -32,6 +35,7 @@ public:
 	void MonsterAction(Character* Player);
 	void LootAction(Character* Player);
 	bool RandomSuccess(int probability);
+	void MonsterSkill(Character* Player);
 };
 
 

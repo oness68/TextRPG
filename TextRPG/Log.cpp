@@ -73,6 +73,12 @@ int Log::GetClosestColorIndex(int r, int g, int b) {
 	return closestIndex;
 }
 
+void Log::SetCursorPosition(int x, int y)
+{
+	COORD pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
 //모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
 void Log::Initialize()
 {
@@ -80,7 +86,7 @@ void Log::Initialize()
 	COORD bufferSize;
 	bufferSize.X = bufferWidth;
 	bufferSize.Y = bufferHeight;
-	cout << bufferSize.X << ", " << bufferSize.Y << endl;
+	//cout << bufferSize.X << ", " << bufferSize.Y << endl;
 	SetConsoleScreenBufferSize(consoleHandle, bufferSize);
 	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//내부의 크기 조절
 	SetConsoleWindowInfo(consoleHandle, true, &windowSize);
@@ -167,13 +173,15 @@ void Log::PrintImage(vector<string>& data)
 
 void Log::PrintLog(string orderLog)
 {
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
+	system("cls");
+	this->SetLog(orderLog);
 	cout << this->log;
 }
 
 void Log::PrintLog(string orderLog, int caseNumber)
 {
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
+	system("cls");
+	this->SetLog(orderLog);
 
 	switch (caseNumber)
 	{
@@ -215,6 +223,7 @@ void Log::PrintLog(string orderLog, int caseNumber)
 //미구현
 void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
 {
+	system("cls");
 	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
 
 	/*switch (caseNumber1)
@@ -253,5 +262,60 @@ void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
 	default:
 		break;
 	}*/
+	cout << this->log;
+}
+
+void Log::PrintLog(string orderLog,bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+	cout << this->log;
+}
+
+void Log::PrintLog(string orderLog, int caseNumber, bool clear)
+{
+	if (clear)
+	{
+		system("cls");
+	}
+	this->SetLog(orderLog);
+
+	switch (caseNumber)
+	{
+	case ECharacter:
+		this->PrintImage(playerData);
+		break;
+	case EGoblin:
+		this->PrintImage(goblinData);
+		break;
+	case EOrc:
+		this->PrintImage(orcData);
+		break;
+	case ETroll:
+		this->PrintImage(trollData);
+		break;
+	case EWolf:
+		this->PrintImage(wolfData);
+		break;
+	case ESlime:
+		this->PrintImage(slimeData);
+		break;
+	case EGoblinRider:
+		this->PrintImage(goblinRiderData);
+		break;
+	case ETwinHeadTroll:
+		this->PrintImage(twinHeadTrollData);
+		break;
+	case ETreant:
+		this->PrintImage(treantData);
+		break;
+	case EDragon:
+		this->PrintImage(dragonData);
+	default:
+		break;
+	}
 	cout << this->log;
 }
