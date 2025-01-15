@@ -98,20 +98,44 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 void Battle::PlayerAction(Character* Player)
 {
 	Log* logger = Log::GetInstance();
+	ItemFactory& IFactory = ItemFactory::GetInstance();
+	Item* item = IFactory.GenerateItem("LowHPPotion");
+	Player->TakeItem(item);
+	vector<Inventory> cosumableItems = Player->GetInventoryItems(ItemType::Consumable);
+
+	
 	logger->PrintLog("무엇을 해야할까?\n1.공격\t2.아이템사용\n",false);
-	int choice = Input(1, 2);
-	switch (choice)
+	bool flag = false;
+	
+	while (!flag)
 	{
-	case 1:
-		AttackSystem(Player);
-		break;
-	case 2:
-		logger->PrintLog("아이템사용!\n",false);
-		//아이템
-		break;
-	default:
-		break;
+		int choice = Input(1, 2);
+		switch (choice)
+		{
+		case 1:
+			AttackSystem(Player);
+			flag = true;
+			break;
+
+		case 2:
+			if (cosumableItems.size() > 0)
+			{
+				UseItem(Player);
+				flag = true;
+			}
+			else
+			{
+				logger->PrintLog("사용 아이템이 없습니다.\n", false);
+			}
+			//아이템
+
+			break;
+
+		default:
+			break;
+		}
 	}
+	
 }
 
 void Battle::MonsterAction(Character* Player)
@@ -180,11 +204,42 @@ void Battle::MonsterSkill(Character* Player) // 특수패턴
 	
 }
 
+void Battle::UseItem(Character* Player)
+{
+	Log* logger = Log::GetInstance();
+
+	vector<Inventory> cosumableItems = Player->GetInventoryItems(ItemType::Consumable);
+	logger->PrintLog("====== Item List =====\n", false);
+
+	int i = 1;
+	for (auto inventory : cosumableItems)
+	{
+		
+		logger->PrintLog(format("{}. 아이템명 :{}, 수량 :{}\n",i, inventory.item->GetName(), inventory.Count), false);
+		i++;
+	}
+
+	int choice = Input(1, i);
+	if (choice > 0)
+	{
+		auto selectedItem = cosumableItems[choice-1];
+		//dynamic_cast<ConsumableItem*>(selectedItem.item)->ConsumeEffect(*Player);
+		Player->UseItem(selectedItem.item->GetName());
+	}
+
+	
+
+}
+
 void Battle::LootAction(Character* Player)
 {
+	ItemFactory &IFactory = ItemFactory::GetInstance();
 	Player->TakeExp(battleMonster->GetExperience());
 	Player->TakeGold(battleMonster->GetGold());
-	string item = battleMonster->GetRandomItem();
+	string itemName = battleMonster->GetRandomItem();
+	
+	Item* item = IFactory.GenerateItem(itemName);
+	Player->TakeItem(item);
 	//Player->TakeItem()
 	//battleMonster.
 }
