@@ -84,18 +84,19 @@ namespace GameManger {
 		int currentHP = player->GetCurrentHP() - 70;
 		int maxHP = player->GetMaxHP();
 		Log* logger = Log::GetInstance();
-		if (maxHP / 2 > currentHP)
+		if (maxHP / 2 > currentHP)	//현재 체력이 전체 체력의 절반보다 낮으면 전체 체력의 반만큼 회복
 		{
 			player->SetCurrentHP(currentHP + (maxHP / 2));
 			string restLog = "플레이어의 체력이 " + to_string(maxHP / 2) + "회복되었습니다.(현재 체력 : " + to_string(player->GetCurrentHP()) + ")\n";
 			logger->PrintLog(restLog, ERest);
 		}
-		else
+		else	//최대로 회복
 		{
 			player->SetCurrentHP(maxHP);
 			string restLog = "플레이어의 체력이 최대(" + to_string(maxHP) + ")로 회복되었습니다.\n";
 			logger->PrintLog(restLog, ERest);
 		}
+		Sleep(3000);
 	}
 
 	// 버프룸 방문 함수
@@ -120,9 +121,6 @@ namespace GameManger {
 		default:
 			break;
 		}
-		/*for (size_t i = 0; i < buffRooms.size(); ++i) {
-			std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
-		}*/
 	}
 
 	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(자체적으로 캐릭터에 버프가 적용되는데, 방향성이 다름) - 채규혁
@@ -137,17 +135,19 @@ namespace GameManger {
 		Log* logger = Log::GetInstance();
 		std::random_device random;
 		std::mt19937 generator(random());
-		int diceResult;
+		std::uniform_int_distribution<int> distribution(1, 6);  //랜덤 주사위 값
+		int diceResult = distribution(generator);
 		int currentHP = player->GetCurrentHP();
 		int maxHP = player->GetMaxHP();
 		int healAmount = (maxHP - currentHP) / 2;
 		int damage = (currentHP) / 5;
 		int goldTake = 1000;
+
 		string diceLog = "랜덤 주사위 방에 도착했습니다.(1~3 : 이로운 효과, 4~6 : 해로운 효과)";
 		diceLog += "\n당신의 운을 시험해보세요.";
 		logger->PrintLog(diceLog, EBuff);
-		std::uniform_int_distribution<int> distribution(1, 6);  //랜덤 주사위 값
-		diceResult = distribution(generator);
+		Sleep(3000);
+
 		diceLog += "\n주사위 값 : " + to_string(diceResult) + "\n";
 		switch (diceResult)
 		{
@@ -156,7 +156,6 @@ namespace GameManger {
 			if (currentHP == maxHP)
 			{
 				diceLog += "이미 플레이어의 체력이 최대입니다.\n";
-				Sleep(3000);
 				logger->PrintLog(diceLog, EBuff);
 				break;
 			}
@@ -164,7 +163,6 @@ namespace GameManger {
 			{
 				player->SetCurrentHP(healAmount);
 				diceLog += "깎인 체력을 반(" + to_string(healAmount) + ") 회복했습니다.\n";
-				Sleep(3000);
 				logger->PrintLog(diceLog, EBuff);
 			}
 			break;
@@ -172,33 +170,28 @@ namespace GameManger {
 			player->AddAttackPower(5);
 			diceLog += "플레이어의 공격력이 5만큼 상승합니다.";
 			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
-			Sleep(3000);
 			logger->PrintLog(diceLog, EBuff);
 			break;
 		case 3:
 			player->TakeGold(goldTake);
 			diceLog += to_string(goldTake) + "gold를 획득했습니다!\n";
-			Sleep(3000);
 			logger->PrintLog(diceLog, EBuff);
 			break;
 		case 4:
 			player->SetCurrentHP(currentHP - damage);   //현재 체력의 5분의 1만큼 체력 감소
 			diceLog += "현재 체력의 5분의 1만큼 체력이 감소합니다.\n";
 			diceLog += "현재 체력 : " + to_string(player->GetCurrentHP()) + "\n";
-			Sleep(3000);
 			logger->PrintLog(diceLog, EDeBuff);
 			break;
 		case 5:
 			player->AddAttackPower(-5);
 			diceLog += "플레이어의 공격력이 5만큼 감소합니다.\n";
 			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
-			Sleep(3000);
 			logger->PrintLog(diceLog, EDeBuff);
 			break;
 		case 6:
 			player->TakeGold(goldTake * -1);
 			diceLog += to_string(goldTake) + "gold를 잃었습니다!\n";
-			Sleep(3000);
 			logger->PrintLog(diceLog, EDeBuff);
 			break;
 		default:
@@ -247,10 +240,10 @@ namespace GameManger {
 			if (guess == secretNumber) {
 				numberLog += "축하합니다! 숫자를 맞췄습니다!\n";
 				score = (attempts - i + 1);
-				BuffBase buff = BuffBase(BuffStat(buffAttackPower, 0, 0), buffDuration);
 				numberLog += "획득 점수: " + to_string(score) + "\n";
 				numberLog += "다음 전투에서 공격력이 " + to_string(buffAttackPower) + " X " + to_string(score) + "(획득 점수) 만큼 " + to_string(buffDuration) + "턴 동안 증가합니다.";
 				logger->PrintLog(numberLog, EBuff);
+				BuffBase buff = BuffBase(BuffStat(buffAttackPower, 0, 0), buffDuration); 
 				player->TryAddBuff(buff);
 				Sleep(7000);
 				return;
@@ -271,9 +264,9 @@ namespace GameManger {
 			numberLog += "정답은 " + to_string(secretNumber) + "\n";
 			numberLog += "정답을 맞추지 못해 디버프를 받습니다!\n";
 
-			BuffBase buff = BuffBase(BuffStat(buffAttackPower * -1, 0, 0), buffDuration);
 			numberLog += "다음 전투에서 공격력이 " + to_string(buffAttackPower * -1) + "만큼 " + to_string(buffDuration) + "턴 동안 감소합니다.";
 			logger->PrintLog(numberLog, EDeBuff);
+			BuffBase buff = BuffBase(BuffStat(buffAttackPower * -1, 0, 0), buffDuration); 
 			player->TryAddBuff(buff);
 			Sleep(7000);
 		}
@@ -352,7 +345,7 @@ namespace GameManger {
 			{
 				str += to_string(count) + "(맞춘 횟수) X " + to_string(buffArmor) + "만큼 " + to_string(buffDuration) + "동안 방어력이 증가합니다.";
 				logger->PrintLog(str, EBuff);
-				BuffBase buff = BuffBase(BuffStat(0, 0, buffArmor), buffDuration);
+				BuffBase buff = BuffBase(BuffStat(0, buffArmor, 0), buffDuration);
 				player->TryAddBuff(buff);
 				break;
 			}
@@ -379,115 +372,112 @@ namespace GameManger {
 
 		Log* logger = Log::GetInstance();
 
-		BuffBase buff = BuffBase(BuffStat(0, 0, 5), 5);
-		player->TryAddBuff(buff);
-			//player->DisplayStatus();
-		 //BuffCoinToss(player);
-		 //logger->PrintLog("재출력 Log", ECharacter);
+		player->DisplayStatus();
+		// VisitBuffRoom(player); 구현완료 - 채규혁
 		// VisitShop(player);
-		// VisitRest(player);
+		// VisitRest(player); 구현완료 - 채규혁
 
-		//SetStage(stage);
-		//BeginBattle(player, stage);
-		//SetStage(++stage);
+		SetStage(stage);
+		BeginBattle(player, stage);
+		SetStage(++stage);
 
-		//while (stage <= 20)
-		//{
-		//	auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
+		while (stage <= 20)
+		{
+			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
 
-		//	for (size_t i = 0; i < stageRooms.size(); ++i) {
-		//		cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
-		//	}
+			for (size_t i = 0; i < stageRooms.size(); ++i) {
+				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
+			}
 
-		//		vector<string> menu = {
-		//			StageRoomToString(stageRooms[0]),
-		//			StageRoomToString(stageRooms[1])
-		//	};
+				vector<string> menu = {
+					StageRoomToString(stageRooms[0]),
+					StageRoomToString(stageRooms[1])
+			};
 
-		//	vector<function<void()>> actions;
+			vector<function<void()>> actions;
 
-		//	for (const auto stage : stageRooms)
-		//	{
-		//		switch (stage)
-		//		{
-		//		case Market:
-		//			// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("이상한 건물에 들어섰다.\n");
-		//				VisitShop(player);
-		//				});
-		//			break;
-		//		case Rest:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-		//				VisitRest(player);
-		//				});
-		//			break;
-		//		case Battle:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("어맛!\n");
-		//				BeginBattle(player, stage);
-		//				});
-		//			break;
-		//		default:
-		//			actions.push_back([&]() {
-		//				logger->PrintLog("여긴 어디지...?\n");
-		//				VisitBuffRoom(player);
-		//				});
-		//			break;
-		//		}
-		//	}
+			for (const auto stage : stageRooms)
+			{
+				switch (stage)
+				{
+				case Market:
+					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
+					actions.push_back([&]() {
+						logger->PrintLog("이상한 건물에 들어섰다.\n");
+						VisitShop(player);
+						});
+					break;
+				case Rest:
+					actions.push_back([&]() {
+						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+						VisitRest(player);
+						});
+					break;
+				case Battle:
+					actions.push_back([&]() {
+						logger->PrintLog("어맛!\n");
+						BeginBattle(player, stage);
+						});
+					break;
+				default:
+					actions.push_back([&]() {
+						logger->PrintLog("여긴 어디지...?\n");
+						VisitBuffRoom(player);
+						});
+					break;
+				}
+			}
 
-		//	Menu menuSystem(menu, actions);
+			Menu menuSystem(menu, actions);
 
-		//	// 메뉴 실행
-		//	while (true) {
-		//		menuSystem.DisplayMenu((int)ECharacter, true);
-		//		menuSystem.RunMenu((int)ECharacter, true);
+			// 메뉴 실행
+			while (true) {
+				menuSystem.DisplayMenu((int)ECharacter, true);
+				menuSystem.RunMenu((int)ECharacter, true);
 
-		//		if (menuSystem.GetSelectedIndex() == 4) {
-		//			break;
-		//		}
+				if (menuSystem.GetSelectedIndex() == 4) {
+					break;
+				}
 
-		//		cout << endl; // 메뉴 간격 조정
-		//	}
+				cout << endl; // 메뉴 간격 조정
+			}
 
-		//	SetStage(++stage);
-		//	/*
-		//	int choice;
-		//	cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
-		//	std::cin >> choice;
+			SetStage(++stage);
+			/*
+			int choice;
+			cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
+			std::cin >> choice;
 
-		//	if (choice == 1 || choice == 2) {
-		//		StageRooms selectedRoom = stageRooms[choice - 1];
+			if (choice == 1 || choice == 2) {
+				StageRooms selectedRoom = stageRooms[choice - 1];
 
-		//		switch (selectedRoom) {
-		//		case Market:
-		//			logger->PrintLog("이상한 건물에 들어섰다.\n");
-		//			VisitShop(player);
-		//			break;
-		//		case Rest:
-		//			logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-		//			VisitRest(player);
-		//			break;
-		//		case Battle:
-		//			logger->PrintLog("어맛!\n");
-		//			BeginBattle(player, stage);
-		//			break;
-		//		default:
-		//			logger->PrintLog("여긴 어디지...?\n");
-		//			VisitBuffRoom(player);
-		//			break;
-		//		}
-		//	}
-		//	else {
-		//		logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
-		//		continue;
-		//	}
+				switch (selectedRoom) {
+				case Market:
+					logger->PrintLog("이상한 건물에 들어섰다.\n");
+					VisitShop(player);
+					break;
+				case Rest:
+					logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+					VisitRest(player);
+					break;
+				case Battle:
+					logger->PrintLog("어맛!\n");
+					BeginBattle(player, stage);
+					break;
+				default:
+					logger->PrintLog("여긴 어디지...?\n");
+					VisitBuffRoom(player);
+					break;
+				}
+			}
+			else {
+				logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
+				continue;
+			}
 
-		//	SetStage(++stage);
-		//	*/
-		//}
+			SetStage(++stage);
+			*/
+		}
 	}
 
 } // namespace GameManger
