@@ -17,6 +17,7 @@ BattleManager* BattleManager::GetInstance()
 void BattleManager::setMonster(BaseMonster* monster)
 {
 	this->monster = monster;
+
 }
 
 void BattleManager::BeginBattle(Character* player, int stage)

@@ -50,6 +50,12 @@ namespace GameManger {
 		void VisitBuffRoom(Character* player);
 		void BeginBattle(Character* player,int stage);
 
+		// 버프방 게임 목록
+		void BuffDice();
+		void BuffNumber();
+		void BuffRand();
+		void BuffGame();
+
 		void BeginPlay(Character* player);
 		
 		void SetStage(int num);
