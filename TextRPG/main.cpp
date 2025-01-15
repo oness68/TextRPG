@@ -18,7 +18,7 @@ int main()
 
 	Log* logger = Log::GetInstance();
 	logger->Initialize();
-	
+
 	// Debug
 	//Character player1 = *new Character("정의된 용사");
 	//Shop shop;

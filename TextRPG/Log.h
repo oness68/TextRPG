@@ -66,7 +66,8 @@ private:
 	vector<string> shopData;
 	//휴식 이미지
 	vector<string> restData;
-	int sleepVar = 2000;
+	//아이템 이미지
+	vector<string> bagData;
 
 private:
 	Log() {};

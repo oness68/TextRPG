@@ -106,6 +106,7 @@ void Log::Initialize()
 	this->deBuffData = PNGImageToData("Images/Debuff.png");
 	this->shopData = PNGImageToData("Images/Shop.png");
 	this->restData = PNGImageToData("Images/Rest.png");
+	this->bagData = PNGImageToData("Images/Bag.png");
 }
 
 const string& Log::GetLog()
@@ -229,6 +230,9 @@ void Log::PrintLog(string orderLog, int caseNumber)
 	case ERest:
 		this->PrintImage(restData);
 		break;
+	case EBag:
+		this->PrintImage(bagData);
+		break;
 	default:
 		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
 		break;
@@ -297,6 +301,9 @@ void Log::PrintLog(string orderLog, int caseNumber, bool clear)
 		break;
 	case ERest:
 		this->PrintImage(restData);
+		break;
+	case EBag:
+		this->PrintImage(bagData);
 		break;
 	default:
 		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
