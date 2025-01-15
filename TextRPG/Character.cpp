@@ -106,6 +106,7 @@ void Character::RemoveItem(Item* item)//추가 이인화---------
 		}
 	}
 }
+
 void Character::LevelUp()
 {
 	if (level < maxLevel)

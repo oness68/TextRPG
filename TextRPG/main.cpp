@@ -46,7 +46,7 @@ int main()
 			logger->PrintInputError();	//잘못된 입력 안내 출력
 		}
 	}
-
+	
 	//게임 실행이 끝났을 때
 	logger->PrintGameOver(EGameEnd);
 	return 0;
