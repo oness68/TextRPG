@@ -1,11 +1,11 @@
-﻿#pragma once
+﻿#ifndef EQUIPABLE_DECORATOR_H_
+#define EQUIPABLE_DECORATOR_H_
+
 #include "EquipableItem.h"
 #include "Character.h"
 
 class EquipableItemDecorator : public EquipableItem
 {
-private:
-	EquipableItem* decoratedItem;
 public:
 	EquipableItemDecorator(EquipableItem* item) : EquipableItem(item->GetName(), item->GetPrice(), item->GetRarity(), item->GetEquipType(), item->GetBaseStat(), item->GetEnchantLevel()), decoratedItem(item) {}
 
@@ -36,6 +36,11 @@ public:
 
 	void EquipEffect(Character& player)
 	{
-		//decoratedItem->EquipEffect(player);
+		decoratedItem->EquipEffect(player);
 	}
+
+private:
+	EquipableItem* decoratedItem;
 };
+
+#endif // !EQUIPABLE_DECORATOR_H_

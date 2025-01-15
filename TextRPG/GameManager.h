@@ -4,9 +4,14 @@
 #define GAMEMANAGER_H
 
 #include <string>
+<<<<<<< HEAD
 #include <vector>
 #include <map>
 
+=======
+#include"BattleManager.h"
+#include"Character.h"
+>>>>>>> e1e55e7f8e65481cf3f2e5a58b12d10f56bb0252
 namespace GameManger {
 	enum StageRooms {
 		Shop = 1,
@@ -24,8 +29,13 @@ namespace GameManger {
 
 		void VisitShop();
 		void VisitRest();
+<<<<<<< HEAD
 		void VisitBuffRoom();
 		void BeginBattle();
+=======
+		void VisiteBuffRoom();
+		void BeginBattle(Character* player,int stage);
+>>>>>>> e1e55e7f8e65481cf3f2e5a58b12d10f56bb0252
 
 		void BeginPlay();
 		

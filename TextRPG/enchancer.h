@@ -1,5 +1,6 @@
-﻿#pragma once
-#include "EquipableItem.h"
+﻿#ifndef ENCHANCER_H_
+#define ENCHANCER_H_
+
 #include "EquipableItemDecorator.h"
 #include <random>
 #include <iostream>
@@ -16,3 +17,5 @@ public:
 
 	vector<Item*> GetEnchanceableItems(map<Item*, int>& inventory);
 };
+
+#endif // !ENCHANCER_H_

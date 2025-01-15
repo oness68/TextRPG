@@ -20,8 +20,11 @@ namespace GameManger {
     }
 
     // 전투 시작 함수
-    void GameManger::BeginBattle() 
+    void GameManger::BeginBattle(Character* player, int stage)
     {
+        BattleManager* BM = BattleManager::GetInstance();
+
+        BM->BeginBattle(player, stage);
         // TODO: 구현 필요
     }
 

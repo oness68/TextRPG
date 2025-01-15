@@ -52,8 +52,9 @@ void EquipableItem::SetEquipping(const bool& equipping)
 	this->isEquipping = equipping;
 }
 
-//void EquipableItem::EquipEffect(Character& player)
-//{
+
+void EquipableItem::EquipEffect(Character& player)
+{
 	//if (equipType == "Weapon")
 	//{
 	//	if (player.GetWeaponSlot() != nullptr)
@@ -81,5 +82,5 @@ void EquipableItem::SetEquipping(const bool& equipping)
 		cout << "You equipped " << player.GetArmorSlot()->GetName() << "! Defence is now : " << player.GetDefPower() << endl;
 
 	}*/
-//}
+}
 

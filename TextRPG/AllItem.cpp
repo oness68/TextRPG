@@ -106,10 +106,14 @@ public:
 		items.push_back(new ChainMail());
 		items.push_back(new MetalArmor());*/
 	}
-	~AllItem() {
+
+	~AllItem()
+	{
 		for (auto item : items) delete item;
 	}
-	vector<Item*> GetRandomItems(int count) {
+
+	vector<Item*> GetRandomItems(int count)
+	{
 		vector<Item*> shuffledItems = items;
 		random_device rd;
 		mt19937 gen(rd());
