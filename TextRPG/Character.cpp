@@ -12,26 +12,34 @@ using namespace std;
 Character::Character(const string& name)
 {
 	this->name = name;
-	TakeItem(ItemFactory::GetInstance().GenerateItem("모험가의장검"));
-
+	DisplayStatus();
+	InitEquipMentItem();
+	DisplayStatus();
 	//cout << "캐릭터 " << name << " 생성 완료!";
 	//cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
+}
+
+void Character::InitEquipMentItem()
+{
+	Item* startItem = ItemFactory::GetInstance().GenerateItem("모험가의장검");
+	TakeItem(startItem);
+	EquipItem(dynamic_cast<EquipableItem*>(startItem));
 }
 
 Character::~Character() {}
 
 void Character::DisplayStatus()
 {
-	cout << GetCharacterStatusString();
+	Log::GetInstance() -> PrintLog(GetCharacterStatusString(), false);
 }
 
-const string& Character::GetCharacterStatusString()
+const string Character::GetCharacterStatusString()
 {
 	string returnValue;
 	returnValue += format("이름 : {}\n", name);
 	returnValue += format("레벨 : {}\n", level);
-	returnValue += format("HP : {}/{}\n", currentHP, maxHP);
-	returnValue += format("공격력 : {}\n", attackPower);
+	returnValue += format("HP : {}/{}\n", currentHP, GetMaxHP());
+	returnValue += format("공격력 : {}\n", GetAttackPower());
 	//returnValue += format("방어력 : {}\n", armor);
 	returnValue += format("Gold : {}\n", gold);
 	returnValue += format("경험치 : {}/{}\n", currentExp, requiredLevelUpExp);
@@ -40,12 +48,20 @@ const string& Character::GetCharacterStatusString()
 }
 
 
-int Character::GetCurrentHP() { return this->currentHP; }
-int Character::GetMaxHP() { return this->maxHP; }
+const int& Character::GetCurrentHP() { return this->currentHP; }
+const int& Character::GetMaxHP()
+{ 
+	//int calculateMaxHP = this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
+	int calculateMaxHP = this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
+	return calculateMaxHP;//this->maxHP + equipmentBuffStat.maxHP + archiveBuffStat.maxHP + buffStat.maxHP;
+}
+
 const int& Character::GetAttackPower()
 {
-	return this->attackPower; // + 아이템 + 버프
+	int calculateAP = this->attackPower + equipmentBuffStat.attackPower + archiveBuffStat.attackPower + buffStat.attackPower;
+	return calculateAP;
 }
+const int& Character::GetRequiredLevelUpExp() { return this->requiredLevelUpExp; }
 
 void Character::SetCurrentHP(int hp)
 {
@@ -59,6 +75,10 @@ void Character::SetCurrentHP(int hp)
 	}
 }
 void Character::SetMaxHP(int hp) { this->maxHP = hp; }
+void Character::AddMaxHP(int amount)
+{
+	this->maxHP += amount;
+}
 void Character::SetAttackPower(int attackPower) { this->attackPower = attackPower; }
 
 void Character::TakeDamage(const int& damage)
@@ -120,10 +140,10 @@ vector<Inventory> Character::GetInventoryItems(enum class ItemType type)
 
 void Character::DisplayInventory()
 {
-	Log* logger = Log::GetInstance();
-	logger->PrintLog("The shop is out of items!\n", (int)EShop, false);
+	//Log* logger = Log::GetInstance();
+	//Log::GetInstance()->PrintLog("The shop is out of items!\n", (int)EShop, false);
 	
-	cout << "======= 인벤토리 목록 =======" << endl;
+	//cout << "======= 인벤토리 목록 =======" << endl;
 	int index = 1;
 	for (auto item : inventory)
 	{
@@ -141,11 +161,21 @@ void Character::TakeItem(Item* item)
 	if (inventory.find(itemName) == inventory.end())
 	{
 		inventory[itemName] = Inventory(item, item->GetType(), 1);
+
+		if (inventory[itemName].itemType == ItemType::Archive)
+		{
+			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
+		}
+
 		//cout << format("신규 아이템이 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
 	}
 	else
 	{
 		inventory[itemName].Count++;
+		if (inventory[itemName].itemType == ItemType::Archive)
+		{
+			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
+		}
 		//cout << format("기존 아이템 개수가 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
 	}
 }
@@ -215,6 +245,71 @@ void Character::ReduceInventory(const string& itemKey)
 		//cout << "인벤토리에서 아이템 항목을 제거합니다!" << endl;
 	}
 }
+
+void Character::TurnEnd()
+{
+
+}
+
+void Character::TryAddBuff(BuffBase& buffBase)
+{
+	buffContainer.push_back(buffBase);
+}
+
+void Character::TryRemoveBuff()
+{
+	for (auto it = buffContainer.begin(); it != buffContainer.end(); )
+	{
+		it->duration--;
+		if (it->duration <= 0)
+		{
+			auto removedBuff = *it;
+			buffStat -= removedBuff.buffStat;
+
+			it = buffContainer.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Character::EquipItem(EquipableItem* equipableItem)
+{
+	if (equipItemContainer.size() > 0)
+	{
+		for (auto equipedItem : equipItemContainer)
+		{
+			if (equipItemContainer.find(equipedItem.first) == equipItemContainer.end())
+			{
+
+			}
+			else
+			{
+				equipedItem.second->SetEquipping(false);
+				equipmentBuffStat -= equipedItem.second->GetBuffStat();
+				equipItemContainer.erase(equipedItem.first);
+			}
+
+			equipItemContainer[equipableItem->GetType()] = equipableItem;
+			equipmentBuffStat += equipableItem->GetBuffStat();
+			equipableItem->SetEquipping(true);
+		}
+	}
+	else
+	{
+		equipItemContainer[equipableItem->GetType()] = equipableItem;
+		equipmentBuffStat += equipableItem->GetBuffStat();
+		equipableItem->SetEquipping(true);
+	}
+}
+
+int Character::GetEquipAddAmount()
+{
+	return 0;
+}
+
 
 
 void Character::LevelUp()

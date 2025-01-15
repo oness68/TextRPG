@@ -20,6 +20,19 @@ EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equip
 	this->itemType = ItemType::Equipable;
 }
 
+EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int> baseStat, int enchantLevel, BuffStat buffStat)
+{
+	this->name = name;
+	this->price = price;
+	this->rarity = rarity;
+	this->equipType = equipType;
+	this->baseStat = baseStat;
+	this->enchantLevel = enchantLevel;
+
+	this->buffStat = buffStat;
+	this->itemType = ItemType::Equipable;
+}
+
 EquipableItem::~EquipableItem()
 {
 }
@@ -27,6 +40,16 @@ EquipableItem::~EquipableItem()
 string EquipableItem::GetEquipType()
 {
 	return this->equipType;
+}
+
+EquipmentType EquipableItem::GetType()
+{
+	return this->type;
+}
+
+BuffStat EquipableItem::GetBuffStat()
+{
+	return this->buffStat;
 }
 
 map<string, int> EquipableItem::GetBaseStat()

@@ -12,10 +12,13 @@ class EquipableItem : public Item
 public:
 	EquipableItem();
 	EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int>baseStat, int enchantLevel);
+	EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int>baseStat, int enchantLevel, BuffStat buffStat);
 	~EquipableItem();
 
 	string GetEquipType();
-	//enum class EquipmentType GetGetEquipType();
+	enum class EquipmentType GetType();
+
+	class BuffStat GetBuffStat();
 
 	map<string, int> GetBaseStat();
 
@@ -28,6 +31,8 @@ public:
 	void EquipEffect(Character& player);
 
 private:
+	enum class EquipmentType type;
+	class BuffStat buffStat;
 	string equipType;//무기,방어구
 	map<string, int> baseStat;
 	int enchantLevel;

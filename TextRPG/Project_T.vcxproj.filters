@@ -36,9 +36,6 @@
     <ClCompile Include="Shop.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="AllItem.cpp">
-      <Filter>소스 파일\Item</Filter>
-    </ClCompile>
     <ClCompile Include="ConsumableItem.cpp">
       <Filter>소스 파일\Item</Filter>
     </ClCompile>
@@ -60,6 +57,18 @@
     <ClCompile Include="Stage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="BuffBase.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ExceptionHandler.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemFactory.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -76,9 +85,6 @@
     </ClInclude>
     <ClInclude Include="Shop.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseEquipableItem.h">
-      <Filter>헤더 파일\Item</Filter>
     </ClInclude>
     <ClInclude Include="ConsumableItem.h">
       <Filter>헤더 파일\Item</Filter>
@@ -108,6 +114,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BuffBase.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
