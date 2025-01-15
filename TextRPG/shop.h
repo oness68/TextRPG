@@ -10,6 +10,8 @@ class Shop
 public:
 	Shop();
 	~Shop();
+
+	void DisplayItem();
 	void BuyItem(Character& player);
 	void SellItem(Character& player);
 	void UseEnchancer(Character& player);

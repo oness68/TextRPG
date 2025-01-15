@@ -37,6 +37,8 @@ ItemFactory::ItemFactory()
 	items.insert(make_pair("고블린귀", new Item("고블린귀", 50, Rarity::C)));
 	items.insert(make_pair("고블린라이더의안장", new Item("고블린라이더의안장", 50, Rarity::C)));
 
+	items.insert(make_pair("모험가의장검", new EquipableItem("모험가의장검", 300, Rarity::C, "Weapon", { {"Damage", 50} }, 0)));
+
 	/*items.push_back(new LeatherArmor());
 	items.push_back(new ChainMail());
 	items.push_back(new MetalArmor());*/

@@ -24,10 +24,12 @@ class ItemFactory
 {
 public:
 	static ItemFactory& GetInstance();
-	vector<Item*> GenerateRandomItems(int count);
 
+	map<string, Item*> items;
 	Item* GenerateItem(string itemName);
 	//Item* GenerateItem(enum ItemList itemList);
+	vector<Item*> GenerateRandomItems(int count);
+
 private:
 	static ItemFactory* instance;
 
@@ -35,8 +37,6 @@ private:
 	~ItemFactory();
 	ItemFactory(const ItemFactory&) = delete;
 	ItemFactory& operator=(const ItemFactory&) = delete;
-
-	map<string, Item*> items;
 };
 
 #endif // !ITEMFACTORY_H_

@@ -59,6 +59,8 @@ public:
 	void BuyItem(class Item* item);
 	void SellItem(string itemKey);
 
+	void ReduceInventory(const string& itemKey);
+
 	//추가 이인화--------------
 	//void RemoveItem(Item* item);//추가 이인화
 	//EquipableItem* GetWeaponSlot();
@@ -79,7 +81,6 @@ private:
 	int maxLevel = 10;
 
 	map<string, class Inventory> inventory;
-	void ReduceInventory(const string& itemKey);
 	
 	//map<EquipmentType, int> equipmentItems;
 	//EquipableItem* weaponSlot = nullptr;

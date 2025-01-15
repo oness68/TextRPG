@@ -1,5 +1,6 @@
 ﻿#include "Character.h"
 #include "Item.h"
+#include "ItemFactory.h"
 #include "ConsumableItem.h"
 #include "EquipableItem.h"
 #include <format>
@@ -11,8 +12,10 @@ using namespace std;
 Character::Character(const string& name)
 {
 	this->name = name;
-	// cout << "캐릭터 " << name << " 생성 완료!";
-	// cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
+	TakeItem(ItemFactory::GetInstance().GenerateItem("모험가의장검"));
+
+	//cout << "캐릭터 " << name << " 생성 완료!";
+	//cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
 }
 
 Character::~Character() {}
@@ -178,13 +181,13 @@ void Character::ReduceInventory(const string& itemKey)
 	Inventory& selectedItem = inventory[itemKey];
 	selectedItem.Count--;
 
-	cout << "인벤토리의 아이템이 감소됐습니다!\n"
-		<< format("이름 : {}, 수량 : {}", selectedItem.item->GetName(), selectedItem.Count) << endl;
+	//cout << "인벤토리의 아이템이 감소됐습니다!\n"
+	//	<< format("이름 : {}, 수량 : {}", selectedItem.item->GetName(), selectedItem.Count) << endl;
 
 	if (selectedItem.Count == 0)
 	{
 		inventory.erase(itemKey);
-		cout << "인벤토리에서 아이템 항목을 제거합니다!" << endl;
+		//cout << "인벤토리에서 아이템 항목을 제거합니다!" << endl;
 	}
 }
 
