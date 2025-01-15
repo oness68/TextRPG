@@ -17,7 +17,7 @@ int main()
 	logger->Initialize();
 	Character player1 = *new Character("한정혁");
 	//player1.DisplayStatus();
-	logger->PrintLog("", EShop);
+
 	int menuOption;
 	bool isGameRun = false;		//게임의 실행여부
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함
