@@ -146,8 +146,7 @@ namespace GameManger {
 	{
 		auto buffRoom = GenerateRandomRoom(buffRoomProbabilities);  //랜덤으로 방 생성
 
-		cout << endl << BuffRoomToString(buffRoom); //무슨 방인지 확인용입니다.(개발용)
-		//Dice 구현   메서드 파서 해야되는데 일단 작동파악 위해서 밖에서 하고 있습니다.
+		cout << endl << BuffRoomToString(buffRoom);
 
 		//Dice 구현 끝
 		switch (buffRoom)
@@ -189,7 +188,41 @@ namespace GameManger {
 
 	void GameManger::BuffNumber()
 	{
+		Log* logger = Log::GetInstance();
 
+		srand((unsigned)time(0));
+		int secretNumber = rand() % 100 + 1;
+		int guess;
+		int attempts = 3;
+		int score = 0;
+
+		logger->PrintLog("숫자 맞추기 게임에 오신 것을 환영합니다!\n", EBuff);
+		logger->PrintLog("1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n", EBuff);
+
+		for (int i = 1; i <= attempts; ++i) {
+			logger->PrintLog(i + "번째 시도: ", EBuff);
+			cin >> guess;
+
+			if (guess == secretNumber) {
+				logger->PrintLog("축하합니다! 숫자를 맞췄습니다!\n", EBuff);
+				score = (attempts - i + 1) * 50;
+				logger->PrintLog("획득 점수: " + score, EBuff);
+				logger->PrintLog("\n", EBuff);
+				return;
+			}
+			else if (guess < secretNumber) {
+				logger->PrintLog("힌트: 더 큰 숫자입니다!\n", EBuff);
+			}
+			else {
+				logger->PrintLog("힌트: 더 작은 숫자입니다!\n", EBuff);
+			}
+		}
+
+		logger->PrintLog("아쉽습니다. 기회를 모두 소진했습니다.\n", EBuff);
+		logger->PrintLog("정답은 " + secretNumber, EBuff);
+		logger->PrintLog("\n", EBuff);
+		logger->PrintLog("획득 점수: " + score, EBuff);
+		logger->PrintLog("\n", EBuff);
 	}
 
 	void GameManger::BuffRand()
