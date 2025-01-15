@@ -19,9 +19,7 @@ namespace GameManger {
 
     // 상점 방문 함수
     void GameManger::VisitShop(Character* player)
-    {
-        int input;
-        
+    {   
         Log::GetInstance()->PrintLog("상점에 방문했습니다!\n", (int)EShop, true);
 
         Shop shop;
