@@ -68,7 +68,7 @@ void Menu::RunMenu(int caseNumber, bool clear) {
                 }
             }
             else if (c == ENTER) {  // 엔터키 입력
-                /* 디버그용
+                
                 cout << "Selected Index: " << selectedIndex << endl;
                 cout << "Executing Action: " << menuItems[selectedIndex] << endl;
 
@@ -91,7 +91,7 @@ void Menu::RunMenu(int caseNumber, bool clear) {
                         cout << "Empty/Null Function" << endl;  // 함수가 없는 경우
                     }
                 }
-                */
+                
                 if (selectedIndex >= 0 && selectedIndex < actions.size()) {
                     actions[selectedIndex]();  // 선택된 항목의 동작 실행
                 }

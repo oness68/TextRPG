@@ -67,53 +67,6 @@ namespace GameManger {
 
 			cout << endl; // 메뉴 간격 조정
 		}
-		/*
-		while (true) {
-			// 메뉴 출력
-			cout << "1. 구매" << endl;
-			cout << "2. 판매" << endl;
-			cout << "3. 강화" << endl;
-			cout << "4. 인벤토리" << endl;
-			cout << "5. 나가기" << endl;
-			cout << "선택: ";
-			cin >> input;
-
-			// 입력값 처리
-			switch (input) {
-			case 1:
-				cout << "구매를 선택했습니다." << endl;
-				shop.BuyItem(*player);
-				// 구매 관련 로직 추가
-				break;
-			case 2:
-				cout << "판매를 선택했습니다." << endl;
-				shop.SellItem(*player);
-				// 판매 관련 로직 추가
-				break;
-			case 3:
-				cout << "강화를 선택했습니다." << endl;
-				shop.UseEnchancer(*player);
-				// 강화 관련 로직 추가
-				break;
-			case 4:
-				cout << "인벤토리를 확인합니다." << endl;
-				// 인벤토리 관련 로직 추가
-
-				//player->GetInventory();
-				player->DisplayInventory();
-
-				break;
-			case 5:
-				cout << "프로그램을 종료합니다." << endl;
-				return; // 반복문 종료
-			default:
-				cout << "잘못된 입력입니다. 다시 선택하세요." << endl;
-				break;
-			}
-
-			cout << endl; // 메뉴 간격 조정
-		}
-		*/
 	}
 
 	// 전투 시작 함수
@@ -152,16 +105,16 @@ namespace GameManger {
 		switch (buffRoom)
 		{
 		case Dice:
-			BuffDice();
+			BuffDice(player);
 			break;
 		case Number:
-			BuffNumber();
+			BuffNumber(player);
 			break;
 		case Rand:
-			BuffRand();
+			BuffRand(player);
 			break;
 		case Game:
-			BuffGame();
+			BuffGame(player);
 			break;
 		default:
 			break;
@@ -171,22 +124,88 @@ namespace GameManger {
 		}*/
 	}
 
-	void GameManger::BuffDice() 
+	void GameManger::BuffDice(Character* player)
 	{
+		//1 : 깎인 체력의 절반 회복
+		//2 : 공격력 5 증가
+		//3 : 골드 1000 획득
+		//4 : 현재 체력의 5분의 1만큼 체력 감소
+		//5 : 공격력 5 감소
+		//6 : 골드 1000 획득
 		Log* logger = Log::GetInstance();
-
 		std::random_device random;
 		std::mt19937 generator(random());
-
+		int diceResult;
+		int currentHP = player->GetCurrentHP() - 60;
+		int maxHP = player->GetMaxHP();
+		int healAmount = (maxHP - currentHP) / 2;
+		int damage = (currentHP) / 5;
+		int goldTake = 1000;
 		string diceLog = "랜덤 주사위 방에 도착했습니다.(1~3 : 이로운 효과, 4~6 : 해로운 효과)";
-		diceLog += "당신의 운을 시험해보세요.";
-		logger->PrintLog("랜덤 주사위 방에 도착했습니다.", EBuff);
-
+		diceLog += "\n당신의 운을 시험해보세요.";
+		logger->PrintLog(diceLog, EBuff);
 		std::uniform_int_distribution<int> distribution(1, 6);  //랜덤 주사위 값
-		int diceResult = distribution(generator);
+		diceResult = distribution(generator);
+		diceLog += "\n주사위 값 : " + to_string(diceResult) + "\n";
+		switch (diceResult)
+		{
+		case 1:
+			diceLog += "플레이어의 체력을 깎인 체력의 반 만큼 회복합니다.\n";
+			if (currentHP == maxHP)
+			{
+				diceLog += "이미 플레이어의 체력이 최대입니다.\n";
+				Sleep(4000);
+				logger->PrintLog(diceLog, EBuff);
+				break;
+			}
+			else
+			{
+				diceLog += "깎인 체력을 반(" + to_string(healAmount) + ") 회복했습니다.\n";
+				Sleep(4000);
+				logger->PrintLog(diceLog, EBuff);
+			}
+			break;
+		case 2:
+			player->SetAttackPower(player->GetAttackPower() + 5);
+			diceLog += "플레이어의 공격력이 5만큼 상승합니다.";
+			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
+			Sleep(4000);
+			logger->PrintLog(diceLog, EBuff);
+			break;
+		case 3:
+			player->TakeGold(goldTake);
+			diceLog += to_string(goldTake) + "gold를 획득했습니다!\n";
+			Sleep(4000);
+			logger->PrintLog(diceLog, EBuff);
+			break;
+		case 4:
+			player->SetCurrentHP(currentHP - damage);   //현재 체력의 5분의 1만큼 체력 감소
+			diceLog += "현재 체력의 5분의 1만큼 체력이 감소합니다.\n";
+			diceLog += "\n현재 체력 : " + to_string(player->GetCurrentHP()) + "\n";
+			Sleep(4000);
+			logger->PrintLog(diceLog, EDeBuff);
+			break;
+		case 5:
+			player->SetAttackPower(player->GetAttackPower() - 5);
+			diceLog += "플레이어의 공격력이 5만큼 감소합니다.\n";
+			diceLog += "현재 공격력 : " + to_string(player->GetAttackPower()) + '\n';
+			Sleep(4000);
+			logger->PrintLog(diceLog, EDeBuff);
+			break;
+		case 6:
+			player->TakeGold(goldTake * -1);
+			diceLog += to_string(goldTake) + "gold를 잃었습니다!\n";
+			Sleep(4000);
+			logger->PrintLog(diceLog, EDeBuff);
+			break;
+		default:
+			cout << "주사위 값 범위 이탈 에러 발생\n";  //예외처리 프로그램 종료
+			exit(1);
+			break;
+		}
 	}
 
-	void GameManger::BuffNumber()
+	void GameManger::BuffNumber(Character* player)
 	{
 		Log* logger = Log::GetInstance();
 
@@ -196,7 +215,7 @@ namespace GameManger {
 		int attempts = 3;
 		int score = 0;
 
-		logger->PrintLog("숫자 맞추기 게임에 오신 것을 환영합니다!\n", EBuff);
+		logger->PrintLog("숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n", EBuff);
 		logger->PrintLog("1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n", EBuff);
 
 		for (int i = 1; i <= attempts; ++i) {
@@ -225,12 +244,12 @@ namespace GameManger {
 		logger->PrintLog("\n", EBuff);
 	}
 
-	void GameManger::BuffRand()
+	void GameManger::BuffRand(Character* player)
 	{
-
+		//TODO: 아이템 랜덤 변경 (등급상향)
 	}
 
-	void GameManger::BuffGame()
+	void GameManger::BuffGame(Character* player)
 	{
 		Log* logger = Log::GetInstance();
 		int solution = 1;
@@ -241,6 +260,7 @@ namespace GameManger {
 
 		logger->PrintLog("동전 던지기 방에 도착했습니다.\n", EBuff);
 		string str = "동전을 던져 나올 면을 선택해주세요.(1 : 앞면, 2 : 뒷면)(현재 맞춘 개수 : ";
+
 		while (solution) {
 			int choice = 0;
 			int RandomNumber = distribution(generator);
@@ -285,28 +305,82 @@ namespace GameManger {
 	{
 		int stage = 1;
 
-		//player->DisplayStatus();
-
 		Log* logger = Log::GetInstance();
 
+		// player->DisplayStatus();
 		// VisitBuffRoom(player);
+		// VisitShop(player);
 
-		VisitShop(player);
-
+		/*
 		SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);
-
+		*/
 		while (stage <= 20)
 		{
 			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
-
+			
 			for (size_t i = 0; i < stageRooms.size(); ++i) {
-				std::cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << std::endl;
+				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
 			}
 
+			vector<string> menu = {
+				StageRoomToString(stageRooms[0]),
+				StageRoomToString(stageRooms[1])
+			};
+
+			vector<function<void()>> actions;
+
+			for (const auto stage : stageRooms)
+			{
+				switch (stage)
+				{
+				case Market:
+					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
+					actions.push_back([&]() {
+						logger->PrintLog("이상한 건물에 들어섰다.\n");
+						VisitShop(player);
+					});
+					break;
+				case Rest:
+					actions.push_back([&]() {
+						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+						VisitRest(player);
+					});
+					break;
+				case Battle:
+					actions.push_back([&]() {
+						logger->PrintLog("어맛!\n");
+						BeginBattle(player, stage);
+					});
+					break;
+				default:
+					actions.push_back([&]() {
+						logger->PrintLog("여긴 어디지...?\n");
+						VisitBuffRoom(player);
+					});
+					break;
+				}
+			}
+
+			Menu menuSystem(menu, actions);
+
+			// 메뉴 실행
+			while (true) {
+				menuSystem.DisplayMenu((int)ECharacter, true);
+				menuSystem.RunMenu((int)ECharacter, true);
+
+				if (menuSystem.GetSelectedIndex() == 4) {
+					break;
+				}
+
+				cout << endl; // 메뉴 간격 조정
+			}
+
+			SetStage(++stage);
+			/*
 			int choice;
-			std::cout << "선택할 방 번호 (1 또는 2 입력): ";
+			cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
 			std::cin >> choice;
 
 			if (choice == 1 || choice == 2) {
@@ -314,117 +388,31 @@ namespace GameManger {
 
 				switch (selectedRoom) {
 				case Market:
-					std::cout << "상점에 도착했습니다!" << std::endl;
+					logger->PrintLog("이상한 건물에 들어섰다.\n");
 					VisitShop(player);
 					break;
 				case Rest:
-					std::cout << "휴식을 취합니다." << std::endl;
+					logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
 					VisitRest(player);
 					break;
 				case Battle:
-					std::cout << "전투가 시작되었습니다!" << std::endl;
+					logger->PrintLog("어맛!\n");
 					BeginBattle(player, stage);
 					break;
 				default:
-					std::cout << "알 수 없는 방입니다." << std::endl;
+					logger->PrintLog("여긴 어디지...?\n");
 					VisitBuffRoom(player);
 					break;
 				}
 			}
 			else {
-				std::cout << "잘못된 입력입니다. 다시 시도하세요." << std::endl;
+				logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
 				continue;
 			}
 
 			SetStage(++stage);
+			*/
 		}
 	}
-
-	template <typename RoomType>
-	RoomType  GameManger::GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
-		double totalProbability = 0.0;
-
-		std::srand(static_cast<unsigned>(std::time(nullptr)));
-
-		for (const auto& room : roomProbabilities) {
-			totalProbability += room.second;
-		}
-
-		double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
-		double cumulativeProbability = 0.0;
-
-		for (const auto& room : roomProbabilities) {
-			cumulativeProbability += room.second;
-			if (randomValue <= cumulativeProbability) {
-				return room.first;
-			}
-		}
-
-		return roomProbabilities.begin()->first;
-	}
-
-	template <typename RoomType>
-	std::vector<RoomType> GameManger::GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom) {
-		std::vector<RoomType> selectedRooms;
-
-		RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
-		selectedRooms.push_back(firstRoom);
-
-		RoomType secondRoom;
-		do {
-			secondRoom = GenerateRandomRoom(roomProbabilities);
-
-		} while (secondRoom == firstRoom && allowDuplicateRoom != firstRoom);
-
-		selectedRooms.push_back(secondRoom);
-
-		return selectedRooms;
-	};
-
-	/*
-	StageRooms GameManger::GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities)
-	{
-		double totalProbability = 0.0;
-
-		for (const auto& room : roomProbabilities)
-		{
-			totalProbability += room.second;
-		}
-
-		double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability; // std::rand()는 0부터 32767까지의 난수를 생성 0 ~ 9999 나머지
-		double cumulativeProbability = 0.0;
-
-		for (const auto& room : roomProbabilities)
-		{
-			cumulativeProbability += room.second;
-			if (randomValue <= cumulativeProbability)
-			{
-				return room.first;
-			}
-		}
-
-		return Shop;
-	}
-	*/
-
-	/*
-	// 배틀방만 중복이 가능하도록 처리한 랜덤 방 선택 함수
-	std::vector<StageRooms> GameManger::GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities)
-	{
-		std::vector<StageRooms> selectedRooms;
-
-		StageRooms firstRoom = GenerateRandomRoom(roomProbabilities);
-		selectedRooms.push_back(firstRoom);
-
-		StageRooms secondRoom;
-		do
-		{
-			secondRoom = GenerateRandomRoom(roomProbabilities);
-		} while (firstRoom != Battle && secondRoom == firstRoom);
-
-		selectedRooms.push_back(secondRoom);
-
-		return selectedRooms;
-	}
-	*/
+	
 } // namespace GameManger
