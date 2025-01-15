@@ -98,6 +98,7 @@ void Log::Initialize()
 	this->dragonData = PNGImageToData("Images/Dragon.png");
 	this->buffData = PNGImageToData("Images/Buff.png");
 	this->deBuffData = PNGImageToData("Images/Debuff.png");
+	this->shopData = PNGImageToData("Images/Shop.png");
 }
 
 const string& Log::GetLog()
@@ -215,6 +216,9 @@ void Log::PrintLog(string orderLog, int caseNumber)
 		break;
 	case EDeBuff:
 		this->PrintImage(deBuffData);
+		break;
+	case EShop:
+		this->PrintImage(shopData);
 		break;
 	default:
 		cout << "해당 이미지 없습니다.(확인 요망)" << endl;

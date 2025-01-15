@@ -62,6 +62,8 @@ private:
 	//버프 이미지
 	vector<string> buffData;
 	vector<string> deBuffData;
+	//상점 이미지
+	vector<string> shopData;
 	int sleepVar = 2000;
 
 private:
