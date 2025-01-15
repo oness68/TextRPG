@@ -101,10 +101,9 @@ namespace GameManger {
 	// 버프룸 방문 함수
 	void GameManger::VisitBuffRoom(Character* player)
 	{
-		auto buffRoom = GenerateRandomRoom(buffRoomProbabilities);  //랜덤으로 방 생성
-
-		BuffCoinToss(player);
-		/*switch (buffRoom)
+		BuffRooms buffRoom = GenerateRandomRoom(buffRoomProbabilities);  //랜덤으로 방 생성
+		
+		switch (buffRoom)
 		{
 		case Dice:
 			BuffDice(player);
@@ -120,12 +119,13 @@ namespace GameManger {
 			break;
 		default:
 			break;
-		}*/
+		}
 		/*for (size_t i = 0; i < buffRooms.size(); ++i) {
 			std::cout << i + 1 << ". Buff Room: " << BuffRoomToString(buffRooms[i]) << std::endl;
 		}*/
 	}
 
+	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(자체적으로 캐릭터에 버프가 적용되는데, 방향성이 다름) - 채규혁
 	void GameManger::BuffDice(Character* player)
 	{
 		//1 : 깎인 체력의 절반 회복
@@ -207,19 +207,20 @@ namespace GameManger {
 		}
 	}
 
+	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(버프 미적용) - 채규혁
 	void GameManger::BuffNumber(Character* player)
 	{
 		Log* logger = Log::GetInstance();
 		std::random_device random;
 		std::mt19937 generator(random());
-		std::uniform_int_distribution<int> distribution(1, 100);
+		std::uniform_int_distribution<int> distribution(1, 10);
 		int secretNumber = distribution(generator);
 		int guess;
 		int attempts = 3;
 		int score = 0;
 		string numberLog = "";
 		numberLog += "숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n";
-		numberLog += "1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n";
+		numberLog += "1부터 10 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n";
 		/*logger->PrintLog("숫자 맞추기 게임에 오신 것을 정말 진심으로 환영합니다!\n", EBuff);
 		logger->PrintLog("1부터 100 사이의 숫자를 맞춰보세요. 기회는 3번입니다!\n", EBuff);*/
 		logger->PrintLog(numberLog, EBuff);
@@ -258,8 +259,9 @@ namespace GameManger {
 		numberLog += "정답은 " + to_string(secretNumber);
 		numberLog += "획득 점수: " + to_string(score) + "\n";
 		logger->PrintLog(numberLog, EBuff);
-	}
+	}	  
 
+	//미구현
 	void GameManger::BuffRand(Character* player)
 	{
 		//TODO: 아이템 랜덤 변경
@@ -267,6 +269,7 @@ namespace GameManger {
 
 	}
 
+	//구현 완료, 캐릭터 쪽 버프관련 완성되면 수정예정(버프 미적용) - 채규혁
 	void GameManger::BuffCoinToss(Character* player)
 	{
 		Log* logger = Log::GetInstance();
@@ -280,26 +283,27 @@ namespace GameManger {
 
 		logger->PrintLog("동전 던지기 방에 도착했습니다.\n", EBuff);
 		Sleep(3000);
-		while (true)
+		while (solution)
 		{
 			
 			int randomNumber = distribution(generator);
 			string result = (randomNumber == 1 ? "앞면" : "뒷면");
 			while (true)
 			{
-				logger->PrintLog("동전을 던져 나올 면을 맞춰보세요.(1 : 앞면, 2 : 뒷면)\n", EBuff);
+				logger->PrintLog("동전을 던져 나올 면을 맞춰보세요.(1 : 앞면, 2 : 뒷면)\n기회는 총 5번 입니다. 행운을 빕니다.!\n입력 : ", EBuff);
 				cin >> choice;
 				switch (choice)
 				{
 				case 1:
-					str += to_string(count + 1) + "번 째 선택 : 앞면";
+					str += to_string(solution) + "번 째 선택 : 앞면";
 					break;
 				case 2:
-					str += to_string(count + 1) + "번 째 선택 : 뒷면";
+					str += to_string(solution) + "번 째 선택 : 뒷면";
 					break;
 				default:
 					logger->PrintLog("", EBuff);
 					logger->PrintInputError();
+					Sleep(2000);
 					break;
 				}
 				if (choice == 1 || choice == 2) break;
@@ -307,16 +311,21 @@ namespace GameManger {
 			str += "    결과 : " + result;
 			if (choice == randomNumber)
 			{
-				str += "\n맞췄습니다!";
 				count++;
+				str += "\n맞췄습니다! 맞춘 횟수 : " + to_string(count);
 			}
 			else
 			{
-				str += "\n틀렸습니다!";
+				str += "\n틀렸습니다! 맞춘 횟수 : " + to_string(count);
 			}
 			logger->PrintLog(str, EBuff);
 			Sleep(3000);
 			str = "";
+			if (++solution == 6)	//동전 덜질 기회는 5번, solution이 6이면 결과에 따라 버프 부여
+			{
+				logger->PrintLog("맞춘 횟수 : " + to_string(count) + "  횟수에 따라 버프 부여하면 될것같습니다~", EBuff);	//반복문으로 count만큼 버프 부여 횟수 갖는 로직 구현하면 될 것 같습니다.
+				break;
+			}
 		}
 		//while (solution) {
 		//	int choice = 0;
