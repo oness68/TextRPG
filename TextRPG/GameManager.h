@@ -39,16 +39,83 @@ namespace GameManger {
 		std::vector<StageRooms> GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities);
 		*/
 
-		template <typename RoomType>
-		RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities);
+		//template <typename RoomType>
+		//RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities);
+
+		//template <typename RoomType>
+		//std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom = std::nullopt);
 
 		template <typename RoomType>
-		std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom = std::nullopt);
+		RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
+			double totalProbability = 0.0;
+
+			// 로그 추가: 전체 확률의 합을 확인
+			//std::cout << "Total Probability: ";
+			for (const auto& room : roomProbabilities) {
+				totalProbability += room.second;
+				std::cout << room.first << " (" << room.second << "), ";
+			}
+			//std::cout << "Total: " << totalProbability << std::endl;
+
+			std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+			double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
+			double cumulativeProbability = 0.0;
+
+			// 로그 추가: 랜덤 값과 누적 확률 확인
+			//std::cout << "Random Value: " << randomValue << std::endl;
+
+			for (const auto& room : roomProbabilities) {
+				cumulativeProbability += room.second;
+				//std::cout << "Cumulative Probability: " << cumulativeProbability << " for Room: " << room.first << std::endl;
+
+				if (randomValue <= cumulativeProbability) {
+					//std::cout << "Selected Room: " << room.first << std::endl;  // 선택된 방 로그
+					return room.first;
+				}
+			}
+
+			//std::cout << "Returning default room: " << roomProbabilities.begin()->first << std::endl;
+			return roomProbabilities.begin()->first;  // default return
+		}
+
+		template <typename RoomType>
+		std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom) {
+			std::vector<RoomType> selectedRooms;
+
+			// 첫 번째 방을 생성
+			RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
+			selectedRooms.push_back(firstRoom);
+
+			//std::cout << "First room selected: " << firstRoom << std::endl;
+
+			RoomType secondRoom;
+			do {
+				secondRoom = GenerateRandomRoom(roomProbabilities);
+				//std::cout << "Second room selected: " << secondRoom << std::endl;
+			} while ((secondRoom == firstRoom) && !allowDuplicateRoom);
+
+			selectedRooms.push_back(secondRoom);
+
+			//std::cout << "Final Rooms Selected: ";
+			for (const auto& room : selectedRooms) {
+				std::cout << room << " ";
+			}
+			std::cout << std::endl;
+
+			return selectedRooms;
+		}
 
 		void VisitShop(Character* player);
 		void VisitRest(Character* player);
 		void VisitBuffRoom(Character* player);
 		void BeginBattle(Character* player,int stage);
+
+		// 버프방 게임 목록
+		void BuffDice(Character* player);
+		void BuffNumber(Character* player);
+		void BuffRand(Character* player);
+		void BuffGame(Character* player);
 
 		void BeginPlay(Character* player);
 		
@@ -75,7 +142,7 @@ namespace GameManger {
 			switch (room) {
 			case Market: return "상점";
 			case Rest: return "휴식";
-			case Buff: return "그냥방";
+			case Buff: return "?방";
 			case Battle: return "전투";
 			default: return "Unknown";
 			}
