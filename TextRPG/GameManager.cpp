@@ -199,6 +199,39 @@ namespace GameManger {
 
 	void GameManger::BuffGame()
 	{
+		Log* logger = Log::GetInstance();
+		int solution = 1;
+		int count = 0;
+		std::random_device random;
+		std::mt19937 generator(random());
+		std::uniform_int_distribution<int> distribution(1, 2);  //동전 앞(1), 뒷면(2)
+
+		logger->PrintLog("동전 던지기 방에 도착했습니다.\n", EBuff);
+		string str = "동전을 던져 나올 면을 선택해주세요.(1 : 앞면, 2 : 뒷면)(현재 맞춘 개수 : ";
+		while (solution) {
+			int choice = 0;
+			int RandomNumber = distribution(generator);
+			logger->PrintLog(str + to_string(count) + ")\n");
+			cin >> choice;
+			string result = (RandomNumber == 1 ? "앞면" : "뒷면");
+			logger->PrintLog("동전 결과 : " + result + "\n");
+			if (choice != 1 && choice != 2)
+			{
+				logger->PrintLog("잘못된 입력입니다. 1 또는 2를 입력해주세요\n");
+				continue;
+			}
+			else if (RandomNumber != choice)
+			{
+				logger->PrintLog("게임 종료! 당신의 선택이 틀렸습니다. (현재 맞춘 개수 : "+to_string(count) +")\n");
+				//맞춘 개수 기반 버프 부여 및 게임 종료
+				solution = 0;
+			}
+			else
+			{
+				logger->PrintLog("당신의 선택이 옳았습니다.\n");
+				count++;
+			}
+		}
 
 	}
 
