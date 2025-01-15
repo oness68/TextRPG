@@ -50,25 +50,20 @@ namespace GameManger {
 			double totalProbability = 0.0;
 
 			// 로그 추가: 전체 확률의 합을 확인
-			//std::cout << "Total Probability: ";
 			for (const auto& room : roomProbabilities) {
 				totalProbability += room.second;
 				std::cout << room.first << " (" << room.second << "), ";
 			}
-			//std::cout << "Total: " << totalProbability << std::endl;
 
-			std::srand(static_cast<unsigned>(std::time(nullptr)));
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_real_distribution<double> dist(0.0, totalProbability);
 
-			double randomValue = (std::rand() % 10000) / 10000.0 * totalProbability;
+			double randomValue = dist(gen);
 			double cumulativeProbability = 0.0;
-
-			// 로그 추가: 랜덤 값과 누적 확률 확인
-			//std::cout << "Random Value: " << randomValue << std::endl;
 
 			for (const auto& room : roomProbabilities) {
 				cumulativeProbability += room.second;
-				//std::cout << "Cumulative Probability: " << cumulativeProbability << " for Room: " << room.first << std::endl;
-
 				if (randomValue <= cumulativeProbability) {
 					//std::cout << "Selected Room: " << room.first << std::endl;  // 선택된 방 로그
 					return room.first;

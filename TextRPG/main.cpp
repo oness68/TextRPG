@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Character.h"
 #include "EnumCollection.h"
+#include "shop.h"
 
 using namespace std;
 
@@ -20,6 +21,9 @@ int main()
 	
 	// Debug
 	// Character player1 = *new Character("정의된 용사");
+	// Character player1 = *new Character("aaa");
+	// Shop shop;
+	// gameManager.VisitShop(&player1);
 
 	int menuOption;
 	bool isGameRun = false;		//게임의 실행여부
@@ -40,19 +44,16 @@ int main()
 	}
 
 	Character player1 = *new Character(characterName);
-
 	// 1. 게임시작, 2. 종료
 	while (!isGameStart)
 	{
 		logger->PrintStartMenu(EMenu);
 		cin >> menuOption;
-
 		switch (menuOption) {
 		case 1:
 			isGameStart = true;	//시작화면 루프 벗어나기 위함
 			isGameRun = true;	//게임 시작
 			logger->PrintStartMenu(EStart);
-
 			gameManager.BeginPlay(&player1);
 			break;
 		case 2:
@@ -63,7 +64,7 @@ int main()
 			logger->PrintInputError();	//잘못된 입력 안내 출력
 		}
 	}
-	
+
 	//게임 실행이 끝났을 때
 	logger->PrintGameOver(EGameEnd);
 	return 0;

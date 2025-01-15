@@ -4,7 +4,7 @@
 #include "ItemFactory.h"
 #include "Log.h"
 #include <format>
-
+#include "Menu.h"
 Log* logger = Log::GetInstance();
 
 Shop::Shop()
@@ -41,51 +41,78 @@ void Shop::BuyItem(Character& player)
 {
 	if (shopInven.empty())
 	{
-		logger->PrintLog("아이템이 없습니다!", (int)EShop, true);
-		//cout << "\nThe shop is out of items!" << endl;
+		logger->PrintLog("구매 가능한 아이템이 없습니다!", (int)EShop, true);
+		Sleep(2000);
 		return;
 	}
 
 	logger->PrintLog("구매할 아이템을 선택해주세요!\n\n", false);
 	logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), (int)EShop, true);
-	//cout << "You have " << player.GetGold() << "gold\n" << endl;
-	//cout << "Select the items you want to buy!" << endl;
-	logger->PrintLog("===========구매 가능===========\n\n", false);
-	for (int i = 0; i < shopInven.size(); i++)
+
+	//logger->PrintLog("===========구매 가능===========\n\n", false);
+
+	vector<string>menuItems = {};
+	vector<function<void()>> actions;
+	for (int i=0; i < shopInven.size(); i++)
+	{
+		menuItems.push_back(format("{} - {} gold [{}]\n", shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType()));
+		actions.push_back([&]() {
+			cout << "Action Executed: " << shopInven[i]->GetName() << endl;
+			player.BuyItem(shopInven[i]);
+			string logMessage = format("[{}]을(를) 구매했습니다!\n\n", shopInven[i]->GetName());
+			logger->PrintLog(logMessage, (int)EShop, true);
+			logger->PrintLog(format("남은 보유금 {} gold\n", player.GetGold()), false);
+
+			shopInven.erase(shopInven.begin() + (i));
+			});
+	}
+	menuItems.push_back("나가기");
+	actions.push_back([&]() {});
+
+	Menu menuSystem(menuItems, actions);
+
+	// 메뉴 실행
+	while (true) {
+		menuSystem.DisplayMenu((int)EShop, true);
+		menuSystem.RunMenu((int)EShop, true);
+
+		break;
+
+		std::cout << endl; // 메뉴 간격 조정
+	}
+
+	/*for (int i = 0; i < shopInven.size(); i++)
 	{
 		if (shopInven[i] != nullptr)
 		{
 			string logMessage = format("{}.{} - {} gold [{}]\n", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType());
 			logger->PrintLog(logMessage, false);
-			//cout << i + 1 << ". " << shopInven[i]->GetName() << " - " << shopInven[i]->GetPrice() << " gold [" << (int)shopInven[i]->GetType() << "]" << endl;
 		}
 		else
 		{
 			string logMessage = format("{}. 잘못된 아이템. ", i + 1);
 			logger->PrintLog(logMessage, false);
-			//cout << i + 1 << ". Invalid Item" << endl;
 		}
-	}
-	logger->PrintLog("\n==============================\n", false);
-	string logMessage = format("{}.나가기\n", shopInven.size() + 1);
-	logger->PrintLog(logMessage, false);
-	//cout << shopInven.size() + 1 << ". Leave the shop" << endl;
+	}*/
+	//logger->PrintLog("\n==============================\n", false);
+	/*string logMessage = format("{}.나가기\n", shopInven.size() + 1);
+	logger->PrintLog(logMessage, false);*/
 
-	int choice;
-	cout << "선택 : ";
-	cin >> choice;
+	//int choice;
+	//cout << "선택 : ";
+	//cin >> choice;
 
-	if (choice == shopInven.size() + 1)
-	{
-		logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
-		//cout << "\nYou left the shop" << endl;
-		return;
-	}
+	//if (choice == shopInven.size() + 1)
+	//{
+	//	logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
+	//	Sleep(2000);
+	//	return;
+	//}
 
-	if (choice < 1 || choice>shopInven.size() + 1)
+	/*if (choice < 1 || choice>shopInven.size() + 1)
 	{
 		logger->PrintLog("잘못된 선택입니다.", (int)EShop, false);
-		//cout << "\nInvalid choice" << endl;
+		Sleep(2000);
 		return;
 	}
 	else
@@ -94,22 +121,18 @@ void Shop::BuyItem(Character& player)
 		if (player.GetGold() >= selectedItem->GetPrice())
 		{
 			player.BuyItem(selectedItem);
-			//player.TakeGold(-selectedItem->GetPrice());
-			//player.TakeItem(selectedItem);
-			string logMessage = format("[{}]을 구매했습니다!\n\n", selectedItem->GetName());
+			string logMessage = format("[{}]을(를) 구매했습니다!\n\n", selectedItem->GetName());
 			logger->PrintLog(logMessage, (int)EShop, true);
-			//cout << "\nYou bought [" << selectedItem->GetName() << "]!\n" << endl;
-			logger->PrintLog(format("보유금 {} gold\n", player.GetGold()), false);
-			//cout << "Left gold : " << player.GetGold() << endl;
+			logger->PrintLog(format("남은 보유금 {} gold\n", player.GetGold()), false);
 
 			shopInven.erase(shopInven.begin() + (choice - 1));
 		}
 		else
 		{
 			logger->PrintLog("골드가 부족합니다.\n", false);
-			//cout << "\nNot enough gold" << endl;
 		}
-	}
+		Sleep(2000);
+	}*/
 }
 
 void Shop::SellItem(Character& player)
@@ -119,6 +142,7 @@ void Shop::SellItem(Character& player)
 	{
 		logger->PrintLog("판매 가능한 아이템이 없습니다!\n", (int)EShop, true);
 		//cout << "You have no items to sell!" << endl;
+		Sleep(2000);
 		return;
 	}
 	logger->PrintLog("판매할 아이템을 선택해주세요.\n", (int)EShop, true);
@@ -146,11 +170,13 @@ void Shop::SellItem(Character& player)
 	{
 		logger->PrintLog("아이템 판매를 종료했습니다.\n", (int)EShop, true);
 		//cout << "\nYou left the Inventory" << endl;
+		Sleep(2000);
 		return;
 	}
 	if (choice<1 || choice>invenItems.size()) {
 		logger->PrintLog("잘못된 입력입니다.\n", (int)EShop, true);
 		//cout << "\nInvaild choice" << endl;
+		Sleep(2000);
 		return;
 	}
 
@@ -166,6 +192,7 @@ void Shop::SellItem(Character& player)
 	//cout << "You sold " << selectedItem->GetName() << " for " << sellPrice << "gold!" << endl;
 	logger->PrintLog(format("보유금 {} gold\n", player.GetGold()), false);
 	//cout << "Left gold : " << player.GetGold() << endl;
+	Sleep(2000);
 }
 
 void Shop::UseEnchancer(Character& player)
@@ -178,6 +205,7 @@ void Shop::UseEnchancer(Character& player)
 	{
 		logger->PrintLog("강화할 수 있는 아이템이 없습니다.\n", (int)EShop, true);
 		//cout << "\nNo Items for enchancement" << endl;
+		Sleep(2000);
 		return;
 	}
 	int enchantPrice = 100;//강화비용
@@ -202,18 +230,21 @@ void Shop::UseEnchancer(Character& player)
 	if (choice == enchantableItems.size()+1)
 	{
 		logger->PrintLog("아이템 강화를 종료했습니다.\n", (int)EShop, true);
+		Sleep(2000);
 		return;
 	}
 	if (choice<1 || choice>enchantableItems.size())
 	{
 		logger->PrintLog("잘못된 입력입니다.\n", (int)EShop, true);
 		//cout << "Invalid choice!" << endl;
+		Sleep(2000);
 		return;
 	}
 	if (player.GetGold() < enchantPrice)
 	{
 		logger->PrintLog("골드가 부족합니다.\n", (int)EShop, true);
 		//cout << "Not enough gold to enchant!" << endl;
+		Sleep(2000);
 		return;
 	}
 
@@ -253,4 +284,5 @@ void Shop::UseEnchancer(Character& player)
 	player.TakeGold(-enchantPrice);
 	logger->PrintLog(format("\n보유금 {} gold\n", player.GetGold()), false);
 	//cout << "You used " << enchantPrice << " gold for enchant!(Left gold : " << player.GetGold() << ")" << endl;
+	Sleep(2000);
 }
