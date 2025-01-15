@@ -49,28 +49,27 @@ public:
 	Item(string name, int price, Rarity rarity)
 	{
 		this->name = name;
+		this->itemType = ItemType::Default;
+		this->rarity = rarity;
 		this->price = price;
-		this->rarityType = rarity;
-		this->typeItem = ItemType::Default;
 		this->depreciationRate = 0.6;
 	}
 	virtual ~Item() {}
 
 	string GetName() { return this->name; }
+	enum class ItemType GetType() { return this->itemType; }
+	enum class Rarity GetRarity() { return this->rarity; }
+	
 	int GetPrice() { return this->price; }
-	int GetRarity() { return this->rarity; }
-	string GetItemType() { return this->name; }
 	double GetDepreciationRate() { return this->depreciationRate; }
-
 	int GetSellPrice() { return depreciationRate == 0 ? price : (int)(price / depreciationRate); }
 
 protected:
 	string name = "";
+	enum class ItemType itemType = ItemType::Unknown;
+	Rarity rarity = Rarity::C;
+
 	int price = 0;
-	int rarity = 0;
-	Rarity rarityType = Rarity::C;
-	string itemType = "";
-	enum class ItemType typeItem = ItemType::Unknown;
 	double depreciationRate = 0;
 };
 

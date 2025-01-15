@@ -11,7 +11,7 @@ class EquipableItem : public Item
 {
 public:
 	EquipableItem();
-	EquipableItem(string name, int price, int rarity, string equipType, map<string, int>baseStat, int enchantLevel);
+	EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int>baseStat, int enchantLevel);
 	~EquipableItem();
 
 	string GetEquipType();

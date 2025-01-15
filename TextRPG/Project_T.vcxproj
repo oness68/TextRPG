@@ -135,7 +135,9 @@
     <ClCompile Include="ConsumableItem.cpp" />
     <ClCompile Include="Enchancer.cpp" />
     <ClCompile Include="EquipableItem.cpp" />
+    <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -151,8 +153,10 @@
     <ClInclude Include="EnumCollection.h" />
     <ClInclude Include="EquipableItem.h" />
     <ClInclude Include="EquipableItemDecorator.h" />
+    <ClInclude Include="ExceptionHandler.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Shop.h" />

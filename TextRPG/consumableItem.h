@@ -6,31 +6,29 @@
 
 using namespace std;
 
+enum class EffectType
+{
+	Unknown,
+	HealCurrentHP,
+	IncreaseMaxHP,
+	DamageUp
+};
+
 class ConsumableItem : public Item
 {
 public:
 	ConsumableItem();
-	ConsumableItem(string name, int price, int rarity, string effectType, int effectValue);
+	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue);
 	virtual ~ConsumableItem();
 
-	string GetEffectType();
+	EffectType GetEffectType();
 	int GetEffectValue();
+
 	void ConsumeEffect(Character& player);
-	//virtual void Use(Character* player);
 
 protected:
-	string effectType;
+	EffectType effectType = EffectType::Unknown;
 	int effectValue;
-};
-
-class HealPotion : public ConsumableItem
-{
-public:
-	HealPotion(string name, int price, Rarity rarity, int effectValue);
-	virtual ~HealPotion();
-
-	void Use(Character* character);
-private:
 };
 
 class AttackBoost : public ConsumableItem
@@ -44,15 +42,25 @@ private:
 	int duration;
 };
 
-class Elixir : public ConsumableItem
-{
-public:
-	Elixir(string name, int price, enum Rarity rarity, int effectValue);
-	virtual ~Elixir();
-
-	void Use(Character* character);
-private:
-};
+//class HealPotion : public ConsumableItem
+//{
+//public:
+//	HealPotion(string name, int price, Rarity rarity, int effectValue);
+//	virtual ~HealPotion();
+//
+//	void Use(Character* character);
+//private:
+//};
+//
+//class Elixir : public ConsumableItem
+//{
+//public:
+//	Elixir(string name, int price, enum Rarity rarity, int effectValue);
+//	virtual ~Elixir();
+//
+//	void Use(Character* character);
+//private:
+//};
 
 
 #endif // !CONSUMABLE_ITEM_H_

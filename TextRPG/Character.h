@@ -49,19 +49,18 @@ public:
 	void TakeGold(const int& gold);
 
 	// ========== 인벤토리 및 아이템 상점관련 ==========
-	map<Item*, int> GetInventory();//변경 이인화
+	vector<Inventory> GetInventoryItems(enum class ItemType type);
+	map<string, class Inventory> GetInventory();
 	const int& GetGold();
 
-	void TakeItem(Item* item);//변경 이인화
-	void UseItem(Item* item);//변경 이인화
+	void TakeItem(Item* item);
+	void UseItem(const string& itemKey);
 
 	void BuyItem(class Item* item);
 	void SellItem(string itemKey);
 
-	void RemoveItem(Item* item);//추가 이인화
-	void ReduceInventory(const string& itemKey); //추가 한정혁
-
 	//추가 이인화--------------
+	//void RemoveItem(Item* item);//추가 이인화
 	//EquipableItem* GetWeaponSlot();
 	//void SetWeaponSlot(EquipableItem* item);
 	//EquipableItem* GetArmorSlot();
@@ -79,8 +78,10 @@ private:
 	int requiredLevelUpExp = 100;
 	int maxLevel = 10;
 
+	map<string, class Inventory> inventory;
+	void ReduceInventory(const string& itemKey);
+	
 	//map<EquipmentType, int> equipmentItems;
-	map<Item*, int> inventory;//변경 이인화
 	//EquipableItem* weaponSlot = nullptr;
 	//EquipableItem* armorSlot = nullptr;
 
