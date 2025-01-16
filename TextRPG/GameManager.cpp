@@ -389,9 +389,9 @@ namespace GameManger {
 				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
 			}
 
-				vector<string> menu = {
-					StageRoomToString(stageRooms[0]),
-					StageRoomToString(stageRooms[1])
+			vector<string> menu = {
+				StageRoomToString(stageRooms[0]),
+				StageRoomToString(stageRooms[1])
 			};
 
 			vector<function<void()>> actions;
@@ -443,40 +443,6 @@ namespace GameManger {
 			}
 
 			SetStage(++stage);
-			/*
-			int choice;
-			cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
-			std::cin >> choice;
-
-			if (choice == 1 || choice == 2) {
-				StageRooms selectedRoom = stageRooms[choice - 1];
-
-				switch (selectedRoom) {
-				case Market:
-					logger->PrintLog("이상한 건물에 들어섰다.\n");
-					VisitShop(player);
-					break;
-				case Rest:
-					logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-					VisitRest(player);
-					break;
-				case Battle:
-					logger->PrintLog("어맛!\n");
-					BeginBattle(player, stage);
-					break;
-				default:
-					logger->PrintLog("여긴 어디지...?\n");
-					VisitBuffRoom(player);
-					break;
-				}
-			}
-			else {
-				logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
-				continue;
-			}
-
-			SetStage(++stage);
-			*/
 		}
 	}
 
