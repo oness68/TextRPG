@@ -69,31 +69,31 @@ public:
 class Goblin : public NormalMonster 
 {
 public:
-	Goblin() : NormalMonster("Goblin", 100, 15, 20, 25) {};
+	Goblin() : NormalMonster("Goblin", 100, 15, 20, 25) { dropTable.push_back({ 10,"고블린귀" }); }
 };
 
 class Orc : public NormalMonster 
 {
 public:
-	Orc() : NormalMonster("Orc", 100, 15, 20, 25) {};
+	Orc() : NormalMonster("Orc", 100, 15, 20, 25) { dropTable.push_back({ 10,"오크의머리털" }); }
 };
 
 class Troll : public NormalMonster
 {
 public:
-	Troll() : NormalMonster("Troll", 100, 15, 20, 25) {};
+	Troll() : NormalMonster("Troll", 100, 15, 20, 25) { dropTable.push_back({ 10,"트롤의송곳니" }); }
 };
 
 class Wolf : public NormalMonster 
 {
 public:
-	Wolf () : NormalMonster("Wolf", 100, 15, 20, 25) {};
+	Wolf () : NormalMonster("Wolf", 100, 15, 20, 25) { dropTable.push_back({ 10,"늑대발톱" }); }
 };
 
 class Slime : public NormalMonster 
 {
 public:
-	Slime() : NormalMonster("Slime", 100, 15, 20, 25) {};
+	Slime() : NormalMonster("Slime", 100, 15, 20, 25) { dropTable.push_back({ 10,"슬라임의점액질" }); }
 };
 
 class BossMonster : public BaseMonster 
@@ -126,6 +126,7 @@ public:
 		responseResultJudgment.push_back(1);
 		responseResultJudgment.push_back(3);
 		responseResultJudgment.push_back(2);
+		dropTable.push_back({ 10,"고블린라이더의안장" });
 	}
 };
 
@@ -142,6 +143,7 @@ public:
 		responseResultJudgment.push_back(2);
 		responseResultJudgment.push_back(1);
 		responseResultJudgment.push_back(3);
+		dropTable.push_back({ 10,"트윈헤드트롤의두개골" });
 	}
 };
 
@@ -158,6 +160,7 @@ public:
 		responseResultJudgment.push_back(3);
 		responseResultJudgment.push_back(2);
 		responseResultJudgment.push_back(1);
+		dropTable.push_back({ 10,"엔트의씨앗" });
 	}
 };
 

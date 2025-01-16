@@ -127,10 +127,10 @@ namespace GameManger {
 		GameManger& operator=(GameManger&&) = delete;
 
 		std::map<StageRooms, double> roomProbabilities = {
-			{Market, 20.0},
+			{Market, 70.0},
 			{Rest, 10.0},
 			{Buff, 10.0},
-			{Battle, 50.0}
+			{Battle, 10.0}
 		};
 
 		std::string StageRoomToString(StageRooms room) {

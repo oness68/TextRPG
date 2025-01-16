@@ -93,24 +93,26 @@ void BaseMonster::TakeDamage(int damage)
 
 void NormalMonster::InitializeDropTable()
 {
-	dropTable.push_back({ 70,"하급체력회복포션" });
-	dropTable.push_back({ 20,"중급체력회복포션" });
-	dropTable.push_back({ 10,"모험가의장검" });
+	dropTable.push_back({ 10,"짐승의가죽" });
+	dropTable.push_back({ 10,"부서진뼈" });
+	dropTable.push_back({ 10,"마물의피" });
+	dropTable.push_back({ 10,"낡은검" });
 }
 
 void BossMonster::InitializeDropTable()
 {
 
-	dropTable.push_back({ 50,"하급체력회복포션 Sword" });
-	dropTable.push_back({ 50,"중급체력회복포션" });
+	dropTable.push_back({ 30,"두꺼운가죽" });
+	dropTable.push_back({ 30,"단단한뼈" });
+	dropTable.push_back({ 30,"마물의뜨거운피" });
 }
 
 void Dragon::InitializeDropTable()
 {
-	dropTable.push_back({ 10,"하급체력회복포션" });
-	dropTable.push_back({ 10,"중급체력회복포션" });
-	dropTable.push_back({ 40,"상급체력회복포션" });
-	dropTable.push_back({ 40,"상급체력회복포션" });
+	dropTable.push_back({ 10,"드래곤의가죽" });
+	dropTable.push_back({ 10,"드래곤의뼈" });
+	dropTable.push_back({ 10,"드래곤의피" });
+	dropTable.push_back({ 10,"드래곤의머리" });
 }
 
 int NormalMonster::TakeAction() const
