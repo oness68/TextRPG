@@ -81,7 +81,7 @@ public:
 	void TurnEnd();
 	void TryAddBuff(BuffBase& buffBase);
 	void TryRemoveBuff();
-
+	string GetName() { return name; }
 private:
 	string name;
 	int level = 1;

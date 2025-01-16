@@ -24,6 +24,7 @@ public:
 	virtual int TakeAction() const = 0;
 	virtual string GetRandomItem() const = 0;
 	virtual int GetResponseScore(int option) const = 0;
+	virtual vector<string> GetcharacterResponseList() const = 0;
 };
 
 class BaseMonster : public Monster
@@ -35,7 +36,7 @@ protected:
 	int experience;
 	int gold;
 	vector<pair<int, string>> dropTable;
-
+	vector<string> characterResponseList = {};
 	virtual void InitializeDropTable() = 0;
 
 public:
@@ -52,6 +53,7 @@ public:
 	void SetGold(int gold) override;
 	void TakeDamage(int damage) override;
 	string GetRandomItem() const override;
+	vector<string> GetcharacterResponseList() const override;
 };
 
 class NormalMonster : public BaseMonster 
@@ -64,6 +66,8 @@ public:
 		: BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
 	int GetResponseScore(int option) const override;
+	vector<string> GetcharacterResponseList() const override;
+
 };
 
 class Goblin : public NormalMonster 
@@ -111,6 +115,7 @@ public:
 		BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
 	int GetResponseScore(int option) const override;
+	vector<string> GetcharacterResponseList() const override;
 };
 
 class GoblinRider : public BossMonster 
@@ -120,9 +125,9 @@ public:
 		
 		characterResponseList.clear();
 		characterResponseList.push_back("고블린 라이더가 활을 꺼내 시위를 당긴다. 당신의 선택은?\n");
-		characterResponseList.push_back("1. 구르며 고블린 라이더에게 접근한다.\n");
-		characterResponseList.push_back("2. 무기로 쳐낸다.\n");
-		characterResponseList.push_back("3. 엎드린다.\n");
+		characterResponseList.push_back("1. 구르며 고블린 라이더에게 접근한다.");
+		characterResponseList.push_back("2. 무기로 쳐낸다.");
+		characterResponseList.push_back("3. 엎드린다.");
 		responseResultJudgment.push_back(1);
 		responseResultJudgment.push_back(3);
 		responseResultJudgment.push_back(2);
@@ -138,9 +143,9 @@ public:
 		
 		characterResponseList.clear();
 		characterResponseList.push_back("트윈 헤드 트롤이 크게 숨을 들이마신다. 당신의 선택은?\n");
-		characterResponseList.push_back("1. 뒤로 돌아 뛴다.\n");
-		characterResponseList.push_back("2. 귀를 막고 트윈 헤드 트롤에게 돌진한다.\n");
-		characterResponseList.push_back("3. 트윈 헤드 트롤에게 빠르게 돌진한다.\n");
+		characterResponseList.push_back("1. 뒤로 돌아 뛴다.");
+		characterResponseList.push_back("2. 귀를 막고 트윈 헤드 트롤에게 돌진한다.");
+		characterResponseList.push_back("3. 트윈 헤드 트롤에게 빠르게 돌진한다.");
 		responseResultJudgment.push_back(2);
 		responseResultJudgment.push_back(1);
 		responseResultJudgment.push_back(3);
@@ -156,9 +161,9 @@ public:
 		
 		characterResponseList.clear();
 		characterResponseList.push_back("트렌트가 온몸에서 가시가 돋아나기 시작했다. 당신의 선택은?\n");
-		characterResponseList.push_back("1. 트렌트에게 돌진한다.\n");
-		characterResponseList.push_back("2. 뒤로 빠르게 뛴다.\n");
-		characterResponseList.push_back("3. 주변의 지형지물에 엄폐한다.\n");
+		characterResponseList.push_back("1. 트렌트에게 돌진한다.");
+		characterResponseList.push_back("2. 뒤로 빠르게 뛴다.");
+		characterResponseList.push_back("3. 주변의 지형지물에 엄폐한다.");
 		responseResultJudgment.push_back(3);
 		responseResultJudgment.push_back(2);
 		responseResultJudgment.push_back(1);
