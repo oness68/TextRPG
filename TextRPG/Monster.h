@@ -56,48 +56,42 @@ public:
 
 class NormalMonster : public BaseMonster 
 {
+protected:
+	void InitializeDropTable() override;
+
 public:
 	NormalMonster(string n, int hp, int atk, int exp, int g)
 		: BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
+	int GetResponseScore(int option) const override;
 };
 
 class Goblin : public NormalMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Goblin() : NormalMonster("Goblin", 100, 15, 20, 25) {};
 };
 
 class Orc : public NormalMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Orc() : NormalMonster("Orc", 100, 15, 20, 25) {};
 };
 
 class Troll : public NormalMonster
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Troll() : NormalMonster("Troll", 100, 15, 20, 25) {};
 };
 
 class Wolf : public NormalMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Wolf () : NormalMonster("Wolf", 100, 15, 20, 25) {};
 };
 
 class Slime : public NormalMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Slime() : NormalMonster("Slime", 100, 15, 20, 25) {};
 };
@@ -110,6 +104,7 @@ protected:
 	/*1 -> Good
 	2 -> Soso
 	3 -> Bad*/
+	void InitializeDropTable() override;
 
 public:
 	BossMonster(string n, int hp, int atk, int exp, int g) :
@@ -120,8 +115,6 @@ public:
 
 class GoblinRider : public BossMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	GoblinRider() : BossMonster("GoblinRider", 500, 30, 50, 100) {
 		
@@ -138,8 +131,6 @@ public:
 
 class TwinHeadTroll : public BossMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	TwinHeadTroll() : BossMonster("TwinHeadTroll", 500, 30, 50, 100) {
 		
@@ -156,8 +147,6 @@ public:
 
 class Treant : public BossMonster 
 {
-protected:
-	void InitializeDropTable() override;
 public:
 	Treant() : BossMonster("Treant", 500, 30, 50, 100) {
 		
@@ -176,8 +165,10 @@ class Dragon : public BossMonster
 {
 protected:
 	void InitializeDropTable() override;
+
 public:
 	Dragon() : BossMonster("Dragon", 1000, 50, 777, 777) {
+		dropTable.clear();
 		characterResponseList.clear();
 
 		InitializeDropTable();
