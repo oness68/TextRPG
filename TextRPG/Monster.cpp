@@ -91,28 +91,6 @@ void BaseMonster::TakeDamage(int damage)
 	}
 }
 
-void NormalMonster::InitializeDropTable()
-{
-	dropTable.push_back({ 70,"하급체력회복포션" });
-	dropTable.push_back({ 20,"중급체력회복포션" });
-	dropTable.push_back({ 10,"모험가의장검" });
-}
-
-void BossMonster::InitializeDropTable()
-{
-
-	dropTable.push_back({ 50,"하급체력회복포션 Sword" });
-	dropTable.push_back({ 50,"중급체력회복포션" });
-}
-
-void Dragon::InitializeDropTable()
-{
-	dropTable.push_back({ 10,"하급체력회복포션" });
-	dropTable.push_back({ 10,"중급체력회복포션" });
-	dropTable.push_back({ 40,"상급체력회복포션" });
-	dropTable.push_back({ 40,"상급체력회복포션" });
-}
-
 int NormalMonster::TakeAction() const
 {
 	// 1 -> 공격
@@ -139,11 +117,6 @@ int NormalMonster::TakeAction() const
 
 		return 2;
 	}
-	return 0;
-}
-
-int NormalMonster::GetResponseScore(int option) const
-{
 	return 0;
 }
 
@@ -189,4 +162,52 @@ int BossMonster::GetResponseScore(int option) const
 {
 	//플레이어의 선택지 입력 값을 받아 그에 따른 점수 반환
 	return responseResultJudgment.at(option - 1);
+}
+
+void Slime::InitializeDropTable()
+{
+
+}
+
+void Wolf::InitializeDropTable()
+{
+
+}
+
+void Troll::InitializeDropTable()
+{
+
+}
+
+void Orc::InitializeDropTable()
+{
+
+}
+
+void Goblin::InitializeDropTable()
+{
+
+}
+
+void Treant::InitializeDropTable()
+{
+
+}
+
+void TwinHeadTroll::InitializeDropTable()
+{
+
+}
+
+void GoblinRider::InitializeDropTable()
+{
+
+}
+
+void Dragon::InitializeDropTable()
+{
+	dropTable.push_back({ 10,"하급체력회복포션" });
+	dropTable.push_back({ 10,"중급체력회복포션" });
+	dropTable.push_back({ 40,"상급체력회복포션" });
+	dropTable.push_back({ 40,"상급체력회복포션" });
 }

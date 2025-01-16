@@ -56,42 +56,48 @@ public:
 
 class NormalMonster : public BaseMonster 
 {
-protected:
-	void InitializeDropTable() override;
-
 public:
 	NormalMonster(string n, int hp, int atk, int exp, int g)
 		: BaseMonster(n, hp, atk, exp, g) {InitializeDropTable();}
 	int TakeAction() const override;
-	int GetResponseScore(int option) const override;
 };
 
 class Goblin : public NormalMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Goblin() : NormalMonster("Goblin", 100, 15, 20, 25) {};
 };
 
 class Orc : public NormalMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Orc() : NormalMonster("Orc", 100, 15, 20, 25) {};
 };
 
 class Troll : public NormalMonster
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Troll() : NormalMonster("Troll", 100, 15, 20, 25) {};
 };
 
 class Wolf : public NormalMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Wolf () : NormalMonster("Wolf", 100, 15, 20, 25) {};
 };
 
 class Slime : public NormalMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Slime() : NormalMonster("Slime", 100, 15, 20, 25) {};
 };
@@ -104,7 +110,6 @@ protected:
 	/*1 -> Good
 	2 -> Soso
 	3 -> Bad*/
-	void InitializeDropTable() override;
 
 public:
 	BossMonster(string n, int hp, int atk, int exp, int g) :
@@ -115,9 +120,11 @@ public:
 
 class GoblinRider : public BossMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	GoblinRider() : BossMonster("GoblinRider", 500, 30, 50, 100) {
-		dropTable.clear();
+		
 		characterResponseList.clear();
 		characterResponseList.push_back("고블린 라이더가 활을 꺼내 시위를 당긴다. 당신의 선택은?\n");
 		characterResponseList.push_back("1. 구르며 고블린 라이더에게 접근한다.\n");
@@ -131,9 +138,11 @@ public:
 
 class TwinHeadTroll : public BossMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	TwinHeadTroll() : BossMonster("TwinHeadTroll", 500, 30, 50, 100) {
-		dropTable.clear();
+		
 		characterResponseList.clear();
 		characterResponseList.push_back("트윈 헤드 트롤이 크게 숨을 들이마신다. 당신의 선택은?\n");
 		characterResponseList.push_back("1. 뒤로 돌아 뛴다.\n");
@@ -147,9 +156,11 @@ public:
 
 class Treant : public BossMonster 
 {
+protected:
+	void InitializeDropTable() override;
 public:
 	Treant() : BossMonster("Treant", 500, 30, 50, 100) {
-		dropTable.clear();
+		
 		characterResponseList.clear();
 		characterResponseList.push_back("트렌트가 온몸에서 가시가 돋아나기 시작했다. 당신의 선택은?\n");
 		characterResponseList.push_back("1. 트렌트에게 돌진한다.\n");
@@ -165,10 +176,8 @@ class Dragon : public BossMonster
 {
 protected:
 	void InitializeDropTable() override;
-
 public:
 	Dragon() : BossMonster("Dragon", 1000, 50, 777, 777) {
-		dropTable.clear();
 		characterResponseList.clear();
 
 		InitializeDropTable();
