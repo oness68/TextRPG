@@ -232,7 +232,10 @@ namespace GameManger {
 			while (true)
 			{
 				logger->PrintLog(to_string(i) + "번째 시도: ", EBuff);
+				PI::ClearInputBuffer();
+				PI::isInputEnabled = true;
 				cin >> guess;
+				PI::isInputEnabled = false;
 				if (guess < 1 || guess >10)
 				{
 					logger->PrintInputError();
@@ -310,7 +313,10 @@ namespace GameManger {
 			while (true)	//입력 예외 처리
 			{
 				logger->PrintLog("동전을 던져 나올 면을 맞춰보세요.(1 : 앞면, 2 : 뒷면)\n기회는 총 5번 입니다. 행운을 빕니다.!\n입력 : ", EBuff);
+				PI::ClearInputBuffer();
+				PI::isInputEnabled = true;
 				cin >> choice;
+				PI::isInputEnabled = false;
 				switch (choice)
 				{
 				case 1:

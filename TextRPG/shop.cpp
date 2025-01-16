@@ -5,6 +5,8 @@
 #include "Log.h"
 #include <format>
 #include "Menu.h"
+#include "ProcessInput.h"
+
 Log* logger = Log::GetInstance();
 Shop::Shop()
 {
@@ -38,7 +40,10 @@ void Shop::BuyItem(Character& player)
 		logger->PrintLog("구매 가능한 아이템이 없습니다!", (int)EShop, true);
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 
@@ -58,13 +63,19 @@ void Shop::BuyItem(Character& player)
 	logger->PrintLog(logMessage, false);
 	int choice;
 	cout << "선택 : ";
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> choice;
+	PI::isInputEnabled = false;
 	if (choice == shopInven.size() + 1)
 	{
 		logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	if (choice < 1 || choice>shopInven.size() + 1)
@@ -72,7 +83,10 @@ void Shop::BuyItem(Character& player)
 		logger->PrintLog("잘못된 선택입니다.", (int)EShop, false);
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	else
@@ -92,7 +106,10 @@ void Shop::BuyItem(Character& player)
 		}
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 	}
 }
 
@@ -105,7 +122,10 @@ void Shop::SellItem(Character& player)
 		//cout << "You have no items to sell!" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	logger->PrintLog("판매할 아이템을 선택해주세요.\n", (int)EShop, true);
@@ -127,14 +147,20 @@ void Shop::SellItem(Character& player)
 	//cout << index << ". Leave the Inventory" << endl;
 	int choice;
 	cout << "선택 : ";
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> choice;
+	PI::isInputEnabled = false;
 	if (choice == index)
 	{
 		logger->PrintLog("아이템 판매를 종료했습니다.\n", (int)EShop, true);
 		//cout << "\nYou left the Inventory" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	if (choice<1 || choice>invenItems.size()) {
@@ -142,7 +168,10 @@ void Shop::SellItem(Character& player)
 		//cout << "\nInvaild choice" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	Item* selectedItem = invenItems[choice - 1];
@@ -157,7 +186,10 @@ void Shop::SellItem(Character& player)
 	//cout << "Left gold : " << player.GetGold() << endl;
 	int choice2;
 	cout << "\n아무 키나 눌러 확인\n";
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> choice2;
+	PI::isInputEnabled = false;
 }
 
 void Shop::UseEnchancer(Character& player)
@@ -171,7 +203,10 @@ void Shop::UseEnchancer(Character& player)
 		//cout << "\nNo Items for enchancement" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	int enchantPrice = 100;//강화비용
@@ -190,13 +225,19 @@ void Shop::UseEnchancer(Character& player)
 	logger->PrintLog(format("{}. 나가기\n", enchantableItems.size() + 1), false);
 	int choice;
 	cout << "선택 : ";
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> choice;
+	PI::isInputEnabled = false;
 	if (choice == enchantableItems.size() + 1)
 	{
 		logger->PrintLog("아이템 강화를 종료했습니다.\n", (int)EShop, true);
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	if (choice<1 || choice>enchantableItems.size())
@@ -205,7 +246,10 @@ void Shop::UseEnchancer(Character& player)
 		//cout << "Invalid choice!" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	if (player.GetGold() < enchantPrice)
@@ -214,7 +258,10 @@ void Shop::UseEnchancer(Character& player)
 		//cout << "Not enough gold to enchant!" << endl;
 		int choice;
 		cout << "\n아무 키나 눌러 확인\n";
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 		cin >> choice;
+		PI::isInputEnabled = false;
 		return;
 	}
 	EquipableItem* itemToEnchant = dynamic_cast<EquipableItem*>(enchantableItems[choice - 1]);
@@ -252,5 +299,8 @@ void Shop::UseEnchancer(Character& player)
 	//cout << "You used " << enchantPrice << " gold for enchant!(Left gold : " << player.GetGold() << ")" << endl;
 	int choice3;
 	cout << "\n아무 키나 눌러 확인\n";
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> choice3;
+	PI::isInputEnabled = false;
 }

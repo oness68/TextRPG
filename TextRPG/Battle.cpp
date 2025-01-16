@@ -1,4 +1,5 @@
 ﻿#include "Battle.h"
+#include "ProcessInput.h"
 //Common
 
 
@@ -39,7 +40,10 @@ int Battle::Input(int min,int max)
 {
 	Log* logger = Log::GetInstance();
 	int input;
+	PI::ClearInputBuffer();
+	PI::isInputEnabled = true;
 	cin >> input;
+	PI::isInputEnabled = false;
 	if (min > input || max < input)
 	{
 		input = 0;

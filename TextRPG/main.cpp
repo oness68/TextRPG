@@ -14,7 +14,7 @@ int main()
 {
 	//SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
 	std::thread inputThread(PI::ProcessInput);
-
+	PI::isInputEnabled = false;
 	try {
 		using GM = GameManger::GameManger;
 		GM& gameManager = GM::GetInstance();
@@ -44,7 +44,10 @@ int main()
 				logger->PrintLog("... 당신은 누구입니까?\n");
 			}
 
+			PI::ClearInputBuffer();
+			PI::isInputEnabled = true;
 			getline(cin, characterName);
+			PI::isInputEnabled = false;
 
 			if (characterName.length() > 0 && characterName.length() <= 10) {
 				logger->PrintLog("너의 이름은? " + characterName + "\n");
@@ -63,7 +66,10 @@ int main()
 		while (!isGameStart)
 		{
 			logger->PrintStartMenu(EMenu);
+			PI::ClearInputBuffer();
+			PI::isInputEnabled = true;
 			cin >> menuOption;
+			PI::isInputEnabled = false;
 			switch (menuOption) {
 			case 1:
 				isGameStart = true;	//시작화면 루프 벗어나기 위함
