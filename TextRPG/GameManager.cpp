@@ -383,6 +383,8 @@ namespace GameManger {
 
 		player->DisplayStatus();
 
+		VisitShop(player);
+
 		/*SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);*/
