@@ -385,6 +385,7 @@ namespace GameManger {
 	void GameManger::BeginPlay(Character* player)
 	{
 		int stage = 1;
+		int battleCnt = 1; // 배틀방 연속 입장 횟수
 
 		Log* logger = Log::GetInstance();
 
@@ -396,6 +397,23 @@ namespace GameManger {
 
 		while (stage <= 20)
 		{
+			if (battleCnt > 1) 
+			{
+				// 배틀방 2연속일 경우 확률 조정
+				roomProbabilities[Battle] = 20.0;
+				roomProbabilities[Rest] = 20.0;
+				roomProbabilities[Buff] = 20.0;
+				roomProbabilities[Market] = 40.0;
+			}
+			else 
+			{
+				// Default
+				roomProbabilities[Battle] = 50.0;
+				roomProbabilities[Rest] = 10.0;
+				roomProbabilities[Buff] = 10.0;
+				roomProbabilities[Market] = 30.0;
+			}
+
 			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
 
 			for (size_t i = 0; i < stageRooms.size(); ++i) {
@@ -417,24 +435,32 @@ namespace GameManger {
 					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
 					actions.push_back([&]() {
 						logger->PrintLog("이상한 건물에 들어섰다.\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitShop(player);
 						});
 					break;
 				case Rest:
 					actions.push_back([&]() {
 						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitRest(player);
 						});
 					break;
 				case Battle:
 					actions.push_back([&]() {
 						logger->PrintLog("어맛!\n");
+						Sleep(2000);
+						++battleCnt;
 						BeginBattle(player, stage);
 						});
 					break;
 				case Buff:
 					actions.push_back([&]() {
 						logger->PrintLog("여긴 어디지...?\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitBuffRoom(player);
 					});
 					break;
@@ -447,8 +473,8 @@ namespace GameManger {
 
 			// 메뉴 실행
 			while (true) {
-				menuSystem.DisplayMenu((int)ECharacter, true);
-				menuSystem.RunMenu((int)ECharacter, true);
+				menuSystem.DisplayMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
+				menuSystem.RunMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
 
 				if (menuSystem.GetSelectedIndex() == 4) {
 					break;
