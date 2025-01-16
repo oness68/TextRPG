@@ -111,12 +111,12 @@ void Battle::PlayerAction(Character* Player)
 	vector<string> menuItems = {
 		"공격",
 		"아이템 사용",
+		
 	};
 
 	vector<function<void()>> actions = 
 	{
 		[&]() {
-			cout << "공격을 선택했습니다." << endl;
 			AttackSystem(Player);
 			nextTurn = true;
 			flag = true;
@@ -134,6 +134,7 @@ void Battle::PlayerAction(Character* Player)
 			}
 			nextTurn = false;
 		}
+		
 
 	};
 
@@ -276,6 +277,7 @@ void Battle::UseItem(Character* Player)
 		
 		
 	};
+	menuItems.push_back(format("{}. 돌아가기", i+1));
 	vector<function<void()>> actions;
 	
 	
@@ -293,6 +295,15 @@ void Battle::UseItem(Character* Player)
 			}
 		);
 	}
+	actions.push_back
+	(
+		[&]()
+		{
+			logger->PrintLog("아이템 사용을 취소했습니다\n", false);
+			Sleep(1000);
+		}
+	);
+
 	Menu menuSystem(menuItems, actions);
 	tempmenuSystem = &menuSystem;
 	// 메뉴 실행
@@ -300,7 +311,7 @@ void Battle::UseItem(Character* Player)
 		menuSystem.DisplayMenu(Image, true, info + "무엇을 해야할까?\n");
 		menuSystem.RunMenu(Image, true, info + "무엇을 해야할까?\n");
 
-		if (menuSystem.GetSelectedIndex() < menuItems.size()) {
+		if (menuSystem.GetSelectedIndex() <= menuItems.size()) {
 			break;
 		}
 
@@ -456,16 +467,19 @@ void Battle::isEndBattle(Character* Player)
 		{
 			logger->PrintLog("전투에서 승리했다!\n", false);
 			isWin = true;
-			Sleep(2000);
+			Sleep(3000);
 
 		}
 		else //패배
 		{
-			logger->PrintLog("플레이어 사망.\n",false);
+			logger->PrintLog("플레이어 사망. (아무키나 입력하세요)\n",false);
 			isWin = false;
 			Player = nullptr;
-			Sleep(2000);
+			Sleep(3000);
 
+			
 		}
+		
 	}
+	
 }
