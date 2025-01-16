@@ -1,12 +1,17 @@
 #include <iostream>
 #include <string>
 
+#include <windows.h>
+#include <thread>
+#include <format>
+
 #include "GameManager.h"
 #include "Log.h"
 #include "Character.h"
 #include "EnumCollection.h"
 #include "shop.h"
 #include "ProcessInput.h"
+#include "HotKeyHandler.h"
 
 using namespace std;
 
@@ -62,6 +67,8 @@ int main()
 		}
 
 		Character player1 = *new Character(characterName);
+		std::thread hotkeyThread(HotkeyHandler, std::ref(player1));
+
 		// 1. 게임시작, 2. 종료
 		while (!isGameStart)
 		{
@@ -91,6 +98,7 @@ int main()
 
 		PI::isRunning = false;
 		inputThread.join();
+		hotkeyThread.join();
 	}
 	catch (...) {
 		// 비정상 종료시 쓰레드 종료
