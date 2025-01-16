@@ -39,7 +39,7 @@ void Character::DisplayStatus(string reason, int hp, int power, int level, int e
 
 	if (level != 0)
 	{
-		temp += format("레벨 : {} + (1)\n", level + 1);
+		temp += format("레벨 : {} (+1)\n", level + 1);
 	}
 	else
 	{
@@ -48,7 +48,7 @@ void Character::DisplayStatus(string reason, int hp, int power, int level, int e
 
 	if (hp != 0)
 	{
-		temp += format("HP : {}/{} + ({})\n", currentHP, GetMaxHP(), hp);
+		temp += format("HP : {}/{} (+{})\n", currentHP, GetMaxHP(), hp);
 	}
 	else
 	{
@@ -57,7 +57,7 @@ void Character::DisplayStatus(string reason, int hp, int power, int level, int e
 
 	if (power != 0)
 	{
-		temp += format("공격력 : {} + ({})\n", GetAttackPower(), power);
+		temp += format("공격력 : {} (+{})\n", GetAttackPower(), power);
 	}
 	else
 	{
@@ -68,7 +68,7 @@ void Character::DisplayStatus(string reason, int hp, int power, int level, int e
 
 	if (exp != 0)
 	{
-		temp += format("경험치 : {}/{} + ({})\n", currentExp, requiredLevelUpExp, exp);
+		temp += format("경험치 : {}/{} (+{})\n", currentExp, requiredLevelUpExp, exp);
 	}
 	else
 	{
@@ -557,19 +557,37 @@ void Character::DisplayEtcItem()
 
 const int& Character::GetGold() { return this->gold; }
 
-void Character::TakeItem(Item* item)
+void Character::TakeItem(Item* item, bool isEquip)
 {
 	string itemName = item->GetName();
 	if (inventory.find(itemName) == inventory.end())
 	{
 		inventory[itemName] = Inventory(item, item->GetType(), 1);
-
-		TryAddArchiveItem(item);
 	}
 	else
 	{
 		inventory[itemName].Count++;
+	}
+
+	switch (item->GetType())
+	{
+	case ItemType::Unknown:
+		break;
+	case ItemType::Equipable:
+		if (isEquip)
+		{
+			EquipItem(dynamic_cast<EquipableItem*>(item));
+		}
+		break;
+	case ItemType::Consumable:
+		break;
+	case ItemType::Archive:
 		TryAddArchiveItem(item);
+		break;
+	case ItemType::Default:
+		break;
+	default:
+		break;
 	}
 }
 

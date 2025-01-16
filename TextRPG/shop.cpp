@@ -204,112 +204,110 @@ void Shop::SellItem(Character& player)
 void Shop::UseEnchancer(Character& player)
 {
 	Enchancer enchancer;
-	auto inventory = player.GetInventory();
+	map<string, class Inventory> inventory = player.GetInventory();
 	vector<Item*> enchantableItems = enchancer.GetEnchanceableItems(inventory);
+	int choice;
+	string logMessage;
+
 	if (enchantableItems.empty())
 	{
 		logger->PrintLog("강화할 수 있는 아이템이 없습니다.\n", (int)EShop, true);
-		//cout << "\nNo Items for enchancement" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
+		Sleep(1500);
 		return;
 	}
-	int enchantPrice = 100;//강화비용
+
+	int enchantPrice = 100;	//강화비용
+	// =============================================================================
 	logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), (int)EShop, true);
-	//cout << "\nYou have " << player.GetGold() << " gold." << endl;
 	logger->PrintLog(format("강화할 아이템을 선택해주세요! [강화 비용 {} gold]\n", enchantPrice), false);
-	//cout << "\nSelect an item to Enchance! (Once " << enchantPrice << " gold)\n" << endl;
-	logger->PrintLog("===========강화 가능===========\n\n", false);
+	logger->PrintLog("\n===========강화 가능===========\n\n", false);
 	for (int i = 0; i < enchantableItems.size(); i++)
 	{
-		string logMessage = format("{}. {} (+{})\n", i + 1, enchantableItems[i]->GetName(), dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel());
+		logMessage = format("{}. {} (+{})\n", i + 1, enchantableItems[i]->GetName(), dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel());
 		logger->PrintLog(logMessage, false);
-		//cout << i + 1 << ". " << enchantableItems[i]->GetName() << "(+" << dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel() << ")" << endl;
 	}
-	logger->PrintLog("\n==============================\n", false);
-	logger->PrintLog(format("{}. 나가기\n", enchantableItems.size() + 1), false);
-	int choice;
+	logger->PrintLog("\n==============================\n\n", false);
+	logger->PrintLog(format("{}. 나가기\n\n", enchantableItems.size() + 1), false);
+	// =============================================================================
+
 	cout << "선택 : ";
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> choice;
-	PI::isInputEnabled = false;
+	// 입력이 정상적인지 판단 => 입력이 int가 아니면 int 값을 받아올때까지 반복
+	while (!(cin >> choice))
+	{
+		// Clear Input Buffer
+		cin.clear();
+		while (std::cin.get() == '\n') continue;
+
+		logger->PrintLog("잘못된 입력입니다.다시입력하세요.\n\n", (int)EShop, true);
+		// =============================================================================
+		logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), false);
+		logger->PrintLog(format("강화할 아이템을 선택해주세요! [강화 비용 {} gold]\n", enchantPrice), false);
+		logger->PrintLog("\n===========강화 가능===========\n\n", false);
+		for (int i = 0; i < enchantableItems.size(); i++)
+		{
+			logMessage = format("{}. {} (+{})\n", i + 1, enchantableItems[i]->GetName(), dynamic_cast<EquipableItem*>(enchantableItems[i])->GetEnchantLevel());
+			logger->PrintLog(logMessage, false);
+		}
+		logger->PrintLog("\n==============================\n\n", false);
+		logger->PrintLog(format("{}. 나가기\n\n", enchantableItems.size() + 1), false);
+		// =============================================================================
+	}
+
 	if (choice == enchantableItems.size() + 1)
 	{
 		logger->PrintLog("아이템 강화를 종료했습니다.\n", (int)EShop, true);
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
+		Sleep(1500);
 	}
-	if (choice<1 || choice>enchantableItems.size())
+	else if (choice < 1 || choice > enchantableItems.size())
 	{
 		logger->PrintLog("잘못된 입력입니다.\n", (int)EShop, true);
-		//cout << "Invalid choice!" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
-	}
-	if (player.GetGold() < enchantPrice)
-	{
-		logger->PrintLog("골드가 부족합니다.\n", (int)EShop, true);
-		//cout << "Not enough gold to enchant!" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
-	}
-	EquipableItem* itemToEnchant = dynamic_cast<EquipableItem*>(enchantableItems[choice - 1]);
-	EquipableItem* enchantedItem = enchancer.EnchanceItem(itemToEnchant);
-	for (int i = 0; i < 2; i++)
-	{
-		logger->PrintLog("\n강화중.\n", (int)EShop, true);
-		Sleep(500);
-		logger->PrintLog("\n강화중..\n", (int)EShop, true);
-		Sleep(500);
-		logger->PrintLog("\n강화중...\n", (int)EShop, true);
-		Sleep(500);
-	}
-	if (enchantedItem != itemToEnchant)
-	{
-		//inventory[itemToEnchant->GetName()].item = enchantedItem;
-		player.ReduceInventory(itemToEnchant->GetName());
-		player.TakeItem(enchantedItem);
-		logger->PrintLog("아이템 강화에 성공했습니다!\n\n", (int)EShop, true);
-		//cout << "Item enchanted successfully!" << endl;
-		string logMessage = format("{}(+{})\n", enchantedItem->GetName(), dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel());
-		logger->PrintLog(logMessage, false);
-		//cout << enchantedItem->GetName() << "(+" << dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel() << ")" << endl;
+		Sleep(1500);
 	}
 	else
 	{
-		logger->PrintLog("아이템 강화에 실패했습니다.\n\n", (int)EShop, true);
-		//cout << "Item enchantment failed! No changes made to the item!" << endl;
-		string logMessage = format("{}(+{})\n", enchantedItem->GetName(), dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel());
-		logger->PrintLog(logMessage, false);
-		//cout << enchantedItem->GetName() << "(+" << dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel() << ")" << endl;
+		if (player.GetGold() < enchantPrice)
+		{
+			logger->PrintLog("골드가 부족합니다.\n", (int)EShop, true);
+			Sleep(1500);
+		}
+		else
+		{
+			EquipableItem* itemToEnchant = dynamic_cast<EquipableItem*>(enchantableItems[choice - 1]);
+			EquipableItem* enchantedItem = enchancer.EnchanceItem(itemToEnchant);
+
+			// ================== 강화 진행 화면 ===================
+			for (int i = 0; i < 2; i++)
+			{
+				logger->PrintLog("\n강화중.\n", (int)EShop, true);
+				Sleep(500);
+				logger->PrintLog("\n강화중..\n", (int)EShop, true);
+				Sleep(500);
+				logger->PrintLog("\n강화중...\n", (int)EShop, true);
+				Sleep(500);
+			}
+			// ========================================================
+
+			if (enchantedItem != itemToEnchant)
+			{
+				player.ReduceInventory(itemToEnchant->GetName());
+				player.TakeItem(enchantedItem, true);
+				logMessage = "아이템 강화에 성공했습니다!\n\n";
+				logMessage += format("{}(+{})\n", enchantedItem->GetName(), dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel());
+				logger->PrintLog(logMessage, (int)EShop, true);
+			}
+			else
+			{
+				logMessage = "아이템 강화에 실패했습니다.\n\n";
+				logMessage += format("{}(+{})\n", enchantedItem->GetName(), dynamic_cast<EquipableItem*>(enchantedItem)->GetEnchantLevel());
+				logger->PrintLog(logMessage, (int)EShop, true);
+			}
+
+			player.TakeGold(-enchantPrice);
+			logger->PrintLog(format("\n보유금 {} gold\n", player.GetGold()), false);
+			Sleep(1500);
+		}
+
 	}
-	player.TakeGold(-enchantPrice);
-	logger->PrintLog(format("\n보유금 {} gold\n", player.GetGold()), false);
-	//cout << "You used " << enchantPrice << " gold for enchant!(Left gold : " << player.GetGold() << ")" << endl;
-	int choice3;
-	cout << "\n아무 키나 눌러 확인\n";
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> choice3;
-	PI::isInputEnabled = false;
+
+	return;
 }

@@ -7,7 +7,7 @@
 class EquipableItemDecorator : public EquipableItem
 {
 public:
-	EquipableItemDecorator(EquipableItem* item) : EquipableItem(item->GetName(), item->GetPrice(), item->GetRarity(), item->GetEquipType(), item->GetBaseStat(), item->GetEnchantLevel()), decoratedItem(item) {}
+	EquipableItemDecorator(EquipableItem* item) : EquipableItem(item->GetName(), item->GetPrice(), item->GetRarity(), item->GetEquipType(), item->GetBaseStat(), item->GetEnchantLevel(), item->GetBuffStat(), item->GetDescription()), decoratedItem(item) {}
 
 	string GetEquipType()
 	{

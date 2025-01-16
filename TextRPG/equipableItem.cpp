@@ -67,6 +67,18 @@ int EquipableItem::GetEnchantLevel()
 void EquipableItem::SetEnchantLevel(const int& level)
 {
 	this->enchantLevel = level;
+	if (this->buffStat.attackPower != 0)
+	{
+		this->buffStat.attackPower += enchantLevel * 5;
+	}
+	else if (this->buffStat.attackPower != 0)
+	{
+		this->buffStat.armor += enchantLevel * 5;
+	}
+	else if (this->buffStat.attackPower != 0)
+	{
+		this->buffStat.maxHP += enchantLevel * 5;
+	}
 }
 
 bool EquipableItem::IsEquipping()

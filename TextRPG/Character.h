@@ -70,7 +70,7 @@ public:
 
 	const int& GetGold();
 
-	void TakeItem(Item* item);
+	void TakeItem(Item* item, bool isEquip = false);
 	void UseItem(const string& itemKey);
 
 	void BuyItem(class Item* item);
