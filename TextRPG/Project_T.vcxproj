@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,7 +159,6 @@
     <ClInclude Include="EquipableItemDecorator.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Monster.h" />
