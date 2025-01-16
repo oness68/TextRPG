@@ -1,9 +1,9 @@
 ﻿#include "GameManager.h"
 #include "Log.h"
+#include "ProcessInput.h"
 
 #include <iostream>
 #include <string>
-#include <conio.h>
 
 using namespace std;
 
@@ -96,7 +96,10 @@ namespace GameManger {
 			string restLog = "플레이어의 체력이 최대(" + to_string(maxHP) + ")로 회복되었습니다.\n";
 			logger->PrintLog(restLog, ERest);
 		}
+		PI::isInputEnabled = false;
 		Sleep(3000);
+		PI::ClearInputBuffer();
+		PI::isInputEnabled = true;
 	}
 
 	// 버프룸 방문 함수
@@ -391,6 +394,10 @@ namespace GameManger {
 
 		player->DisplayStatus();
 
+		while (true) {
+			VisitRest(player);
+		}
+
 		SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);
@@ -482,8 +489,6 @@ namespace GameManger {
 
 				cout << endl; // 메뉴 간격 조정
 			}
-
-			
 		}
 	}
 

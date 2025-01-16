@@ -1,0 +1,16 @@
+diff a/TextRPG/main.cpp b/TextRPG/main.cpp	(rejected hunks)
+@@ -36,10 +36,14 @@
+ 			isGameStart = true;	//����ȭ�� ���� ����� ����
+ 			isGameRun = true;	//���� ����
+ 			logger->PrintStartMenu(EStart);
++<<<<<<< HEAD
+ 
+ 			//TODO: �ɸ��� �̸� �Է¹޴� �κ� �ʿ�
+ 
+ 			gameManager.BeginPlay(&player1);
++=======
++			gameManager.BeginBattle(&player1, 5);
++>>>>>>> 9d30785ef95e92a52273d128d2fdeadafa83c43f
+ 			break;
+ 		case 2:
+ 			logger->PrintGameOver(EGameEnd);	//�÷��̾��� ����� ���� ����� ���� ����� ��¹�
