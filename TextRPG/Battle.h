@@ -26,22 +26,27 @@ class Battle
 	BaseMonster* battleMonster;
 	bool nextTurn;
 	string info;
-public:
-	
+	int stage;
+
+private:
 	void restoreCharacterState(Character* player);
 	void saveCharacterState(Character* player);
 	void StageOfDifficulty(int stage);
 	void NextTurn(Character* Player);
-	void Fight(Character* Player,BaseMonster* monster, int stage);
 	void PlayerAction(Character* Player);
 	void AttackSystem(Character* Player);
 	void isEndBattle(Character* Player);
 	void MonsterAction(Character* Player);
 	void LootAction(Character* Player);
-	bool RandomSuccess(int probability);
 	void MonsterSkill(Character* Player);
 	void UseItem(Character* Player);
 	void UpdateInfo(Character* Player);
+	bool RandomSuccess(int probability);
+
+public:
+	
+	void Fight(Character* Player,BaseMonster* monster, int stage);
+	
 
 };
 
