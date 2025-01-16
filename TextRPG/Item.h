@@ -70,6 +70,7 @@ public:
 	virtual ~Item() {}
 
 	string GetName() { return this->name; }
+	string GetDescription() { return this->description; }
 	ItemType GetType() { return this->itemType; }
 	Rarity GetRarity() { return this->rarity; }
 	
@@ -79,6 +80,7 @@ public:
 
 protected:
 	string name = "";
+	string description = "";
 	ItemType itemType = ItemType::Unknown;
 	Rarity rarity = Rarity::C;
 
@@ -99,6 +101,7 @@ public:
 		this->buffStat = buffStat;
 
 		this->itemType = ItemType::Archive;
+		this->description = "도감아이템 입니다";
 	}
 
 	BuffStat GetBuffStat() { return this->buffStat; }

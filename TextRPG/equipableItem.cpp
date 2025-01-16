@@ -18,6 +18,7 @@ EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equip
 	this->enchantLevel = enchantLevel;
 
 	this->itemType = ItemType::Equipable;
+	this->description = "장비아이템 입니다.";
 }
 
 EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equipType, map<string, int> baseStat, int enchantLevel, BuffStat buffStat)
@@ -31,6 +32,7 @@ EquipableItem::EquipableItem(string name, int price, Rarity rarity, string equip
 
 	this->buffStat = buffStat;
 	this->itemType = ItemType::Equipable;
+	this->description = "장비아이템 입니다.";
 }
 
 EquipableItem::~EquipableItem()

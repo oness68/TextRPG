@@ -25,6 +25,7 @@ public:
 
 	EffectType GetEffectType();
 	int GetEffectValue();
+	int GetDuration();
 
 	void ConsumeEffect(Character& player);
 
