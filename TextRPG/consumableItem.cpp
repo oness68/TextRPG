@@ -40,8 +40,8 @@ void ConsumableItem::ConsumeEffect(Character& player)
 	{
 	case EffectType::HealCurrentHP:
 		player.SetCurrentHP(player.GetCurrentHP() + this->effectValue);
-		//cout << "You used a " << name << "!" << endl;
-		//cout << "Healing HP" << effectValue << "! Current HP : " << player.GetCurrentHP() << "/" << player.GetMaxHP() << endl;
+		cout << "You used a " << name << "!" << endl;
+		cout << "Healing HP" << effectValue << "! Current HP : " << player.GetCurrentHP() << "/" << player.GetMaxHP() << endl;
 		break;
 	case EffectType::IncreaseMaxHP:
 		player.AddMaxHP(effectValue);

@@ -384,7 +384,7 @@ namespace GameManger {
 	// 게임시작
 	void GameManger::BeginPlay(Character* player)
 	{
-		int stage = 1;
+		int stage = 5;
 
 		Log* logger = Log::GetInstance();
 
@@ -447,8 +447,8 @@ namespace GameManger {
 
 			// 메뉴 실행
 			while (true) {
-				menuSystem.DisplayMenu((int)ECharacter, true);
-				menuSystem.RunMenu((int)ECharacter, true);
+				menuSystem.DisplayMenu((int)ECharacter, true,"");
+				menuSystem.RunMenu((int)ECharacter, true,"");
 
 				if (menuSystem.GetSelectedIndex() == 4) {
 					break;

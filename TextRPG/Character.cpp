@@ -252,8 +252,8 @@ void Character::DisplayInventory()
 	Menu menuSystem(menuItems, actions);
 
 	while (true) {
-		menuSystem.DisplayMenu((int)EBag, true);
-		menuSystem.RunMenu((int)EBag, true);
+		menuSystem.DisplayMenu((int)EBag, true,"");
+		menuSystem.RunMenu((int)EBag, true,"");
 
 		if (menuSystem.GetSelectedIndex() == 4) {
 			break;
@@ -309,8 +309,8 @@ void Character::DisplayEquipMentItem()
 
 	Menu menuSystem(menuItems, actions);
 	while (true) {
-		menuSystem.DisplayMenu((int)EBag, true);
-		menuSystem.RunMenu((int)EBag, true);
+		menuSystem.DisplayMenu((int)EBag, true,"");
+		menuSystem.RunMenu((int)EBag, true,"");
 
 		if (menuSystem.GetSelectedIndex() == menuItems.size() -1) 
 		{
