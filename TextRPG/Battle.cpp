@@ -63,7 +63,7 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 	{
 		//logger->PrintLog();
 		logger->PrintLog("", BM->getMonsterImage(), true);
-		logger->PrintLog("플레이어 체력 :" + to_string(Player->GetCurrentHP()) + " : " + to_string(Player->GetMaxHP()) + " 플레이어 공격력 : " + to_string(Player->GetAttackPower())+"\n",false);
+		logger->PrintLog("플레이어 체력 :" + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 플레이어 공격력 : " + to_string(Player->GetAttackPower())+"\n",false);
 		logger->PrintLog(battleMonster->GetName() + " 체력 : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage())+"\n",false);
 		if (myTurn)
 		{
@@ -366,8 +366,6 @@ bool Battle::RandomSuccess(int probability)
 		return false;
 	}
 }
-
-
 
 void Battle::AttackSystem(Character* Player)
 {

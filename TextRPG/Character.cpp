@@ -109,7 +109,7 @@ const int& Character::GetRequiredLevelUpExp() { return this->requiredLevelUpExp;
 
 void Character::SetCurrentHP(int hp)
 {
-	if (hp > maxHP)
+	if (hp > GetMaxHP())
 	{
 		this->currentHP = maxHP;
 	}
