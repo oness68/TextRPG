@@ -277,8 +277,8 @@ namespace GameManger {
 	{
 		//TODO: 아이템 랜덤 변경
 		Log* logger = Log::GetInstance();
-		logger->PrintLog("미구현 방입니다.", EBuff);
-		Sleep(3000);
+		logger->PrintLog("아무것도 없었다.", EBuff);
+		Sleep(2000);
 	}
 
 	//구현 완료 - 채규혁
@@ -362,7 +362,7 @@ namespace GameManger {
 	// 스테이지 단계 설정
 	void GameManger::SetStage(int num)
 	{
-		stage = num;
+		this->stage = num;
 	}
 
 	//테스트용 BeginPlay
@@ -476,14 +476,14 @@ namespace GameManger {
 				menuSystem.DisplayMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
 				menuSystem.RunMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
 
-				if (menuSystem.GetSelectedIndex() == 4) {
-					break;
+				if (menuSystem.GetSelectedIndex() == 0 || menuSystem.GetSelectedIndex() == 1) {
+					SetStage(++stage);
 				}
 
 				cout << endl; // 메뉴 간격 조정
 			}
 
-			SetStage(++stage);
+			
 		}
 	}
 
