@@ -58,8 +58,8 @@ namespace GameManger {
 
 		// 메뉴 실행
 		while (true) {
-			menuSystem.DisplayMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
-			menuSystem.RunMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
+			menuSystem.DisplayMenu((int)EShop, true, "");
+			menuSystem.RunMenu((int)EShop, true, "");
 
 			if (menuSystem.GetSelectedIndex() == 4) {
 				break;
