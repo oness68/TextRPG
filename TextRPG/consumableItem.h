@@ -19,8 +19,8 @@ class ConsumableItem : public Item
 {
 public:
 	ConsumableItem();
-	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue);
-	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration);
+	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, string desc = "소비아이템");
+	ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration, string desc = "소비아이템");
 	virtual ~ConsumableItem();
 
 	EffectType GetEffectType();
