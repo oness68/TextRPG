@@ -16,10 +16,6 @@ Character::Character(const string& name)
 	this->name = name;
 	DisplayStatus();
 	InitEquipMentItem();
-	//DisplayStatus();
-
-	//cout << "캐릭터 " << name << " 생성 완료!";
-	//cout << " 레벨 : " << level << ", 체력 : " << currentHP << " / " << maxHP << ", 공격력 : " << attackPower << endl;
 }
 
 void Character::InitEquipMentItem()
@@ -27,25 +23,6 @@ void Character::InitEquipMentItem()
 	Item* startItem = ItemFactory::GetInstance().GenerateItem("모험가의장검");
 	TakeItem(startItem);
 	EquipItem(dynamic_cast<EquipableItem*>(startItem));
-
-	TakeExp(140);
-	//DisplayStatus();
-
-	//Item* archiveItem = ItemFactory::GetInstance().GenerateItem("고블린족장의유물");
-	//TakeItem(archiveItem);
-	//DisplayStatus();
-
-	//Item* trollsBlood = ItemFactory::GetInstance().GenerateItem("트롤의심장");
-	//TakeItem(trollsBlood);
-	//DisplayStatus();
-
-	Item* lowAttackBooster = ItemFactory::GetInstance().GenerateItem("하급공격부스터");
-	//Item* middleAttackBooster = ItemFactory::GetInstance().GenerateItem("중급공격부스터");
-
-	TakeItem(lowAttackBooster);
-	//TakeItem(middleAttackBooster);
-
-	UseItem("하급공격부스터");
 }
 
 Character::~Character() {}
@@ -100,7 +77,6 @@ void Character::DisplayStatus(string reason, int hp, int power, int level, int e
 
 	Log::GetInstance()->PrintLog(temp, false);
 }
-
 
 const string Character::GetCharacterStatusString()
 {
@@ -217,6 +193,7 @@ vector<Inventory> Character::GetInventoryItems(enum class ItemType type)
 	return inventoryItems;
 }
 
+#pragma region Inventory 관련 Method들 TO DO : GameManager로 이전
 void Character::DisplayInventory()
 {
 	vector<string> menuItems = {
@@ -229,31 +206,31 @@ void Character::DisplayInventory()
 
 	vector<function<void()>> actions = {
 	[&]() {
-		//cout << "******* 장비아이템 ********" << endl;
-		DisplayEquipMentItem();
-	},
-	[&]() {
-		//cout << "******* 소모품 ********" << endl;
-		DisplayConsumableItem();
-	},
-	[&]() {
-		//cout << "******* 도감 ********" << endl;
-		DisplayArchiveItem();
-	},
-	[&]() {
-		//cout << "******* 기타 ********" << endl;
-		DisplayEtcItem();
-	},
-	[&]() {
-		cout << "인벤토리를 종료합니다." << endl;
-	}
+			//cout << "******* 장비아이템 ********" << endl;
+			DisplayEquipMentItem();
+		},
+		[&]() {
+			//cout << "******* 소모품 ********" << endl;
+			DisplayConsumableItem();
+		},
+		[&]() {
+			//cout << "******* 도감 ********" << endl;
+			DisplayArchiveItem();
+		},
+		[&]() {
+			//cout << "******* 기타 ********" << endl;
+			DisplayEtcItem();
+		},
+		[&]() {
+			cout << "인벤토리를 종료합니다." << endl;
+		}
 	};
 
 	Menu menuSystem(menuItems, actions);
 
 	while (true) {
 		menuSystem.DisplayMenu((int)EBag, true, "");
-		menuSystem.RunMenu((int)EBag, true,"");
+		menuSystem.RunMenu((int)EBag, true, "");
 
 		if (menuSystem.GetSelectedIndex() == 4) {
 			break;
@@ -261,14 +238,6 @@ void Character::DisplayInventory()
 
 		cout << endl; // 메뉴 간격 조정
 	}
-
-	//int index = 1;
-	//for (auto item : inventory)
-	//{
-	//	//cout << format("{}. {}, 수량:{}", index, item.second.item->name, item.second.Count) << endl;
-	//	index++;
-	//}
-
 }
 
 void Character::DisplayEquipMentItem()
@@ -282,37 +251,81 @@ void Character::DisplayEquipMentItem()
 		for (Inventory inventory : displayInventory)
 		{
 			EquipableItem* item = dynamic_cast<EquipableItem*>(inventory.item);
-			BuffStat itemStat = item->GetBuffStat();
+			EquipableItem& selectedItem = *item;
+			BuffStat itemStat = selectedItem.GetBuffStat();
 
-			string temp = format("{} [{}] {}ea\n", item->GetName(), item->GetEnchantLevel(), inventory.Count);
-			temp += format("공격력+{}, 방어력+{}, 체력+{}", itemStat.attackPower, itemStat.armor, itemStat.maxHP);
+			string temp = format("- {} [+{}] ", item->GetName(), item->GetEnchantLevel());
+			if (selectedItem.IsEquipping())
+			{
+				temp += "(장착중)";
+			}
+
 			menuItems.push_back(temp);
 
 			actions.push_back([&]()
 				{
-					string s;
-					Log::GetInstance()->PrintLog(format("[{}] 아이템이 선택됨!!", item->GetName()), (int)EBag, true);
-					// TO DO : 아이템에대한 상세정보 표시, 장착 버튼 구현
-					cin >> s;
+					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
+					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
+					itemDetail += format("장비  장착효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
+					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
+
+					// TODO : Replace : Menu System(장착, 나가기)
+					vector<string> itemDetailMenu = {
+						"\n[장착]",
+						"[장비 아이템 인벤토리로 돌아가기]"
+					};
+
+					vector<function<void()>> itemDetailAction = {
+						[&]()
+						{
+							if (selectedItem.IsEquipping())
+							{
+								Log::GetInstance()->PrintLog("WARNING : 이미 장착중인 아이템 입니다.", (int)EBag, true);
+							}
+							else
+							{
+								EquipItem(&selectedItem);
+							}
+
+							Sleep(2000);
+						},
+						[&]()
+						{
+						}
+					};
+
+					Menu itemDetailSystem(itemDetailMenu, itemDetailAction);
+					while (true) {
+						itemDetailSystem.DisplayMenu((int)EBag, true, itemDetail);
+						itemDetailSystem.RunMenu((int)EBag, true, itemDetail);
+
+						if (itemDetailSystem.GetSelectedIndex() == itemDetailMenu.size() - 1)
+						{
+							break;
+						}
+
+						cout << endl; // 메뉴 간격 조정
+					}
 					return;
 				});
+
 		}
 	}
 	else
 	{
-		menuItems.push_back("장비아이템이 텅 비어있습니다~");
+		menuItems.push_back("***** 장비 아이템이 텅 비어있습니다 *****");
 		actions.push_back([&]() {});
 	}
 
 	menuItems.push_back("\n[인벤토리로 돌아가기]");
-	actions.push_back([&]() { });
+	actions.push_back([&]() {});
 
 	Menu menuSystem(menuItems, actions);
 	while (true) {
-		menuSystem.DisplayMenu((int)EBag, true,"");
-		menuSystem.RunMenu((int)EBag, true,"");
+		menuSystem.DisplayMenu((int)EBag, true, "");
+		menuSystem.RunMenu((int)EBag, true, "");
 
-		if (menuSystem.GetSelectedIndex() == menuItems.size() -1) 
+		if (menuSystem.GetSelectedIndex() == menuItems.size() - 1)
 		{
 			break;
 		}
@@ -323,15 +336,223 @@ void Character::DisplayEquipMentItem()
 
 void Character::DisplayConsumableItem()
 {
+	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Consumable);
+	vector<string> menuItems;
+	vector<function<void()>> actions;
+
+	if (displayInventory.size() > 0)
+	{
+		for (Inventory inventory : displayInventory)
+		{
+			ConsumableItem* item = dynamic_cast<ConsumableItem*>(inventory.item);
+
+			string temp = format("- {}  개수 : {}ea", item->GetName(), inventory.Count);
+			menuItems.push_back(temp);
+
+			actions.push_back([&]()
+				{
+					string itemDetail = format("[{}] 상세 정보\n\n", item->GetName());
+					itemDetail += format("아이템 설명 : {}\n", item->GetDescription());
+					itemDetail += "아이템 사용효과 : ";
+					switch (item->GetEffectType())
+					{
+					case EffectType::Unknown:
+						break;
+					case EffectType::HealCurrentHP:
+						itemDetail += format("체력을 {}만큼 회복합니다.\n", item->GetEffectValue());
+						break;
+					case EffectType::IncreaseMaxHP:
+						itemDetail += format("최대 체력을 {}만큼 증가시킵니다.\n", item->GetEffectValue());
+						break;
+					case EffectType::IncreaseAttackPower:
+						itemDetail += format("공격력을 {}만큼 증가시킵니다.\n", item->GetEffectValue());
+						break;
+					case EffectType::DamageUp:
+						itemDetail += format("공격력을 {}턴동안 {}만큼 증가시킵니다.\n", item->GetDuration(), item->GetEffectValue());
+						break;
+					default:
+						break;
+					}
+
+					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", item->GetPrice(), item->GetSellPrice());
+
+
+					vector<string> itemDetailMenu = { "\n[소비 아이템 인벤토리로 돌아가기]" };
+					vector<function<void()>> itemDetailAction = { [&]() {} };
+
+					Menu itemDetailSystem(itemDetailMenu, itemDetailAction);
+					while (true) {
+						itemDetailSystem.DisplayMenu((int)EBag, true, itemDetail);
+						itemDetailSystem.RunMenu((int)EBag, true, itemDetail);
+
+						if (itemDetailSystem.GetSelectedIndex() == itemDetailMenu.size() - 1)
+						{
+							break;
+						}
+
+						cout << endl; // 메뉴 간격 조정
+					}
+
+					return;
+				});
+		}
+	}
+	else
+	{
+		menuItems.push_back("***** 소모품이 텅 비어있습니다 *****");
+		actions.push_back([&]() {});
+	}
+
+	menuItems.push_back("\n[인벤토리로 돌아가기]");
+	actions.push_back([&]() {});
+
+	Menu menuSystem(menuItems, actions);
+	while (true) {
+		menuSystem.DisplayMenu((int)EBag, true, "");
+		menuSystem.RunMenu((int)EBag, true, "");
+
+		if (menuSystem.GetSelectedIndex() == menuItems.size() - 1)
+		{
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
 }
 
 void Character::DisplayArchiveItem()
 {
+	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Archive);
+	vector<string> menuItems;
+	vector<function<void()>> actions;
+
+	if (displayInventory.size() > 0)
+	{
+		for (Inventory inventory : displayInventory)
+		{
+			ArchiveItem* item = dynamic_cast<ArchiveItem*>(inventory.item);
+			ArchiveItem& selectedItem = *item;
+			BuffStat itemStat = selectedItem.GetBuffStat();
+
+			string temp = format("- {}  개수 : {}ea", item->GetName(), inventory.Count);
+			menuItems.push_back(temp);
+
+			actions.push_back([&]()
+				{
+					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
+					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
+					itemDetail += format("장비  장착효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
+					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
+
+
+					vector<string> itemDetailMenu = { "\n[도감 아이템 인벤토리로 돌아가기]" };
+					vector<function<void()>> itemDetailAction = { [&]() {} };
+
+					Menu itemDetailSystem(itemDetailMenu, itemDetailAction);
+					while (true) {
+						itemDetailSystem.DisplayMenu((int)EBag, true, itemDetail);
+						itemDetailSystem.RunMenu((int)EBag, true, itemDetail);
+
+						if (itemDetailSystem.GetSelectedIndex() == itemDetailMenu.size() - 1)
+						{
+							break;
+						}
+
+						cout << endl; // 메뉴 간격 조정
+					}
+					return;
+				});
+
+		}
+	}
+	else
+	{
+		menuItems.push_back("***** 도감 아이템이 텅 비어있습니다 *****");
+		actions.push_back([&]() {});
+	}
+
+	menuItems.push_back("\n[인벤토리로 돌아가기]");
+	actions.push_back([&]() {});
+
+	Menu menuSystem(menuItems, actions);
+	while (true) {
+		menuSystem.DisplayMenu((int)EBag, true, "");
+		menuSystem.RunMenu((int)EBag, true, "");
+
+		if (menuSystem.GetSelectedIndex() == menuItems.size() - 1)
+		{
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
 }
 
 void Character::DisplayEtcItem()
 {
+	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Archive);
+	vector<string> menuItems;
+	vector<function<void()>> actions;
+
+	if (displayInventory.size() > 0)
+	{
+		for (Inventory inventory : displayInventory)
+		{
+			Item& selectedItem = *inventory.item;
+			string temp = format("- {}  개수 : {}ea", selectedItem.GetName(), inventory.Count);
+			menuItems.push_back(temp);
+
+			actions.push_back([&]()
+				{
+					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
+					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
+					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
+
+
+					vector<string> itemDetailMenu = { "\n[기타 아이템 인벤토리로 돌아가기]" };
+					vector<function<void()>> itemDetailAction = { [&]() {} };
+
+					Menu itemDetailSystem(itemDetailMenu, itemDetailAction);
+					while (true) {
+						itemDetailSystem.DisplayMenu((int)EBag, true, itemDetail);
+						itemDetailSystem.RunMenu((int)EBag, true, itemDetail);
+
+						if (itemDetailSystem.GetSelectedIndex() == itemDetailMenu.size() - 1)
+						{
+							break;
+						}
+
+						cout << endl; // 메뉴 간격 조정
+					}
+					return;
+				});
+
+		}
+	}
+	else
+	{
+		menuItems.push_back("***** 기타 아이템이 텅 비어있습니다 *****");
+		actions.push_back([&]() {});
+	}
+
+	menuItems.push_back("\n[인벤토리로 돌아가기]");
+	actions.push_back([&]() {});
+
+	Menu menuSystem(menuItems, actions);
+	while (true) {
+		menuSystem.DisplayMenu((int)EBag, true, "");
+		menuSystem.RunMenu((int)EBag, true, "");
+
+		if (menuSystem.GetSelectedIndex() == menuItems.size() - 1)
+		{
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
 }
+
+#pragma endregion
 
 const int& Character::GetGold() { return this->gold; }
 
@@ -342,24 +563,12 @@ void Character::TakeItem(Item* item)
 	{
 		inventory[itemName] = Inventory(item, item->GetType(), 1);
 
-		if (inventory[itemName].itemType == ItemType::Archive)
-		{
-			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
-
-			string temp = format("************* 도감 아이템 획득 ****************");
-			DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
-		}
-
-		//cout << format("신규 아이템이 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
+		TryAddArchiveItem(item);
 	}
 	else
 	{
 		inventory[itemName].Count++;
-		if (inventory[itemName].itemType == ItemType::Archive)
-		{
-			archiveBuffStat += dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
-		}
-		//cout << format("기존 아이템 개수가 추가됐습니다!! 아이템 이름 : {}, 개수 : {}", itemName, inventory[itemName].Count) << endl;
+		TryAddArchiveItem(item);
 	}
 }
 
@@ -390,7 +599,7 @@ void Character::BuyItem(Item* item)
 {
 	if (gold < item->GetPrice())
 	{
-		Log::GetInstance()->PrintLog("소지 골드가 부족합니다.\n", false);
+		//Log::GetInstance()->PrintLog("소지 골드가 부족합니다.\n", false);
 	}
 	else
 	{
@@ -419,14 +628,13 @@ void Character::ReduceInventory(const string& itemKey)
 	Inventory& selectedItem = inventory[itemKey];
 	selectedItem.Count--;
 
-	//cout << "인벤토리의 아이템이 감소됐습니다!\n"
-	//	<< format("이름 : {}, 수량 : {}", selectedItem.item->GetName(), selectedItem.Count) << endl;
-
 	if (selectedItem.Count == 0)
 	{
 		inventory.erase(itemKey);
-		//cout << "인벤토리에서 아이템 항목을 제거합니다!" << endl;
+		// Log::GetInstance()->PrintLog("인벤토리에서 아이템 항목을 제거합니다!", false);
 	}
+
+	TryRemoveArchiveItem(selectedItem);
 }
 
 void Character::TurnEnd()
@@ -445,9 +653,9 @@ void Character::TryAddBuff(BuffBase& buffBase)
 	{
 		buffContainer.push_back(buffBase);
 		buffStat += buffBase.buffStat;
-	
+
 		string temp = format("************* 디/버프 효과 발동 ****************");
-		DisplayStatus(temp, buffStat.maxHP, buffBase.buffStat.attackPower);
+		DisplayStatus(temp, buffBase.buffStat.maxHP, buffBase.buffStat.attackPower);
 	}
 }
 
@@ -462,7 +670,7 @@ void Character::TryRemoveBuff()
 			buffStat -= removedBuff.buffStat;
 
 			string temp = format("************* 버프 종료 ****************");
-			DisplayStatus(temp, -buffStat.maxHP, -buffStat.attackPower);
+			DisplayStatus(temp, -removedBuff.buffStat.maxHP, -removedBuff.buffStat.attackPower);
 
 			it = buffContainer.erase(it);
 		}
@@ -473,26 +681,44 @@ void Character::TryRemoveBuff()
 	}
 }
 
+void Character::TryAddArchiveItem(Item* item)
+{
+	string itemName = item->GetName();
+	if (inventory[itemName].itemType == ItemType::Archive)
+	{
+		BuffStat archiveItemBuffStat = dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
+		archiveBuffStat += archiveItemBuffStat;
+
+		string temp = format("************* 도감 아이템 획득 ****************");
+		DisplayStatus(temp, archiveItemBuffStat.maxHP, archiveItemBuffStat.attackPower);
+	}
+}
+
+void Character::TryRemoveArchiveItem(Inventory inventory)
+{
+	if (inventory.itemType == ItemType::Archive)
+	{
+		BuffStat archiveItemBuffStat = dynamic_cast<ArchiveItem*>(inventory.item)->GetBuffStat();
+		archiveBuffStat -= archiveItemBuffStat;
+
+		string temp = format("************* 도감 아이템 소실 ****************");
+		DisplayStatus(temp, archiveItemBuffStat.maxHP, archiveItemBuffStat.attackPower);
+	}
+}
+
 void Character::EquipItem(EquipableItem* equipableItem)
 {
-	if (equipItemContainer.size() > 0)
+	if (equipItemContainer.find(equipableItem->GetType()) != equipItemContainer.end())
 	{
-		for (auto equipedItem : equipItemContainer)
-		{
-			if (equipItemContainer.find(equipedItem.first) != equipItemContainer.end())
-			{
-				equipedItem.second->SetEquipping(false);
-				equipmentBuffStat -= equipedItem.second->GetBuffStat();
-				equipItemContainer.erase(equipedItem.first);
-			}
+		auto currentItem = equipItemContainer[equipableItem->GetType()];
 
-			Equip(equipableItem);
-		}
+		// 현재 장비 해제 처리
+		currentItem->SetEquipping(false);
+		equipmentBuffStat -= currentItem->GetBuffStat();
+		equipItemContainer.erase(equipableItem->GetType());
 	}
-	else
-	{
-		Equip(equipableItem);
-	}
+
+	Equip(equipableItem);
 }
 
 void Character::Equip(EquipableItem* equipableItem)
@@ -515,7 +741,7 @@ void Character::LevelUp()
 		IncreaseMaxHP();
 		IncreaseAttackPower();
 		IncreaseRequireLevelUpExp();
-		
+
 		string temp = "************* 레벨업 ****************";
 		DisplayStatus(temp, increaseMaxHPAmount, increaseAPAmount, level, increaseExpAmount);
 
@@ -523,18 +749,13 @@ void Character::LevelUp()
 		if (level == maxLevel)
 		{
 			currentExp = requiredLevelUpExp;
-			//cout << "최대 레벨에 도달했습니다." << endl;
+			// Log::GetInstance()->PrintLog("최대 레벨에 도달했습니다.", false);
 		}
-	}
-	else
-	{
-
 	}
 }
 
 void Character::IncreaseMaxHP()
 {
-	
 	this->maxHP += increaseMaxHPAmount;
 }
 
