@@ -81,7 +81,7 @@ namespace GameManger {
 	// 휴식 장소 방문 함수 구현 완료 - 채규혁
 	void GameManger::VisitRest(Character* player)
 	{
-		int currentHP = player->GetCurrentHP() - 70;
+		int currentHP = player->GetCurrentHP();
 		int maxHP = player->GetMaxHP();
 		Log* logger = Log::GetInstance();
 		if (maxHP / 2 > currentHP)	//현재 체력이 전체 체력의 절반보다 낮으면 전체 체력의 반만큼 회복
@@ -243,7 +243,7 @@ namespace GameManger {
 				numberLog += "획득 점수: " + to_string(score) + "\n";
 				numberLog += "다음 전투에서 공격력이 " + to_string(buffAttackPower) + " X " + to_string(score) + "(획득 점수) 만큼 " + to_string(buffDuration) + "턴 동안 증가합니다.";
 				logger->PrintLog(numberLog, EBuff);
-				BuffBase buff = BuffBase(BuffStat(buffAttackPower, 0, 0), buffDuration); 
+				BuffBase buff = BuffBase(BuffStat(buffAttackPower, 0, 0), buffDuration);
 				player->TryAddBuff(buff);
 				Sleep(7000);
 				return;
@@ -266,7 +266,7 @@ namespace GameManger {
 
 			numberLog += "다음 전투에서 공격력이 " + to_string(buffAttackPower * -1) + "만큼 " + to_string(buffDuration) + "턴 동안 감소합니다.";
 			logger->PrintLog(numberLog, EDeBuff);
-			BuffBase buff = BuffBase(BuffStat(buffAttackPower * -1, 0, 0), buffDuration); 
+			BuffBase buff = BuffBase(BuffStat(buffAttackPower * -1, 0, 0), buffDuration);
 			player->TryAddBuff(buff);
 			Sleep(7000);
 		}
@@ -365,7 +365,24 @@ namespace GameManger {
 		stage = num;
 	}
 
-	// 게임시작
+	//테스트용 BeginPlay
+//	void GameManger::BeginPlay(Character* player)
+//	{
+//		Log* logger = Log::GetInstance();
+//
+//		//VisitBuffRoom(player);
+//		//VisitShop(player);
+//		VisitRest(player);
+//		//BuffDice(player);
+//		//BuffNumber(player);
+//		//BuffCoinToss(player);
+//
+//		/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
+//		player->TryAddBuff(buff);*/
+//	}
+//}
+
+	//게임시작
 	void GameManger::BeginPlay(Character* player)
 	{
 		int stage = 1;
