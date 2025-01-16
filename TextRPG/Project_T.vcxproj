@@ -157,6 +157,7 @@
     <ClInclude Include="EquipableItem.h" />
     <ClInclude Include="EquipableItemDecorator.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="HotKeyHandler.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Menu.h" />

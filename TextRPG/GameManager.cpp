@@ -75,11 +75,6 @@ namespace GameManger {
 		BattleManager* BM = BattleManager::GetInstance();
 
 		BM->BeginBattle(player, stage);
-		
-		if (player == NULL) 
-		{
-			exit(1);
-		}
 	}
 
 	// 휴식 장소 방문 함수 구현 완료 - 채규혁
@@ -516,11 +511,11 @@ namespace GameManger {
 		Log* logger = Log::GetInstance();
 
 		player->DisplayStatus();
-
+		
 		SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);
-
+		
 		while (stage <= 20)
 		{
 			if (stage % 5 == 0) // 보스 입장
@@ -565,32 +560,24 @@ namespace GameManger {
 				case Market:
 					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
 					actions.push_back([&]() {
-						logger->PrintLog("이상한 건물에 들어섰다.\n");
-						Sleep(2000);
 						battleCnt = 0;
 						VisitShop(player);
 					});
 					break;
 				case Rest:
 					actions.push_back([&]() {
-						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-						Sleep(2000);
 						battleCnt = 0;
 						VisitRest(player);
 					});
 					break;
 				case Battle:
 					actions.push_back([&]() {
-						logger->PrintLog("어맛!\n");
-						Sleep(2000);
 						++battleCnt;
 						BeginBattle(player, stage);
 					});
 					break;
 				case Buff:
 					actions.push_back([&]() {
-						logger->PrintLog("여긴 어디지...?\n");
-						Sleep(2000);
 						battleCnt = 0;
 						VisitBuffRoom(player);
 					});
@@ -609,6 +596,7 @@ namespace GameManger {
 
 				if (menuSystem.GetSelectedIndex() == 0 || menuSystem.GetSelectedIndex() == 1) {
 					SetStage(++stage);
+					break;
 				}
 
 				cout << endl; // 메뉴 간격 조정

@@ -108,7 +108,7 @@ namespace GameManger {
 		int GetCurrentStage();
 
 	private:
-		int stage;
+		int stage = 0;
 
 		GameManger() = default;
 		GameManger(const GameManger&) = delete;
@@ -125,10 +125,10 @@ namespace GameManger {
 
 		std::string StageRoomToString(StageRooms room) {
 			switch (room) {
-			case Market: return "상점";
-			case Rest: return "휴식";
-			case Buff: return "알수 없는방";
-			case Battle: return "전투";
+			case Market: return "앞에 알수없는 건물이 있다.";
+			case Rest: return "앞에 넓은 공터가 있다.";
+			case Buff: return "앞에 알수없는 방이 있다.";
+			case Battle: return "앞에 몬스터가 있다.";
 			default: return "Unknown";
 			}
 		};
