@@ -127,6 +127,7 @@ public:
 		responseResultJudgment.push_back(3);
 		responseResultJudgment.push_back(2);
 		dropTable.push_back({ 10,"고블린라이더의안장" });
+		dropTable.push_back({ 10,"고블린족장의유물" });
 	}
 };
 
@@ -144,6 +145,7 @@ public:
 		responseResultJudgment.push_back(1);
 		responseResultJudgment.push_back(3);
 		dropTable.push_back({ 10,"트윈헤드트롤의두개골" });
+		dropTable.push_back({ 10,"트롤의심장" });
 	}
 };
 
@@ -161,6 +163,7 @@ public:
 		responseResultJudgment.push_back(2);
 		responseResultJudgment.push_back(1);
 		dropTable.push_back({ 10,"엔트의씨앗" });
+		dropTable.push_back({ 10,"트렌트의열매" });
 	}
 };
 
