@@ -369,20 +369,133 @@ namespace GameManger {
 	}
 
 	//테스트용 BeginPlay
-	//void GameManger::BeginPlay(Character* player)
-	//{
-	//	Log* logger = Log::GetInstance();
+	void GameManger::BeginPlayDebug(Character* player)
+	{
+		int stage = 1;
+		int battleCnt = 1; // 배틀방 연속 입장 횟수
 
-	//	//VisitBuffRoom(player);
-	//	VisitShop(player);
-	//	//VisitRest(player);
-	//	//BuffDice(player);
-	//	//BuffNumber(player);
-	//	//BuffCoinToss(player);
+		Log* logger = Log::GetInstance();
 
-	//	/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
-	//	player->TryAddBuff(buff);*/
-	//}
+		player->DisplayStatus();
+
+		/*SetStage(stage);
+		BeginBattle(player, stage);
+		SetStage(++stage);*/
+
+		while (stage <= 20)
+		{
+			cout << "------------------------------------------------------------------" << endl;
+			cout << "currentStage" << stage << endl;
+
+			if (stage % 5 == 0) // 보스 입장
+			{
+				// Debug
+				cout << "BOSS" << endl;
+				battleCnt = 2;
+
+				//BeginBattle(player, stage);
+				//battleCnt = 0;
+				SetStage(++stage);
+				continue;
+			}
+
+
+			if (battleCnt > 1)
+			{
+				// 배틀방 2연속일 경우 확률 조정
+				roomProbabilities[Battle] = 20.0;
+				roomProbabilities[Rest] = 20.0;
+				roomProbabilities[Buff] = 20.0;
+				roomProbabilities[Market] = 40.0;
+				battleCnt = 0;
+			}
+			else
+			{
+				// Default
+				roomProbabilities[Battle] = 50.0;
+				roomProbabilities[Rest] = 10.0;
+				roomProbabilities[Buff] = 10.0;
+				roomProbabilities[Market] = 30.0;
+			}
+
+			// roomProbabilities 출력
+			for (const auto& entry : roomProbabilities) {
+				std::cout << StageRoomToString(entry.first) << ": " << entry.second << std::endl;
+			}
+
+			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
+
+			// 디버그
+			for (size_t i = 0; i < stageRooms.size(); ++i) {
+				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
+			}
+
+			SetStage(++stage);
+
+			//vector<string> menu = {
+			//	StageRoomToString(stageRooms[0]),
+			//	StageRoomToString(stageRooms[1])
+			//};
+
+			//vector<function<void()>> actions;
+
+			//for (const auto stage : stageRooms)
+			//{
+			//	switch (stage)
+			//	{
+			//	case Market:
+			//		// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
+			//		actions.push_back([&]() {
+			//			logger->PrintLog("이상한 건물에 들어섰다.\n");
+			//			Sleep(2000);
+			//			battleCnt = 0;
+			//			//VisitShop(player);
+			//			});
+			//		break;
+			//	case Rest:
+			//		actions.push_back([&]() {
+			//			logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+			//			Sleep(2000);
+			//			battleCnt = 0;
+			//			//VisitRest(player);
+			//			});
+			//		break;
+			//	case Battle:
+			//		actions.push_back([&]() {
+			//			logger->PrintLog("어맛!\n");
+			//			Sleep(2000);
+			//			++battleCnt;
+			//			//BeginBattle(player, stage);
+			//			});
+			//		break;
+			//	case Buff:
+			//		actions.push_back([&]() {
+			//			logger->PrintLog("여긴 어디지...?\n");
+			//			Sleep(2000);
+			//			battleCnt = 0;
+			//			//VisitBuffRoom(player);
+			//		});
+			//		break;
+			//	default:
+			//		break;
+			//	}
+			//}
+
+			//Menu menuSystem(menu, actions);
+
+			//// 메뉴 실행
+			//while (true) {
+			//	menuSystem.DisplayMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
+			//	menuSystem.RunMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
+
+			//	if (menuSystem.GetSelectedIndex() == 0 || menuSystem.GetSelectedIndex() == 1) {
+			//		SetStage(++stage);
+			//	}
+
+			//	cout << endl; // 메뉴 간격 조정
+			//}
+		}
+	}
 
 	// 게임시작
 	void GameManger::BeginPlay(Character* player)
@@ -394,25 +507,30 @@ namespace GameManger {
 
 		player->DisplayStatus();
 
-		while (true) {
-			VisitRest(player);
-		}
-
 		SetStage(stage);
 		BeginBattle(player, stage);
 		SetStage(++stage);
 
 		while (stage <= 20)
 		{
-			if (battleCnt > 1) 
+			if (stage % 5 == 0) // 보스 입장
+			{
+				BeginBattle(player, stage);
+				battleCnt = 0;
+				SetStage(++stage);
+				continue;
+			}
+
+			if (battleCnt > 1)
 			{
 				// 배틀방 2연속일 경우 확률 조정
 				roomProbabilities[Battle] = 20.0;
 				roomProbabilities[Rest] = 20.0;
 				roomProbabilities[Buff] = 20.0;
 				roomProbabilities[Market] = 40.0;
+				battleCnt = 0;
 			}
-			else 
+			else
 			{
 				// Default
 				roomProbabilities[Battle] = 50.0;
@@ -422,10 +540,6 @@ namespace GameManger {
 			}
 
 			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
-
-			for (size_t i = 0; i < stageRooms.size(); ++i) {
-				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
-			}
 
 			vector<string> menu = {
 				StageRoomToString(stageRooms[0]),
@@ -444,16 +558,16 @@ namespace GameManger {
 						logger->PrintLog("이상한 건물에 들어섰다.\n");
 						Sleep(2000);
 						battleCnt = 0;
-						VisitShop(player);
-						});
+						//VisitShop(player);
+					});
 					break;
 				case Rest:
 					actions.push_back([&]() {
 						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
 						Sleep(2000);
 						battleCnt = 0;
-						VisitRest(player);
-						});
+						//VisitRest(player);
+					});
 					break;
 				case Battle:
 					actions.push_back([&]() {
@@ -461,14 +575,14 @@ namespace GameManger {
 						Sleep(2000);
 						++battleCnt;
 						BeginBattle(player, stage);
-						});
+					});
 					break;
 				case Buff:
 					actions.push_back([&]() {
 						logger->PrintLog("여긴 어디지...?\n");
 						Sleep(2000);
 						battleCnt = 0;
-						VisitBuffRoom(player);
+						//VisitBuffRoom(player);
 					});
 					break;
 				default:

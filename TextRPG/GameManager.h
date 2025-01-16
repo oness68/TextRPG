@@ -34,17 +34,6 @@ namespace GameManger {
 	public:
 		static GameManger& GetInstance();
 
-		/*
-		StageRooms GenerateRandomRoom(const std::map<StageRooms, double>& roomProbabilities);
-		std::vector<StageRooms> GenerateTwoRandomRooms(const std::map<StageRooms, double>& roomProbabilities);
-		*/
-
-		//template <typename RoomType>
-		//RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities);
-
-		//template <typename RoomType>
-		//std::vector<RoomType> GenerateTwoRandomRooms(const std::map<RoomType, double>& roomProbabilities, std::optional<RoomType> allowDuplicateRoom = std::nullopt);
-
 		template <typename RoomType>
 		RoomType GenerateRandomRoom(const std::map<RoomType, double>& roomProbabilities) {
 			double totalProbability = 0.0;
@@ -82,12 +71,12 @@ namespace GameManger {
 			RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
 			selectedRooms.push_back(firstRoom);
 
-			//std::cout << "First room selected: " << firstRoom << std::endl;
+			std::cout << "First room selected: " << firstRoom << std::endl;
 
 			RoomType secondRoom;
 			do {
 				secondRoom = GenerateRandomRoom(roomProbabilities);
-				//std::cout << "Second room selected: " << secondRoom << std::endl;
+				std::cout << "Second room selected: " << secondRoom << std::endl;
 			} while ((secondRoom == firstRoom) && !allowDuplicateRoom);
 
 			selectedRooms.push_back(secondRoom);
@@ -113,6 +102,7 @@ namespace GameManger {
 		void BuffCoinToss(Character* player);
 
 		void BeginPlay(Character* player);
+		void BeginPlayDebug(Character* player);
 		
 		void SetStage(int num);
 		int GetCurrentStage();
@@ -137,7 +127,7 @@ namespace GameManger {
 			switch (room) {
 			case Market: return "상점";
 			case Rest: return "휴식";
-			case Buff: return "?방";
+			case Buff: return "알수 없는방";
 			case Battle: return "전투";
 			default: return "Unknown";
 			}
