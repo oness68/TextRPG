@@ -145,7 +145,6 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="ProcessInput.cpp" />
     <ClCompile Include="Shop.cpp" />
-    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battle.h" />
@@ -165,6 +164,7 @@
     <ClInclude Include="ProcessInput.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project_T.rc" />
