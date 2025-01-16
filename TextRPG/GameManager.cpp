@@ -75,7 +75,11 @@ namespace GameManger {
 		BattleManager* BM = BattleManager::GetInstance();
 
 		BM->BeginBattle(player, stage);
-		// TODO: 리턴 처리
+		
+		if (player == NULL) 
+		{
+			exit(1);
+		}
 	}
 
 	// 휴식 장소 방문 함수 구현 완료 - 채규혁
@@ -564,7 +568,7 @@ namespace GameManger {
 						logger->PrintLog("이상한 건물에 들어섰다.\n");
 						Sleep(2000);
 						battleCnt = 0;
-						//VisitShop(player);
+						VisitShop(player);
 					});
 					break;
 				case Rest:
@@ -572,7 +576,7 @@ namespace GameManger {
 						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
 						Sleep(2000);
 						battleCnt = 0;
-						//VisitRest(player);
+						VisitRest(player);
 					});
 					break;
 				case Battle:
@@ -588,7 +592,7 @@ namespace GameManger {
 						logger->PrintLog("여긴 어디지...?\n");
 						Sleep(2000);
 						battleCnt = 0;
-						//VisitBuffRoom(player);
+						VisitBuffRoom(player);
 					});
 					break;
 				default:
