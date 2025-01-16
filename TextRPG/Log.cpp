@@ -73,14 +73,7 @@ int Log::GetClosestColorIndex(int r, int g, int b) {
 	return closestIndex;
 }
 
-void Log::SetCursorPosition(int x, int y)
-{
-	COORD pos = { x,y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-//모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌
-//최적화를 위해 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15(16색)의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
+//세로는 모니터 크기 4분의 3, 가로는 이미지 너비만큼 크기 설정, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환->콘솔 색상 변환을 위해)
 void Log::Initialize()
 {
 	//콘솔 버퍼 크기 정하고 창 크기 설정해줌
@@ -169,7 +162,7 @@ void Log::PrintImage(vector<string>& data)
 			if (colorIndex >= 0 && colorIndex <= NUMBER_OF_COLOR)	//NUMBER_OF_COLOR 16
 			{
 				SetConsoleTextAttribute(consoleHandle, colorIndex);	//색상에 해당하는 인덱스값을 넣어 콘솔 텍스트의 색상 변경
-				cout << "\u25A0";	//각 색상에 맞는 도트 출력
+				cout << "\u25A0";	//각 색상에 맞는 도트 출력(네모 모양 특수문자
 			}
 		}
 		cout << "\n";	//줄 변경
@@ -312,50 +305,5 @@ void Log::PrintLog(string orderLog, int caseNumber, bool clear)
 		cout << "해당 이미지 없습니다.(확인 요망)" << endl;
 		break;
 	}
-	cout << this->log;
-}
-
-//미구현
-void Log::PrintLog(string orderLog, int caseNumber1, int caseNumber2)
-{
-	system("cls");
-	this->SetLog(orderLog);				//각 객체에서 SetLog를 직접 호출하기보단, PrintLog를 호출에서 Set과 출력이 동시에 이루어지도록 함
-
-	/*switch (caseNumber1)
-	{
-	case ECharacter:
-		this->PrintImage(playerData);
-		break;
-	case EGoblin:
-		this->PrintImage(goblinData);
-		break;
-	case EOrc:
-		this->PrintImage(orcData);
-		break;
-	case ETroll:
-		this->PrintImage(trollData);
-		break;
-	case EWolf:
-		this->PrintImage(wolfData);
-		break;
-	case ESlime:
-		this->PrintImage(slimeData);
-		break;
-	case EGoblinRider:
-		this->PrintImage(goblinRiderData);
-		break;
-	case ETwinHeadTroll:
-		this->PrintImage(twinHeadTrollData);
-		break;
-	case ETreant:
-		this->PrintImage(treantData);
-		break;
-	case EDragon:
-		this->PrintImage(dragonData);
-	case EJustString:
-		break;
-	default:
-		break;
-	}*/
 	cout << this->log;
 }
