@@ -10,6 +10,19 @@ Menu::Menu(const std::vector<std::string>& menuItems, const std::vector<std::fun
     : menuItems(menuItems), actions(actions), selectedIndex(0) {
 }
 
+void Menu::ShowMenu(int selectedIndex, int caseNumber, bool clear, string info) {
+    Log::GetInstance()->PrintLog(info, caseNumber, clear);
+
+    for (int i = 0; i < menuItems.size(); ++i) {
+        if (i == selectedIndex) {
+            cout << menuItems[i] << " <" << endl;
+        }
+        else {
+            cout << menuItems[i] << endl;
+        }
+    }
+}
+
 void Menu::ShowMenu(int selectedIndex, int caseNumber, bool clear) {
     Log::GetInstance()->PrintLog("", caseNumber, clear);
 
@@ -23,8 +36,8 @@ void Menu::ShowMenu(int selectedIndex, int caseNumber, bool clear) {
     }
 }
 
-void Menu::DisplayMenu(int caseNumber, bool clear) {
-    ShowMenu(selectedIndex, caseNumber, clear);  // 메뉴를 첫 번째 항목으로 표시
+void Menu::DisplayMenu(int caseNumber, bool clear, string info) {
+    ShowMenu(selectedIndex, caseNumber, clear, info);  // 메뉴를 첫 번째 항목으로 표시
 }
 
 int Menu::GetSelectedIndex() {
@@ -43,7 +56,7 @@ void Menu::RemoveMenuItem(int index) {
     }
 }
 
-void Menu::RunMenu(int caseNumber, bool clear) {
+void Menu::RunMenu(int caseNumber, bool clear, string info) {
     char c;
     while (true) {
         if (_kbhit()) {  // 키 입력을 확인
@@ -56,12 +69,26 @@ void Menu::RunMenu(int caseNumber, bool clear) {
                 case UP:
                     // 위 방향키
                     selectedIndex = (selectedIndex - 1 + menuItems.size()) % menuItems.size();  // 상위 항목으로 이동
-                    ShowMenu(selectedIndex, caseNumber, clear);
+                    if (info != "")
+                    {
+                        ShowMenu(selectedIndex, caseNumber, clear, info);
+                    }
+                    else
+                    {
+                        ShowMenu(selectedIndex, caseNumber, clear);
+                    }
                     break;
                 case DOWN:
                     // 아래 방향키
                     selectedIndex = (selectedIndex + 1) % menuItems.size();  // 하위 항목으로 이동
-                    ShowMenu(selectedIndex, caseNumber, clear);
+                    if (info != "")
+                    {
+                        ShowMenu(selectedIndex, caseNumber, clear, info);
+                    }
+                    else
+                    {
+                        ShowMenu(selectedIndex, caseNumber, clear);
+                    }
                     break;
                 default:
                     break;

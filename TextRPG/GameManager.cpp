@@ -58,8 +58,8 @@ namespace GameManger {
 
 		// 메뉴 실행
 		while (true) {
-			menuSystem.DisplayMenu((int)EShop, true);
-			menuSystem.RunMenu((int)EShop, true);
+			menuSystem.DisplayMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
+			menuSystem.RunMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
 
 			if (menuSystem.GetSelectedIndex() == 4) {
 				break;
@@ -366,23 +366,22 @@ namespace GameManger {
 	}
 
 	//테스트용 BeginPlay
-//	void GameManger::BeginPlay(Character* player)
-//	{
-//		Log* logger = Log::GetInstance();
-//
-//		//VisitBuffRoom(player);
-//		//VisitShop(player);
-//		VisitRest(player);
-//		//BuffDice(player);
-//		//BuffNumber(player);
-//		//BuffCoinToss(player);
-//
-//		/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
-//		player->TryAddBuff(buff);*/
-//	}
-//}
+	//void GameManger::BeginPlay(Character* player)
+	//{
+	//	Log* logger = Log::GetInstance();
 
-	//게임시작
+	//	//VisitBuffRoom(player);
+	//	VisitShop(player);
+	//	//VisitRest(player);
+	//	//BuffDice(player);
+	//	//BuffNumber(player);
+	//	//BuffCoinToss(player);
+
+	//	/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
+	//	player->TryAddBuff(buff);*/
+	//}
+
+	// 게임시작
 	void GameManger::BeginPlay(Character* player)
 	{
 		int stage = 1;
@@ -390,9 +389,6 @@ namespace GameManger {
 		Log* logger = Log::GetInstance();
 
 		player->DisplayStatus();
-		// VisitBuffRoom(player); 구현완료 - 채규혁
-		// VisitShop(player);
-		// VisitRest(player); 구현완료 - 채규혁
 
 		SetStage(stage);
 		BeginBattle(player, stage);
@@ -436,11 +432,13 @@ namespace GameManger {
 						BeginBattle(player, stage);
 						});
 					break;
-				default:
+				case Buff:
 					actions.push_back([&]() {
 						logger->PrintLog("여긴 어디지...?\n");
 						VisitBuffRoom(player);
-						});
+					});
+					break;
+				default:
 					break;
 				}
 			}

@@ -29,17 +29,30 @@ int main()
 	bool isGameStart = false;	//게임메뉴 탈출조건 위함
 	string characterName;
 
+	bool namingFlag = false;
+
 	while (true) {
-		logger->PrintLog("... 당신은 누구입니까?\n");
+		if (namingFlag) 
+		{
+			logger->PrintLog("말도 안되는 이름입니다....\n당신은 누구입니까?\n");
+		}
+		else 
+		{
+			logger->PrintLog("... 당신은 누구입니까?\n");
+		}
+		
 		getline(cin, characterName);
 
-		if (characterName.length() >= 0 && characterName.length() <= 10) {
+		if (characterName.length() > 0 && characterName.length() <= 10) {
 			logger->PrintLog("너의 이름은? " + characterName + "\n");
 			break;
 		}
-		else {
-			logger->PrintLog("말도 안되는 이름입니다.\n");
+		else 
+		{
+			namingFlag = true;
 		}
+
+		// system("pause"); TODO: 좀더 이쁘게 하기위해 사용
 	}
 
 	Character player1 = *new Character(characterName);
