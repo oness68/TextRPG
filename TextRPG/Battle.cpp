@@ -472,7 +472,7 @@ void Battle::isEndBattle(Character* Player)
 		}
 		else //패배
 		{
-			logger->PrintLog("플레이어 사망. (아무키나 입력하세요)\n",false);
+			logger->PrintLog("플레이어 사망.\n",false);
 			isWin = false;
 			Player = nullptr;
 			Sleep(3000);
