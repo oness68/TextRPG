@@ -591,8 +591,8 @@ namespace GameManger {
 
 			// 메뉴 실행
 			while (true) {
-				menuSystem.DisplayMenu((int)ECharacter, false, "Stage: " + to_string(stage) + "\n");
-				menuSystem.RunMenu((int)ECharacter, false, "Stage: " + to_string(stage) + "\n");
+				menuSystem.DisplayMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
+				menuSystem.RunMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
 
 				if (menuSystem.GetSelectedIndex() == 0 || menuSystem.GetSelectedIndex() == 1) {
 					SetStage(++stage);
