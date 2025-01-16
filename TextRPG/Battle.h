@@ -31,7 +31,7 @@ public:
 	void restoreCharacterState(Character* player);
 	void saveCharacterState(Character* player);
 	void StageOfDifficulty(int stage);
-	void NextTurn();
+	void NextTurn(Character* Player);
 	void Fight(Character* Player,BaseMonster* monster, int stage);
 	void PlayerAction(Character* Player);
 	void AttackSystem(Character* Player);

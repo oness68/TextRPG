@@ -161,8 +161,7 @@ void Battle::MonsterAction(Character* Player)
 	
 	//logger->PrintLog(battleMonster->GetName() + "가(이) 공격했다!\n",false);
 	int Damage = 0;
-	//state = (MonsterState)battleMonster->TakeAction();
-	state = EMonsterSkill;
+	state = (MonsterState)battleMonster->TakeAction();
 	switch (state)
 	{
 	case Enums::EAttack:
@@ -313,7 +312,7 @@ void Battle::UseItem(Character* Player)
 
 void Battle::UpdateInfo(Character* Player)
 {
-	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetCurrentHP())+"\n";
+	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetAttackPower())+"\n";
 	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + "\n";
 }
 
