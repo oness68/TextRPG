@@ -328,15 +328,6 @@ void Battle::UpdateInfo(Character* Player)
 	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + " 경험치 : " + to_string(battleMonster->GetExperience()) + "\n";
 }
 
-int Battle::DamageReturn(int Damage, int armor)
-{
-	float multiple = armor / 300;
-	multiple = 1 - multiple;
-	Damage = Damage * multiple;
-	if (Damage < 0)
-		Damage = 1;
-	return Damage;
-}
 
 void Battle::LootAction(Character* Player)
 {
