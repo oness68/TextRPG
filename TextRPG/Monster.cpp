@@ -38,6 +38,11 @@ string BaseMonster::GetRandomItem() const
 	return "";
 }
 
+vector<string> BaseMonster::GetcharacterResponseList() const
+{
+	return characterResponseList;
+}
+
 string BaseMonster::GetName()
 {
 	return this->name;
@@ -149,6 +154,12 @@ int NormalMonster::GetResponseScore(int option) const
 	return 0;
 }
 
+vector<string> NormalMonster::GetcharacterResponseList() const
+{
+	vector<string> vec = {};
+	return vec;
+}
+
 int BossMonster::TakeAction() const
 {
 	// 1 -> 공격
@@ -191,4 +202,9 @@ int BossMonster::GetResponseScore(int option) const
 {
 	//플레이어의 선택지 입력 값을 받아 그에 따른 점수 반환
 	return responseResultJudgment.at(option - 1);
+}
+
+vector<string> BossMonster::GetcharacterResponseList() const
+{
+	return this->characterResponseList;
 }

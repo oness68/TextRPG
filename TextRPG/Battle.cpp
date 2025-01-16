@@ -26,42 +26,38 @@ void Battle::StageOfDifficulty(int stage)
 	battleMonster->SetExperience(battleMonster->GetExperience() * multiple);
 	battleMonster->SetDamage(battleMonster->GetDamage() * multiple);
 	battleMonster->SetGold(battleMonster->GetGold() * multiple);
+	
 }
 
-void Battle::NextTurn()
+void Battle::NextTurn(Character* Player)
 {
 	if (nextTurn)
 	{
+		if (myTurn)
+		{
+			Player->TurnEnd();
+		}
 		myTurn = !myTurn;
 	}
 }
 
-int Battle::Input(int min,int max)
-{
-	Log* logger = Log::GetInstance();
-	int input;
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> input;
-	PI::isInputEnabled = false;
-	if (min > input || max < input)
-	{
-		input = 0;
-		logger->PrintLog("입력 범위 오류 다시 선택하세요.\n", false);
 
-	}
-
-	return input;
-}
 void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 {
 	Log* logger = Log::GetInstance();
 	BattleManager* BM = BattleManager::GetInstance();
 	this->battleMonster = monster;
+	Image = BM->getMonsterImage();
 	StageOfDifficulty(stage);
 	saveCharacterState(Player);
 	logger->PrintLog(battleMonster->GetName() + "가(이) 등장했다!\n", BM->getMonsterImage(), false);
 	Sleep(1000);
+	ItemFactory& IFactory = ItemFactory::GetInstance();
+	Item* item = IFactory.GenerateItem("하급체력회복포션");
+	Item* item2 = IFactory.GenerateItem("중급체력회복포션");
+	Player->TakeItem(item);
+	Player->TakeItem(item2);
+	UpdateInfo(Player);
 	while (!endBattle)
 	{
 		//logger->PrintLog();
@@ -71,9 +67,9 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 		if (myTurn)
 		{
 			PlayerAction(Player);
-			Player->TurnEnd();
+			
+			UpdateInfo(Player);
 			Sleep(2000);
-
 			//플레이어턴
 		}
 		else
@@ -81,11 +77,13 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 			Sleep(1500);
 
 			MonsterAction(Player);
+			UpdateInfo(Player);
+
 			//몬스터 턴
 			Sleep(2500);
 		}
 
-		NextTurn();
+		NextTurn(Player);
 		isEndBattle(Player);
 		
 
@@ -105,27 +103,26 @@ void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 void Battle::PlayerAction(Character* Player)
 {
 	Log* logger = Log::GetInstance();
-	ItemFactory& IFactory = ItemFactory::GetInstance();
-	Item* item = IFactory.GenerateItem("하급체력회복포션");
-	Player->TakeItem(item);
+	
 	vector<Inventory> cosumableItems = Player->GetInventoryItems(ItemType::Consumable);
 
-	
-	logger->PrintLog("무엇을 해야할까?\n1.공격\t2.아이템사용\n",false);
 	bool flag = false;
 	
-	while (!flag)
+	vector<string> menuItems = {
+		"공격",
+		"아이템 사용",
+	};
+
+	vector<function<void()>> actions = 
 	{
-		int choice = Input(1, 2);
-		switch (choice)
-		{
-		case 1:
+		[&]() {
+			cout << "공격을 선택했습니다." << endl;
 			AttackSystem(Player);
 			nextTurn = true;
 			flag = true;
-			break;
-
-		case 2:
+		},
+		[&]() {
+			cout << "아이템을 사용합니다." << endl;
 			if (cosumableItems.size() > 0)
 			{
 				UseItem(Player);
@@ -136,14 +133,25 @@ void Battle::PlayerAction(Character* Player)
 				logger->PrintLog("사용 아이템이 없습니다.\n", false);
 			}
 			nextTurn = false;
-			//아이템
+		}
 
-			break;
+	};
 
-		default:
+	Menu menuSystem(menuItems, actions);
+
+	// 메뉴 실행
+	while (true) {
+		menuSystem.DisplayMenu(Image, true, info+"무엇을 해야할까?\n");
+		menuSystem.RunMenu(Image, true, info + "무엇을 해야할까?\n");
+
+		if (menuSystem.GetSelectedIndex() < menuItems.size()) {
 			break;
 		}
+
+		cout << endl; // 메뉴 간격 조정
 	}
+
+
 	
 }
 
@@ -184,11 +192,44 @@ void Battle::MonsterAction(Character* Player)
 void Battle::MonsterSkill(Character* Player) // 특수패턴
 {
 	Log* logger = Log::GetInstance();
-	int choice = Input(1, 3);
-	while (choice==0)
+
+	
+	int choice;
+	vector<string> ActionList = battleMonster->GetcharacterResponseList();
+	vector<string> menuItems;
+	for (int i = 1; i < ActionList.size(); i++)
 	{
-		choice = Input(1, 3);
+		menuItems.push_back(ActionList[i]);
 	}
+
+	vector<function<void()>> actions =
+	{
+		[&]() {
+			choice = 1;
+		},
+		[&]() {
+			choice = 2;
+		},
+		[&]() {
+			choice = 3;
+		}
+
+	};
+
+	Menu menuSystem(menuItems, actions);
+
+	// 메뉴 실행
+	while (true) {
+		menuSystem.DisplayMenu(Image, true, info+ ActionList[0]);
+		menuSystem.RunMenu(Image, true, info + ActionList[0]);
+
+		if (menuSystem.GetSelectedIndex() < menuItems.size()) {
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
+	}
+
 
 	int result = battleMonster->GetResponseScore(choice);
 	if (result==1)
@@ -215,31 +256,65 @@ void Battle::MonsterSkill(Character* Player) // 특수패턴
 	
 }
 
+
+
 void Battle::UseItem(Character* Player)
 {
 	Log* logger = Log::GetInstance();
 
 	vector<Inventory> cosumableItems = Player->GetInventoryItems(ItemType::Consumable);
 	logger->PrintLog("====== Item List =====\n", false);
-
-	int i = 1;
+	vector<string> menuItems;
+	
+	int i = 0;
+	
 	for (auto inventory : cosumableItems)
 	{
-		
-		logger->PrintLog(format("{}. 아이템명 :{}, 수량 :{}\n",i, inventory.item->GetName(), inventory.Count), false);
+		menuItems.push_back(format("{}. 아이템명 :{}, 수량 :{}", i+1, inventory.item->GetName(), inventory.Count));
+		//logger->PrintLog(, false);
 		i++;
-	}
+		
+		
+	};
+	vector<function<void()>> actions;
+	
+	
+	Menu* tempmenuSystem;
 
-	int choice = Input(1, i);
-	if (choice > 0)
+	for (int index = 0; index < cosumableItems.size(); index++)
 	{
-		auto selectedItem = cosumableItems[choice-1];
-		//dynamic_cast<ConsumableItem*>(selectedItem.item)->ConsumeEffect(*Player);
-		Player->UseItem(selectedItem.item->GetName());
+		actions.push_back
+		(
+			[&]()
+			{
+				auto selectedItem = cosumableItems[tempmenuSystem->GetSelectedIndex()];
+				Player->UseItem(selectedItem.item->GetName());
+				Sleep(1000);
+			}
+		);
+	}
+	Menu menuSystem(menuItems, actions);
+	tempmenuSystem = &menuSystem;
+	// 메뉴 실행
+	while (true) {
+		menuSystem.DisplayMenu(Image, true, info + "무엇을 해야할까?\n");
+		menuSystem.RunMenu(Image, true, info + "무엇을 해야할까?\n");
+
+		if (menuSystem.GetSelectedIndex() < menuItems.size()) {
+			break;
+		}
+
+		cout << endl; // 메뉴 간격 조정
 	}
 
 	
 
+}
+
+void Battle::UpdateInfo(Character* Player)
+{
+	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetAttackPower())+"\n";
+	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + "\n";
 }
 
 void Battle::LootAction(Character* Player)
@@ -282,17 +357,20 @@ bool Battle::RandomSuccess(int probability)
 void Battle::AttackSystem(Character* Player)
 {
 	Log* logger = Log::GetInstance();
-	logger->PrintLog("어느곳을 공격할까?\n1.머리(40%)\t2.몸통(80%)\n",false);
 	bool flag = false;
 	bool isHit;
 	int Damage = 0;
-	while (!flag)
+	int headProb = 30;
+	int bodyProb = 80;
+	vector<string> menuItems = {
+		format("머리 {}%",headProb),
+		format("몸통 {}%",bodyProb),
+	};
+
+	vector<function<void()>> actions =
 	{
-		int choice = Input(1, 2);
-		switch (choice)
-		{
-		case 1:
-			isHit = RandomSuccess(40);
+		[&]() {
+			isHit = RandomSuccess(headProb);
 			if (isHit)
 			{
 				logger->PrintLog("머리 공격이 성공했다!\n", false);
@@ -305,19 +383,19 @@ void Battle::AttackSystem(Character* Player)
 				}
 				battleMonster->TakeDamage(Damage);
 
-				logger->PrintLog(battleMonster->GetName() + "가(이)"+ to_string(Damage)+"의 피해를 입었다!\n",false);
+				logger->PrintLog(battleMonster->GetName() + "가(이)" + to_string(Damage) + "의 피해를 입었다!\n",false);
 			}
 			else
 			{
 				logger->PrintLog("공격이 빗나갔다.\n",false);
 				logger->PrintLog(battleMonster->GetName() + "가(이) 피해를 입지 않았다.\n",false);
 			}
-			
+
 			flag = true;
 			//log
-			break;
-		case 2:
-			isHit = RandomSuccess(80);
+		},
+		[&]() {
+			isHit = RandomSuccess(bodyProb);
 			if (isHit)
 			{
 				logger->PrintLog("공격이 성공했다!\n", false);
@@ -339,15 +417,30 @@ void Battle::AttackSystem(Character* Player)
 			}
 			flag = true;
 			//log
-			break;
-		default:
+		}
+
+	};
+
+	Menu menuSystem(menuItems, actions);
+
+	// 메뉴 실행
+	while (true) 
+	{
+		menuSystem.DisplayMenu(Image, true, info + "어느곳을 공격할까?\n");
+		menuSystem.RunMenu(Image, true, info + "어느곳을 공격할까?\n");
+
+		if (menuSystem.GetSelectedIndex() < menuItems.size()) {
 			break;
 		}
-	}
-	
 
-	
+		cout << endl; // 메뉴 간격 조정
+	}
+
+
 }
+
+
+
 
 void Battle::isEndBattle(Character* Player)
 {
