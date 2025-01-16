@@ -54,7 +54,7 @@ public:
 	void TakeDamage(const int& damage);
 	void TakeExp(const int& exp);
 	void TakeGold(const int& gold);
-
+	int GetCurrnetExp() { return currentExp; }
 	// ========== 인벤토리 및 아이템 상점관련 ==========
 	vector<Inventory> GetInventoryItems(enum class ItemType type = ItemType::Unknown);
 	map<string, class Inventory> GetInventory();
