@@ -70,6 +70,9 @@ public:
 	void TakeItem(Item* item);
 	void UseItem(const string& itemKey);
 
+	void TryAddArchiveItem(Item* item);
+	void TryRemoveArchiveItem(Inventory inventory);
+
 	void BuyItem(class Item* item);
 	void SellItem(string itemKey);
 

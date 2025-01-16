@@ -13,7 +13,9 @@ ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType
 	this->rarity = rarity;
 	this->effectType = effectType;
 	this->effectValue = effectValue;
+
 	this->itemType = ItemType::Consumable;
+	this->description = "소비아이템 입니다.";
 }
 
 ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration)
@@ -26,6 +28,7 @@ ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType
 
 	this->duration = duration;
 	this->itemType = ItemType::Consumable;
+	this->description = "소비아이템 입니다.";
 }
 
 ConsumableItem::~ConsumableItem() {}
@@ -33,6 +36,8 @@ ConsumableItem::~ConsumableItem() {}
 EffectType ConsumableItem::GetEffectType() { return this->effectType; }
 
 int ConsumableItem::GetEffectValue() { return this->effectValue; }
+
+int ConsumableItem::GetDuration() { return this->duration; }
 
 void ConsumableItem::ConsumeEffect(Character& player)
 {
