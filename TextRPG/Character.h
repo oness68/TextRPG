@@ -59,6 +59,7 @@ public:
 	vector<Inventory> GetInventoryItems(enum class ItemType type = ItemType::Unknown);
 	map<string, class Inventory> GetInventory();
 
+	// TODO : UI 로 이동 필요 (Game Manager)
 	void DisplayInventory();
 	void DisplayEquipMentItem();
 	void DisplayConsumableItem();
@@ -70,18 +71,19 @@ public:
 	void TakeItem(Item* item);
 	void UseItem(const string& itemKey);
 
-	void TryAddArchiveItem(Item* item);
-	void TryRemoveArchiveItem(Inventory inventory);
-
 	void BuyItem(class Item* item);
 	void SellItem(string itemKey);
-
 	void ReduceInventory(const string& itemKey);
 
 	void TurnEnd();
 	void TryAddBuff(BuffBase& buffBase);
 	void TryRemoveBuff();
+
 	string GetName() { return name; }
+
+	void TryAddArchiveItem(Item* item);
+	void TryRemoveArchiveItem(Inventory inventory);
+
 private:
 	string name;
 	int level = 1;
