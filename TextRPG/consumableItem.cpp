@@ -6,7 +6,7 @@ ConsumableItem::ConsumableItem()
 {
 }
 
-ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue)
+ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, string desc)
 {
 	this->name = name;
 	this->price = price;
@@ -15,10 +15,10 @@ ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType
 	this->effectValue = effectValue;
 
 	this->itemType = ItemType::Consumable;
-	this->description = "소비아이템 입니다.";
+	this->description = desc;
 }
 
-ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration)
+ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType effectType, int effectValue, int duration, string desc)
 {
 	this->name = name;
 	this->price = price;
@@ -28,7 +28,7 @@ ConsumableItem::ConsumableItem(string name, int price, Rarity rarity, EffectType
 
 	this->duration = duration;
 	this->itemType = ItemType::Consumable;
-	this->description = "소비아이템 입니다.";
+	this->description = desc;
 }
 
 ConsumableItem::~ConsumableItem() {}

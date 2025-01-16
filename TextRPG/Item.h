@@ -48,7 +48,7 @@ class Item
 	friend class Character;
 public:
 	Item() {};
-	Item(string name, int price, Rarity rarity)
+	Item(string name, int price, Rarity rarity, string desc = "기타아이템")
 	{
 		this->name = name;
 		this->rarity = rarity;
@@ -56,8 +56,9 @@ public:
 
 		this->itemType = ItemType::Default;
 		this->depreciationRate = 0.6;
+		this->description = desc;
 	}
-	Item(string name, int price, Rarity rarity, double depreciationRate)
+	Item(string name, int price, Rarity rarity, double depreciationRate, string desc = "기타아이템")
 	{
 		this->name = name;
 		this->rarity = rarity;
@@ -65,6 +66,7 @@ public:
 		this->depreciationRate = depreciationRate;
 
 		this->itemType = ItemType::Default;
+		this->description = desc;
 	}
 
 	virtual ~Item() {}
@@ -93,7 +95,7 @@ class ArchiveItem : public Item
 {
 public:
 	ArchiveItem() {};
-	ArchiveItem(string name, int price, Rarity rarity, BuffStat buffStat)
+	ArchiveItem(string name, int price, Rarity rarity, BuffStat buffStat, string desc = "도감아이템")
 	{
 		this->name = name;
 		this->rarity = rarity;
@@ -101,7 +103,7 @@ public:
 		this->buffStat = buffStat;
 
 		this->itemType = ItemType::Archive;
-		this->description = "도감아이템 입니다";
+		this->description = desc;
 	}
 
 	BuffStat GetBuffStat() { return this->buffStat; }
