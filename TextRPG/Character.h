@@ -43,6 +43,7 @@ public:
 	const int& GetMaxHP();
 	const int& GetAttackPower();
 	const int& GetRequiredLevelUpExp();
+	const int& GetArmor() { return armor; }
 
 	void SetCurrentHP(int hp);
 	void SetMaxHP(int hp);

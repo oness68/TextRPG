@@ -324,8 +324,8 @@ void Battle::UseItem(Character* Player)
 
 void Battle::UpdateInfo(Character* Player)
 {
-	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetAttackPower())+ " 경험치 : "+ to_string(Player->GetCurrnetExp())+" / "+ to_string(Player->GetRequiredLevelUpExp())+"\n";
-	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + " 경험치 : " + to_string(battleMonster->GetExperience()) + "\n";
+	info = Player->GetName() + "} => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " |공격력 : " + to_string(Player->GetAttackPower())+"\n\t |방어력 : " +to_string(Player->GetArmor()) + "\t |경험치 : " + to_string(Player->GetCurrnetExp()) + " / " + to_string(Player->GetRequiredLevelUpExp()) + "\n\n";
+	info += battleMonster->GetName() + "| => HP : " + to_string(battleMonster->GetHealth()) + " |공격력 : " + to_string(battleMonster->GetDamage()) + " |경험치 : " + to_string(battleMonster->GetExperience()) + "\n\n";
 }
 
 
