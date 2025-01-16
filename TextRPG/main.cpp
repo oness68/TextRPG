@@ -20,6 +20,7 @@ int main()
 	//SetConsoleOutputCP(CP_UTF8); // CMD 기본 인코딩 설정
 	std::thread inputThread(PI::ProcessInput);
 	PI::isInputEnabled = false;
+
 	try {
 		using GM = GameManger::GameManger;
 		GM& gameManager = GM::GetInstance();

@@ -324,9 +324,10 @@ void Battle::UseItem(Character* Player)
 
 void Battle::UpdateInfo(Character* Player)
 {
-	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetAttackPower())+"\n";
-	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + "\n";
+	info = Player->GetName() + " => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " 공격력 : " + to_string(Player->GetAttackPower())+ " 경험치 : "+ to_string(Player->GetCurrnetExp())+" / "+ to_string(Player->GetRequiredLevelUpExp())+"\n";
+	info += battleMonster->GetName() + " => HP : " + to_string(battleMonster->GetHealth()) + " 공격력 : " + to_string(battleMonster->GetDamage()) + " 경험치 : " + to_string(battleMonster->GetExperience()) + "\n";
 }
+
 
 void Battle::LootAction(Character* Player)
 {
@@ -474,9 +475,9 @@ void Battle::isEndBattle(Character* Player)
 		{
 			logger->PrintLog("플레이어 사망.\n",false);
 			isWin = false;
-			Player = nullptr;
+			
 			Sleep(3000);
-
+			exit(1);
 			
 		}
 		
