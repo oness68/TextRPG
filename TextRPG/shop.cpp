@@ -35,161 +35,170 @@ void Shop::DisplayItem()
 }
 void Shop::BuyItem(Character& player)
 {
+	int choice;
+	string logMessage;
+
 	if (shopInven.empty())
 	{
-		logger->PrintLog("구매 가능한 아이템이 없습니다!", (int)EShop, true);
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
+		logger->PrintLog("\n구매 가능한 아이템이 없습니다!", (int)EShop, true);
+		Sleep(1500);
 		return;
 	}
 
-	logger->PrintLog("구매할 아이템을 선택해주세요!\n\n", false);
-	logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), (int)EShop, true);
-	logger->PrintLog("===========구매 가능===========\n\n", false);
+	// =============================================================================
+	logger->PrintLog("\n구매할 아이템을 선택해주세요!\n", (int)EShop, true);
+	logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), false);
 
+	logger->PrintLog("===========구매 가능===========\n\n", false);
 	for (int i = 0; i < shopInven.size(); i++)
 	{
-		string logMessage = format("{}.{} - {} gold [{}]\n", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice(), (int)shopInven[i]->GetType());
+		logMessage = format("{}.{} - {} gold\n", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice());
 		logger->PrintLog(logMessage, false);
+	}
+	logger->PrintLog("\n==============================\n\n", false);
+	logger->PrintLog(format("{}.나가기\n", shopInven.size() + 1), false);
 
+	logger->PrintLog("\n선택 : ", false); 
+	// =============================================================================
+	// 입력이 정상적인지 판단 => 입력이 int가 아니면 int 값을 받아올때까지 반복
+	while (!(cin >> choice))
+	{
+		// Clear Input Buffer
+		cin.clear();
+		while (std::cin.get() == '\n') continue;
+
+		logger->PrintLog("잘못된 입력입니다.다시입력하세요.\n", (int)EShop, true);
+		// =============================================================================
+		logger->PrintLog("\n구매할 아이템을 선택해주세요!\n", false);
+		logger->PrintLog(format("보유금 {} gold\n\n", player.GetGold()), false);
+
+		logger->PrintLog("===========구매 가능===========\n\n", false);
+		for (int i = 0; i < shopInven.size(); i++)
+		{
+			logMessage = format("{}.{} - {} gold\n", i + 1, shopInven[i]->GetName(), shopInven[i]->GetPrice());
+			logger->PrintLog(logMessage, false);
+		}
+		logger->PrintLog("\n==============================\n\n", false);
+		logger->PrintLog(format("{}.나가기\n", shopInven.size() + 1), false);
+
+		logger->PrintLog("\n선택 : ", false);
+		// =============================================================================
 	}
 
-	logger->PrintLog("\n==============================\n", false);
-	string logMessage = format("{}.나가기\n", shopInven.size() + 1);
-	logger->PrintLog(logMessage, false);
-	int choice;
-	cout << "선택 : ";
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> choice;
-	PI::isInputEnabled = false;
 	if (choice == shopInven.size() + 1)
 	{
 		logger->PrintLog("아이템 구매를 종료했습니다.\n", (int)EShop, true);
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
+		Sleep(1500);
 	}
-	if (choice < 1 || choice>shopInven.size() + 1)
+	else if (choice < 1 || choice > shopInven.size() + 1)
 	{
-		logger->PrintLog("잘못된 선택입니다.", (int)EShop, false);
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
+		logger->PrintLog(format("잘못된 선택입니다. 입력 : {}", choice), (int)EShop, true);
+		Sleep(1500);
 	}
 	else
 	{
+		// 아이템을 정상적으로 선택했을시
 		Item* selectedItem = shopInven[choice - 1];
 		if (player.GetGold() >= selectedItem->GetPrice())
 		{
 			player.BuyItem(selectedItem);
-			string logMessage = format("[{}]을(를) 구매했습니다!\n\n", selectedItem->GetName());
+
+			logMessage = format("[{}]을(를) 구매했습니다!\n\n", selectedItem->GetName());
+			logMessage += format("남은 보유금 {} gold\n", player.GetGold());
 			logger->PrintLog(logMessage, (int)EShop, true);
-			logger->PrintLog(format("남은 보유금 {} gold\n", player.GetGold()), false);
+			
 			shopInven.erase(shopInven.begin() + (choice - 1));
 		}
 		else
 		{
-			logger->PrintLog("골드가 부족합니다.\n", false);
+			logger->PrintLog("\n :( 보유 골드가 부족합니다.\n", (int)EShop, false);
 		}
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
+
+		Sleep(1500);
 	}
+
+	return;
 }
 
 void Shop::SellItem(Character& player)
 {
-	auto inventory = player.GetInventory();
+	map<string, class Inventory> inventory = player.GetInventory();
+	int choice;
+	int index = 1;
+
 	if (inventory.empty())
 	{
 		logger->PrintLog("판매 가능한 아이템이 없습니다!\n", (int)EShop, true);
-		//cout << "You have no items to sell!" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
+		Sleep(1500);
 		return;
 	}
+
+	//======================================================================
 	logger->PrintLog("판매할 아이템을 선택해주세요.\n", (int)EShop, true);
-	//cout << "\nSelect the item you want to sell!\n" << endl;
 	logger->PrintLog("===========판매 가능===========\n\n", false);
-	//cout << "[Inventory]\n" << endl;
-	int index = 1;
 	vector <Item*> invenItems;
 	for (const auto& item : inventory)
 	{
 		string logMessage = format("{}. {} (x{}) [판매가 - {} gold]\n", index, item.second.item->GetName(), item.second.Count, item.second.item->GetSellPrice());
 		logger->PrintLog(logMessage, false);
-		//cout << index << ". " << item.second.item->GetName() << " (x" << item.second.Count << ")" << " [Price at Sale - " << item.second.item->GetSellPrice() << " gold]" << endl;
 		invenItems.push_back(item.second.item);
 		index++;
 	}
-	logger->PrintLog("\n==============================\n", false);
+	logger->PrintLog("\n==============================\n\n", false);
 	logger->PrintLog(format("{}. 나가기\n", index), false);
-	//cout << index << ". Leave the Inventory" << endl;
-	int choice;
+
 	cout << "선택 : ";
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> choice;
-	PI::isInputEnabled = false;
+	// =============================================================================
+	// 입력이 정상적인지 판단 => 입력이 int가 아니면 int 값을 받아올때까지 반복
+	while (!(cin >> choice))
+	{
+		// Clear Input Buffer
+		cin.clear();
+		while (std::cin.get() == '\n') continue;
+		logger->PrintLog("잘못된 입력입니다.다시입력하세요.\n", (int)EShop, true);
+
+		//======================================================================
+		logger->PrintLog("판매할 아이템을 선택해주세요.\n", (int)EShop, true);
+		logger->PrintLog("===========판매 가능===========\n\n", false);
+		index = 1;
+		vector <Item*> invenItems;
+		for (const auto& item : inventory)
+		{
+			string logMessage = format("{}. {} (x{}) [판매가 - {} gold]\n", index, item.second.item->GetName(), item.second.Count, item.second.item->GetSellPrice());
+			logger->PrintLog(logMessage, false);
+			invenItems.push_back(item.second.item);
+			index++;
+		}
+		logger->PrintLog("\n==============================\n\n", false);
+		logger->PrintLog(format("{}. 나가기\n", index), false);
+		cout << "선택 : ";
+		// =============================================================================
+	}
+
 	if (choice == index)
 	{
 		logger->PrintLog("아이템 판매를 종료했습니다.\n", (int)EShop, true);
-		//cout << "\nYou left the Inventory" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
+		Sleep(1500);
 	}
-	if (choice<1 || choice>invenItems.size()) {
+	else if (choice < 1 || choice > invenItems.size()) 
+	{
 		logger->PrintLog("잘못된 입력입니다.\n", (int)EShop, true);
-		//cout << "\nInvaild choice" << endl;
-		int choice;
-		cout << "\n아무 키나 눌러 확인\n";
-		PI::ClearInputBuffer();
-		PI::isInputEnabled = true;
-		cin >> choice;
-		PI::isInputEnabled = false;
-		return;
+		Sleep(1500);
 	}
-	Item* selectedItem = invenItems[choice - 1];
-	int sellPrice = selectedItem->GetSellPrice();
-	player.SellItem(selectedItem->GetName());
-	//player.TakeGold(sellPrice);
-	//player.SellItem(selectedItem->GetName());
-	string logMessage = format("{}을(를) {}gold 에 판매했습니다!\n\n", selectedItem->GetName(), sellPrice);
-	logger->PrintLog(logMessage, EShop, true);
-	//cout << "You sold " << selectedItem->GetName() << " for " << sellPrice << "gold!" << endl;
-	logger->PrintLog(format("보유금 {} gold\n", player.GetGold()), false);
-	//cout << "Left gold : " << player.GetGold() << endl;
-	int choice2;
-	cout << "\n아무 키나 눌러 확인\n";
-	PI::ClearInputBuffer();
-	PI::isInputEnabled = true;
-	cin >> choice2;
-	PI::isInputEnabled = false;
+	else
+	{
+		// 정상적으로 판매 했을시
+		Item* selectedItem = invenItems[choice - 1];
+		player.SellItem(selectedItem->GetName());
+
+		string logMessage = format("{}을(를) {}gold 에 판매했습니다!\n\n", selectedItem->GetName(), selectedItem->GetSellPrice());
+		logMessage += format("보유금 {} gold\n", player.GetGold());
+		logger->PrintLog(logMessage, EShop, true);
+
+		Sleep(1500);
+	}
+
+	return;
 }
 
 void Shop::UseEnchancer(Character& player)

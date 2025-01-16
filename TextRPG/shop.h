@@ -11,8 +11,6 @@ public:
 	Shop();
 	~Shop();
 
-	void operator=(Shop&& rhs) noexcept;
-
 	void DisplayItem();
 	void BuyItem(Character& player);
 	void SellItem(Character& player);
