@@ -44,6 +44,7 @@ void Battle::NextTurn(Character* Player)
 
 void Battle::Fight(Character* Player, BaseMonster* monster, int stage) // 전투
 {
+	this->stage = stage;
 	Log* logger = Log::GetInstance();
 	BattleManager* BM = BattleManager::GetInstance();
 	this->battleMonster = monster;
@@ -324,8 +325,10 @@ void Battle::UseItem(Character* Player)
 
 void Battle::UpdateInfo(Character* Player)
 {
-	info = Player->GetName() + "} => HP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " |공격력 : " + to_string(Player->GetAttackPower())+"\n\t |방어력 : " +to_string(Player->GetArmor()) + "\t |경험치 : " + to_string(Player->GetCurrnetExp()) + " / " + to_string(Player->GetRequiredLevelUpExp()) + "\n\n";
-	info += battleMonster->GetName() + "| => HP : " + to_string(battleMonster->GetHealth()) + " |공격력 : " + to_string(battleMonster->GetDamage()) + " |경험치 : " + to_string(battleMonster->GetExperience()) + "\n\n";
+
+	info = " " + to_string(stage) + " Stage\n";
+	info += Player->GetName() + " =>\tHP : " + to_string(Player->GetCurrentHP()) + " / " + to_string(Player->GetMaxHP()) + " |공격력 : " + to_string(Player->GetAttackPower())+"\n\t\t방어력 : " +to_string(Player->GetArmor()) + "\t|경험치 : " + to_string(Player->GetCurrnetExp()) + " / " + to_string(Player->GetRequiredLevelUpExp()) + "\n\n";
+	info += battleMonster->GetName() + " =>\tHP : " + to_string(battleMonster->GetHealth()) + " |공격력 : " + to_string(battleMonster->GetDamage()) + " | 경험치 : " + to_string(battleMonster->GetExperience()) + "\n\n";
 }
 
 
