@@ -79,18 +79,21 @@ void Log::SetCursorPosition(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-//모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌, 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
+//모니터 크기의 4분의 1 크기로 콘솔 창 크기를 설정하고 모니터 가운데로 띄워줌
+//최적화를 위해 각 string타입 벡터에 이미지 텍스트 초기화(32X32 PNG파일을 0~15(16색)의 색상에 따라 알파벳으로 변환 -> 콘솔 색상 변환을 위해)
 void Log::Initialize()
 {
-	//SetConsoleOutputCP(CP_UTF8);
+	//콘솔 버퍼 크기 정하고 창 크기 설정해줌
 	bufferSize.X = bufferWidth;
 	bufferSize.Y = bufferHeight;
 	//cout << bufferSize.X << ", " << bufferSize.Y << endl;
 	SetConsoleScreenBufferSize(consoleHandle, bufferSize);
-	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1 };	//내부의 크기 조절
+	SMALL_RECT windowSize = { 0, 0, bufferWidth - 1, bufferHeight - 1};	//내부의 크기 조절
 	SetConsoleWindowInfo(consoleHandle, true, &windowSize);
 
-	MoveWindow(console, moniterScreenWidth / 4, moniterScreenHeight / 4, consoleWidth, consoleHeight, true);	//화면 가운데로 띄우고, 크기 조절
+	int centerPositionX = (moniterScreenWidth - (consoleWidth * charWidth)) / 2;
+	int centerPositionY = (moniterScreenHeight - (consoleHeight * charHeight)) / 2;
+	MoveWindow(console, centerPositionX, centerPositionY, consoleWidth * charWidth, consoleHeight * charHeight, true);	//화면 가운데로 띄우고, 크기 조절
 
 	this->playerData = PNGImageToData("Images/Player.png");
 	this->goblinData = PNGImageToData("Images/Goblin.png");
