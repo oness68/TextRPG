@@ -655,6 +655,7 @@ void Character::TryAddBuff(BuffBase& buffBase)
 		buffContainer.push_back(buffBase);
 		buffStat += buffBase.buffStat;
 
+		CharacterStatChanged();
 		string temp = format("************* 디/버프 효과 발동 ****************");
 		DisplayStatus(temp, buffBase.buffStat.maxHP, buffBase.buffStat.attackPower);
 	}
@@ -670,6 +671,7 @@ void Character::TryRemoveBuff()
 			auto removedBuff = *it;
 			buffStat -= removedBuff.buffStat;
 
+			CharacterStatChanged();;
 			string temp = format("************* 버프 종료 ****************");
 			DisplayStatus(temp, -removedBuff.buffStat.maxHP, -removedBuff.buffStat.attackPower);
 
@@ -690,6 +692,7 @@ void Character::TryAddArchiveItem(Item* item)
 		BuffStat archiveItemBuffStat = dynamic_cast<ArchiveItem*>(item)->GetBuffStat();
 		archiveBuffStat += archiveItemBuffStat;
 
+		CharacterStatChanged();
 		string temp = format("************* 도감 아이템 획득 ****************");
 		DisplayStatus(temp, archiveItemBuffStat.maxHP, archiveItemBuffStat.attackPower);
 	}
@@ -702,6 +705,7 @@ void Character::TryRemoveArchiveItem(Inventory inventory)
 		BuffStat archiveItemBuffStat = dynamic_cast<ArchiveItem*>(inventory.item)->GetBuffStat();
 		archiveBuffStat -= archiveItemBuffStat;
 
+		CharacterStatChanged();
 		string temp = format("************* 도감 아이템 소실 ****************");
 		DisplayStatus(temp, archiveItemBuffStat.maxHP, archiveItemBuffStat.attackPower);
 	}
@@ -729,8 +733,18 @@ void Character::Equip(EquipableItem* equipableItem)
 	equipmentBuffStat += equipableItem->GetBuffStat();
 	equipableItem->SetEquipping(true);
 
+	CharacterStatChanged();
+
 	string temp = "************* 장비 장착 ****************";
 	DisplayStatus(temp, buffStat.maxHP, buffStat.attackPower);
+}
+
+void Character::CharacterStatChanged()
+{
+	if (this->currentHP > this->GetMaxHP())
+	{
+		SetCurrentHP(this->GetMaxHP());
+	}
 }
 
 void Character::LevelUp()
@@ -742,6 +756,8 @@ void Character::LevelUp()
 		IncreaseMaxHP();
 		IncreaseAttackPower();
 		IncreaseRequireLevelUpExp();
+
+		SetCurrentHP(this->GetMaxHP());
 
 		string temp = "************* 레벨업 ****************";
 		DisplayStatus(temp, increaseMaxHPAmount, increaseAPAmount, level, increaseExpAmount);
