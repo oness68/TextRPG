@@ -58,8 +58,8 @@ namespace GameManger {
 
 		// 메뉴 실행
 		while (true) {
-			menuSystem.DisplayMenu((int)EShop, true);
-			menuSystem.RunMenu((int)EShop, true);
+			menuSystem.DisplayMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
+			menuSystem.RunMenu((int)EShop, true, "여기는 정보가 들어갈꺼에요\n");
 
 			if (menuSystem.GetSelectedIndex() == 4) {
 				break;
@@ -366,33 +366,30 @@ namespace GameManger {
 	}
 
 	//테스트용 BeginPlay
-//	void GameManger::BeginPlay(Character* player)
-//	{
-//		Log* logger = Log::GetInstance();
-//
-//		//VisitBuffRoom(player);
-//		//VisitShop(player);
-//		VisitRest(player);
-//		//BuffDice(player);
-//		//BuffNumber(player);
-//		//BuffCoinToss(player);
-//
-//		/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
-//		player->TryAddBuff(buff);*/
-//	}
-//}
+	//void GameManger::BeginPlay(Character* player)
+	//{
+	//	Log* logger = Log::GetInstance();
 
-	//게임시작
+	//	//VisitBuffRoom(player);
+	//	VisitShop(player);
+	//	//VisitRest(player);
+	//	//BuffDice(player);
+	//	//BuffNumber(player);
+	//	//BuffCoinToss(player);
+
+	//	/*BuffBase buff = BuffBase(BuffStat(0, 0, 0), 0);
+	//	player->TryAddBuff(buff);*/
+	//}
+
+	// 게임시작
 	void GameManger::BeginPlay(Character* player)
 	{
 		int stage = 1;
+		int battleCnt = 1; // 배틀방 연속 입장 횟수
 
 		Log* logger = Log::GetInstance();
 
 		player->DisplayStatus();
-		// VisitBuffRoom(player); 구현완료 - 채규혁
-		// VisitShop(player);
-		// VisitRest(player); 구현완료 - 채규혁
 
 		SetStage(stage);
 		BeginBattle(player, stage);
@@ -400,15 +397,32 @@ namespace GameManger {
 
 		while (stage <= 20)
 		{
+			if (battleCnt > 1) 
+			{
+				// 배틀방 2연속일 경우 확률 조정
+				roomProbabilities[Battle] = 20.0;
+				roomProbabilities[Rest] = 20.0;
+				roomProbabilities[Buff] = 20.0;
+				roomProbabilities[Market] = 40.0;
+			}
+			else 
+			{
+				// Default
+				roomProbabilities[Battle] = 50.0;
+				roomProbabilities[Rest] = 10.0;
+				roomProbabilities[Buff] = 10.0;
+				roomProbabilities[Market] = 30.0;
+			}
+
 			auto stageRooms = GenerateTwoRandomRooms(roomProbabilities, std::optional<StageRooms>(StageRooms::Battle));
 
 			for (size_t i = 0; i < stageRooms.size(); ++i) {
 				cout << i + 1 << ". Stage Room: " << StageRoomToString(stageRooms[i]) << endl;
 			}
 
-				vector<string> menu = {
-					StageRoomToString(stageRooms[0]),
-					StageRoomToString(stageRooms[1])
+			vector<string> menu = {
+				StageRoomToString(stageRooms[0]),
+				StageRoomToString(stageRooms[1])
 			};
 
 			vector<function<void()>> actions;
@@ -421,26 +435,36 @@ namespace GameManger {
 					// player는 게임 도중에 바뀔 수 있는 값이라면, 그 시점에서 player가 변경된 상태를 반영하게 됩니다.
 					actions.push_back([&]() {
 						logger->PrintLog("이상한 건물에 들어섰다.\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitShop(player);
 						});
 					break;
 				case Rest:
 					actions.push_back([&]() {
 						logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitRest(player);
 						});
 					break;
 				case Battle:
 					actions.push_back([&]() {
 						logger->PrintLog("어맛!\n");
+						Sleep(2000);
+						++battleCnt;
 						BeginBattle(player, stage);
 						});
 					break;
-				default:
+				case Buff:
 					actions.push_back([&]() {
 						logger->PrintLog("여긴 어디지...?\n");
+						Sleep(2000);
+						battleCnt = 0;
 						VisitBuffRoom(player);
-						});
+					});
+					break;
+				default:
 					break;
 				}
 			}
@@ -449,8 +473,8 @@ namespace GameManger {
 
 			// 메뉴 실행
 			while (true) {
-				menuSystem.DisplayMenu((int)ECharacter, true);
-				menuSystem.RunMenu((int)ECharacter, true);
+				menuSystem.DisplayMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
+				menuSystem.RunMenu((int)ECharacter, true, "Stage: " + to_string(stage) + "\n");
 
 				if (menuSystem.GetSelectedIndex() == 4) {
 					break;
@@ -460,40 +484,6 @@ namespace GameManger {
 			}
 
 			SetStage(++stage);
-			/*
-			int choice;
-			cout << "들어갈 방 번호 (1 또는 2 입력): " << endl;
-			std::cin >> choice;
-
-			if (choice == 1 || choice == 2) {
-				StageRooms selectedRoom = stageRooms[choice - 1];
-
-				switch (selectedRoom) {
-				case Market:
-					logger->PrintLog("이상한 건물에 들어섰다.\n");
-					VisitShop(player);
-					break;
-				case Rest:
-					logger->PrintLog("잠시 쉴수 있을꺼 같다.\n");
-					VisitRest(player);
-					break;
-				case Battle:
-					logger->PrintLog("어맛!\n");
-					BeginBattle(player, stage);
-					break;
-				default:
-					logger->PrintLog("여긴 어디지...?\n");
-					VisitBuffRoom(player);
-					break;
-				}
-			}
-			else {
-				logger->PrintLog("잘못된 입력입니다. 다시 시도하세요.\n");
-				continue;
-			}
-
-			SetStage(++stage);
-			*/
 		}
 	}
 

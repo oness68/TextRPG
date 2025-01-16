@@ -130,7 +130,7 @@ namespace GameManger {
 			{Market, 20.0},
 			{Rest, 10.0},
 			{Buff, 10.0},
-			{Battle, 60.0}
+			{Battle, 50.0}
 		};
 
 		std::string StageRoomToString(StageRooms room) {
