@@ -36,12 +36,18 @@ ItemFactory::ItemFactory()
 
 	items.insert(make_pair("모험가의장검", new EquipableItem("모험가의장검", 300, Rarity::C, "Weapon", { {"Damage", 50} }, 0, BuffStat(10, 0, 0))));
 
+	//장비 아이템베이스
+	items.insert(make_pair("선택받은용사의검", new EquipableItem("선택받은용사의검", 3000, Rarity::SSR, "Weapon", { {"Damage", 50} }, 0, BuffStat(50, 0, 0))));
+	items.insert(make_pair("전투도끼", new EquipableItem("전투도끼", 1000, Rarity::R, "Weapon", { {"Damage", 50} }, 0, BuffStat(3, 0, 0))));
+	items.insert(make_pair("가죽갑옷", new EquipableItem("가죽갑옷", 300, Rarity::C, "Armor", { {"Damage", 50} }, 0, BuffStat(0, 10, 0))));
+	items.insert(make_pair("체인메일", new EquipableItem("체인메일", 500, Rarity::R, "Armor", { {"Damage", 50} }, 0, BuffStat(0, 20, 0))));
+	items.insert(make_pair("가시갑옷", new EquipableItem("가시갑옷", 1000, Rarity::SR, "Armor", { {"Damage", 50} }, 0, BuffStat(10, 30, 0))));
 
 	//보스몹 드랍 도감아이템
-	items.insert(make_pair("고블린족장의유물", new ArchiveItem("고블린족장의유물", 50, Rarity::C, BuffStat(5, 0, 0))));
-	items.insert(make_pair("트롤의심장", new ArchiveItem("트롤의심장", 50, Rarity::C, BuffStat(0, 0, 50))));
-	items.insert(make_pair("트렌트의열매", new ArchiveItem("트렌트의열매", 50, Rarity::C, BuffStat(0, 0, 50))));
-	items.insert(make_pair("드래곤의머리", new ArchiveItem("드래곤의머리", 50, Rarity::C, BuffStat(0, 0, 50))));
+	items.insert(make_pair("고블린족장의유물", new ArchiveItem("고블린족장의유물", 500, Rarity::C, BuffStat(5, 0, 0))));
+	items.insert(make_pair("트롤의심장", new ArchiveItem("트롤의심장", 500, Rarity::C, BuffStat(0, 0, 50))));
+	items.insert(make_pair("트렌트의열매", new ArchiveItem("트렌트의열매", 500, Rarity::C, BuffStat(0, 0, 50))));
+	items.insert(make_pair("드래곤의머리", new ArchiveItem("드래곤의머리", 500, Rarity::C, BuffStat(0, 0, 50))));
 	//몬스터 별 특수 드랍템
 	items.insert(make_pair("고블린귀", new Item("고블린귀", 50, Rarity::C)));
 	items.insert(make_pair("오크의머리털", new Item("오크의머리털", 50, Rarity::C)));
@@ -82,7 +88,7 @@ vector<Item*> ItemFactory::GenerateRandomItems(int count)
 	vector<Item*> shuffledItems;
 	for (auto item : items)
 	{
-		if (item.second->GetType() == ItemType::Consumable || item.second->GetType() == ItemType::Equipable) {
+		if (item.second->GetType() == ItemType::Consumable || item.second->GetType() == ItemType::Equipable || item.second->GetType() == ItemType::Archive) {
 
 			shuffledItems.push_back(item.second);
 		}
