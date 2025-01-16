@@ -266,7 +266,7 @@ void Character::DisplayEquipMentItem()
 				{
 					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
 					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
-					itemDetail += format("장비  장착효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
+					itemDetail += format("장비 장착효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
 					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
 
 					// TODO : Replace : Menu System(장착, 나가기)
@@ -345,36 +345,37 @@ void Character::DisplayConsumableItem()
 		for (Inventory inventory : displayInventory)
 		{
 			ConsumableItem* item = dynamic_cast<ConsumableItem*>(inventory.item);
+			ConsumableItem& selectedItem = *item;
 
-			string temp = format("- {}  개수 : {}ea", item->GetName(), inventory.Count);
+			string temp = format("- {}  개수 : {}ea", selectedItem.GetName(), inventory.Count);
 			menuItems.push_back(temp);
 
 			actions.push_back([&]()
 				{
-					string itemDetail = format("[{}] 상세 정보\n\n", item->GetName());
-					itemDetail += format("아이템 설명 : {}\n", item->GetDescription());
+					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
+					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
 					itemDetail += "아이템 사용효과 : ";
-					switch (item->GetEffectType())
+					switch (selectedItem.GetEffectType())
 					{
 					case EffectType::Unknown:
 						break;
 					case EffectType::HealCurrentHP:
-						itemDetail += format("체력을 {}만큼 회복합니다.\n", item->GetEffectValue());
+						itemDetail += format("체력을 {}만큼 회복합니다.\n", selectedItem.GetEffectValue());
 						break;
 					case EffectType::IncreaseMaxHP:
-						itemDetail += format("최대 체력을 {}만큼 증가시킵니다.\n", item->GetEffectValue());
+						itemDetail += format("최대 체력을 {}만큼 증가시킵니다.\n", selectedItem.GetEffectValue());
 						break;
 					case EffectType::IncreaseAttackPower:
-						itemDetail += format("공격력을 {}만큼 증가시킵니다.\n", item->GetEffectValue());
+						itemDetail += format("공격력을 {}만큼 증가시킵니다.\n", selectedItem.GetEffectValue());
 						break;
 					case EffectType::DamageUp:
-						itemDetail += format("공격력을 {}턴동안 {}만큼 증가시킵니다.\n", item->GetDuration(), item->GetEffectValue());
+						itemDetail += format("공격력을 {}턴동안 {}만큼 증가시킵니다.\n", selectedItem.GetDuration(), selectedItem.GetEffectValue());
 						break;
 					default:
 						break;
 					}
 
-					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", item->GetPrice(), item->GetSellPrice());
+					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
 
 
 					vector<string> itemDetailMenu = { "\n[소비 아이템 인벤토리로 돌아가기]" };
@@ -441,7 +442,7 @@ void Character::DisplayArchiveItem()
 				{
 					string itemDetail = format("[{}] 상세 정보\n\n", selectedItem.GetName());
 					itemDetail += format("아이템 설명 : {}\n", selectedItem.GetDescription());
-					itemDetail += format("장비  장착효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
+					itemDetail += format("도감 수집 효과 : 공격력+{}, 방어력+{}, 체력+{}\n", selectedItem.GetBuffStat().attackPower, selectedItem.GetBuffStat().armor, selectedItem.GetBuffStat().maxHP);
 					itemDetail += format("아이템 구매가격 : {}, 판매 가격 : {}\n", selectedItem.GetPrice(), selectedItem.GetSellPrice());
 
 
@@ -490,7 +491,7 @@ void Character::DisplayArchiveItem()
 
 void Character::DisplayEtcItem()
 {
-	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Archive);
+	vector<Inventory> displayInventory = GetInventoryItems(ItemType::Default);
 	vector<string> menuItems;
 	vector<function<void()>> actions;
 
