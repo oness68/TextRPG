@@ -39,6 +39,7 @@ public:
 	void DisplayStatus(string reason, int hp, int power, int level = 0, int exp = 0);
 	const string GetCharacterStatusString();
 
+	const string& GetName() { return name; }
 	const int& GetCurrentHP();
 	const int& GetMaxHP();
 	const int& GetAttackPower();
@@ -79,8 +80,6 @@ public:
 	void TryAddBuff(BuffBase& buffBase);
 	void TryRemoveBuff();
 
-	string GetName() { return name; }
-
 	void TryAddArchiveItem(Item* item);
 	void TryRemoveArchiveItem(Inventory inventory);
 
@@ -107,6 +106,7 @@ private:
 	void InitEquipMentItem();
 	void EquipItem(EquipableItem* equipableItem);
 	void Equip(EquipableItem* equipableItem);
+	void CharacterStatChanged();
 
 	void LevelUp();
 
