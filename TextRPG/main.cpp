@@ -21,6 +21,8 @@ int main()
 	std::thread inputThread(PI::ProcessInput);
 	PI::isInputEnabled = false;
 
+	inputThread.join(); // 테스트중 abort() 문제
+
 	try {
 		using GM = GameManger::GameManger;
 		GM& gameManager = GM::GetInstance();
@@ -107,8 +109,6 @@ int main()
 		PI::isRunning = false;
 		inputThread.join();
 	}
-
-	
 
 	return 0;
 }

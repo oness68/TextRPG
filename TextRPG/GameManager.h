@@ -71,12 +71,12 @@ namespace GameManger {
 			RoomType firstRoom = GenerateRandomRoom(roomProbabilities);
 			selectedRooms.push_back(firstRoom);
 
-			std::cout << "First room selected: " << firstRoom << std::endl;
+			// std::cout << "First room selected: " << firstRoom << std::endl;
 
 			RoomType secondRoom;
 			do {
 				secondRoom = GenerateRandomRoom(roomProbabilities);
-				std::cout << "Second room selected: " << secondRoom << std::endl;
+				// std::cout << "Second room selected: " << secondRoom << std::endl;
 			} while ((secondRoom == firstRoom) && !allowDuplicateRoom);
 
 			selectedRooms.push_back(secondRoom);
