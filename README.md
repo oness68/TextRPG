@@ -32,4 +32,6 @@
     - 네임드 급 이상의 몬스터 특수 패턴 구현
     - 턴제 버프형 아이템 구현
     - 강화 시스템
+ 
+- **[영상](https://www.youtube.com/watch?v=e2Sr1rXcKx0)**
 
